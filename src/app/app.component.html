@@ -1,28 +1,47 @@
-<h1>
-  {{name}}
-</h1>
-<p><strong>Address: </strong> {{address.street}} {{address.city}}</p>
-<button (click)="toggleHobbies()">{{showHobbies ? "Hide Hobbies" : "Show Hobbies"}}</button>
-<div *ngIf="showHobbies">
-  <h3>Hobbies</h3>
-  <ul>
-    <li *ngFor="let hobby of hobbies; let i = index">
-      {{hobby}} <button (click)="deleteHobby(i)">Delete</button>
-    </li>
-  </ul>
-  <form (submit)="addHobby(hobby.value)">
-  <label>Add Hobby: </label><br>
-  <input type="text" #hobby/><br>
+<div class="sideNav">
+  <md-sidenav-container>
+    <md-sidenav #sidenav class="example-sidenav">
+      <ul>
+        <li> Summary </li>
+        <li> Calendar </li>
+        <li> Other </li>
+      </ul>
+    </md-sidenav>
+
+    <div class="example-sidenav-content">
+      <button md-button (click)="sidenav.open()">
+        Open sidenav
+      </button>
+    </div>
+
+<div class="main">
+  <h1>
+    {{name}}
+  </h1>
+  <p><strong>Address: </strong> {{address.street}} {{address.city}}</p>
+  <button (click)="toggleHobbies()">{{showHobbies ? "Hide Hobbies" : "Show Hobbies"}}</button>
+  <div *ngIf="showHobbies">
+    <h3>Hobbies</h3>
+    <ul>
+      <li *ngFor="let hobby of hobbies; let i = index">
+        {{hobby}} <button (click)="deleteHobby(i)">Delete</button>
+      </li>
+    </ul>
+    <form (submit)="addHobby(hobby.value)">
+    <label>Add Hobby: </label><br>
+    <input type="text" #hobby/><br>
+    </form>
+  </div>
+  <hr>
+  <h3>Edit User</h3>
+  <form>
+    <label>Name: </label><br>
+    <input type="text" name="name" [(ngModel)]="name"/><br>
+    <label>Street: </label><br>
+    <input type="text" name="street" [(ngModel)]="address.street"/><br>
+    <label>City: </label><br>
+    <input type="text" name="city" [(ngModel)]="address.city"/><br>
   </form>
 </div>
-<hr>
-<h3>Edit User</h3>
-<form>
-  <label>Name: </label><br>
-  <input type="text" name="name" [(ngModel)]="name"/><br>
-  <label>Street: </label><br>
-  <input type="text" name="street" [(ngModel)]="address.street"/><br>
-  <label>City: </label><br>
-  <input type="text" name="city" [(ngModel)]="address.city"/><br>
-</form>
-
+  </md-sidenav-container>
+</div>

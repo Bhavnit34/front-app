@@ -1,0 +1,59 @@
+<nav class="header">
+  <div class="navLeft">
+    <h1 class="welcomeMessage">Welcome, Bhavnit</h1>
+  </div>
+  <div class="navMiddle">
+    <ul class="navigation">
+      <li><a selected="true">Summary</a></li>
+      <li><a>Calendar</a></li>
+      <li><a>Trends</a></li>
+    </ul>
+  </div>
+   <div class="navRight">
+
+   </div>
+
+</nav>
+
+
+
+<div class="tileBack">
+  <div class="tileToday">
+  </div>
+  <div class="historyWrapper">
+    <div class="tileSummary"></div>
+    <div class="tileSummary"></div>
+    <div class="tileSummary"></div>
+  </div>
+</div>
+
+
+
+<!--
+<div class="row">
+  <div class="col-md-6">
+    <div style="display: block;">
+      <canvas baseChart width="500px" height="500px"
+              [datasets]="lineChartData"
+              [labels]="lineChartLabels"
+              [options]="lineChartOptions"
+              [colors]="lineChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-bottom: 10px">
+    <table class="table table-responsive table-condensed">
+      <tr>
+        <th *ngFor="let label of lineChartLabels">{{label}}</th>
+      </tr>
+      <tr *ngFor="let d of lineChartData">
+        <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
+      </tr>
+    </table>
+    <button (click)="randomize()">CLICK</button>
+  </div>
+</div>
+-->

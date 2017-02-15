@@ -9,9 +9,9 @@ export class UserComponent {
   name: string;
   address: address;
   hobbies: string[];
-  showHobbies : boolean;
+  showHobbies: boolean;
 
-  constructor(){
+  constructor() {
     this.name = "Bhavnit Patel";
     this.address = {
       street: "40 Granville",
@@ -21,21 +21,22 @@ export class UserComponent {
     this.showHobbies = true;
   }
 
-   toggleHobbies() {
-     if(this.showHobbies == true) {
-       this.showHobbies = false;
-     } else {
-       this.showHobbies = true;
-     }
+  toggleHobbies() {
+    if (this.showHobbies == true) {
+      this.showHobbies = false;
+    } else {
+      this.showHobbies = true;
+    }
   }
 
-  addHobby(hobby){
+  addHobby(hobby) {
     this.hobbies.push(hobby);
   }
 
-  deleteHobby(i){
-    this.hobbies.splice(i,1);
+  deleteHobby(i) {
+    this.hobbies.splice(i, 1);
   }
+
 
 }
 

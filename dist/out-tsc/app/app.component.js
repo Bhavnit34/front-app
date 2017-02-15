@@ -15,7 +15,7 @@ export var AppComponent = (function () {
     AppComponent = __decorate([
         Component({
             selector: 'app-root',
-            template: "\n    <user></user>\n    "
+            template: "\n    <home></home>\n    "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

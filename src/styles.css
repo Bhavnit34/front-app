@@ -1,1 +1,149 @@
 /* You can add global styles to this file, and also import other style files */
+md-sidenav {
+  position: relative;
+}
+
+.example-container {
+  width: 500px;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-content {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+
+.sideNav {
+  width: 20%;
+  float:left;
+}
+
+.main {
+  width : 80%;
+  float:left;
+}
+
+.header {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  background-color: #00838F;
+  color: white;
+}
+
+.navMiddle {
+  text-align: center;
+}
+
+.navLeft {
+  position: relative;
+  height: 50px;
+  float:left;
+  width: 33.3%;
+}
+
+.welcomeMessage {
+  text-align: center;
+  font-weight: normal;
+  margin: 11px 0 0 0;
+}
+
+.navMiddle {
+  position: relative;
+  height: 50px;
+  float:left;
+  width: 33.3%;
+}
+
+.navRight {
+  position: relative;
+  height: 50px;
+  float:left;
+  width: 33.3%;
+}
+
+
+ul.navigation {
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+  height: 100%;
+  overflow: hidden;
+}
+
+ul.navigation li {
+  display:inline-block;
+}
+
+ul.navigation li a {
+  color: #FFFFFF;
+  font-size: 19px;
+  padding: 14px 16px;
+}
+
+ul.navigation li a[selected="true"] {
+  background-color: #FDFDFD;
+  color: #00838F;
+}
+
+ul.navigation li a:hover {
+  cursor: pointer;
+  background-color: #2E99A3;
+}
+
+body {
+  margin: 0; /* remove whitespace at top of page */
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+.tileBack {
+  margin-left: 20%;
+  height: 100%;
+  background-color: #FDFDFD;
+  width: 60%;
+  position: relative;
+}
+
+.tileToday {
+  margin: 2% 0 0 0;
+  width:100%;
+  height:40%;
+  min-height: 350px;
+  max-height: 400px;
+  display: inline-block;
+  background-color: #EEEEFF;
+  float: left;
+}
+
+.historyWrapper {
+  width: 100%;
+  height: 35%;
+  min-height: 200px;
+  max-height: 238px;
+  background-color: aliceblue;
+  float: left;
+  margin: 2% 0 0 0;
+}
+
+.tileSummary {
+  width: 31.3%;
+  height: 80%;
+  min-height: 160px;
+  max-height: 190px;
+  background-color: aqua;
+  float: left;
+  margin: 2% 0 0 1.6%;
+}
+
