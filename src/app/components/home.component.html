@@ -18,9 +18,32 @@
 
 
 <div class="tileBack">
-  <div class="tileToday">
+  <div class="tileToday baseTile">
+    <div class="attrWrapper">
+      <table border = "1">
+        <tr>
+          <td onclick="toggleTile('sleepGraphTile')">Asleep Time</td>
+          <td onclick="toggleTile('sleepGraphTile')">Awake Time</td>
+          <td onclick="toggleTile('sleepGraphTile')">Sleep Quality</td>
+          <td>Heart Rate</td>
+          <td onclick="toggleTile('calorieGraphTile')">Calories</td>
+          <td onclick="toggleTile('idleGraphTile')">Idle Time</td>
+        </tr>
+      </table>
+    </div>
   </div>
-  <div class="historyWrapper">
+  <div class="attrGraphWrapper" id="attrGraphWrapper">
+    <div class="attrGraphTile baseTile" id="sleepGraphTile">
+      <h1>Sleep Graph</h1>
+    </div>
+    <div class="attrGraphTile baseTile" id="calorieGraphTile">
+      <h1>Calories Graph</h1>
+    </div>
+    <div class="attrGraphTile baseTile" id="idleGraphTile">
+      <h1>Idle Time Graph</h1>
+    </div>
+  </div>
+  <div class="historyWrapper baseTile">
     <div class="tileSummary"></div>
     <div class="tileSummary"></div>
     <div class="tileSummary"></div>

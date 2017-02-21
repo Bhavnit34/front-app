@@ -31,6 +31,19 @@ md-sidenav {
   float:left;
 }
 
+/* Overall Page */
+
+body {
+  margin: 0; /* remove whitespace at top of page */
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+/* -----------------------------------------*/
+
+/* Top Navigation Bar ---------------------*/
 .header {
   position: relative;
   height: 50px;
@@ -99,15 +112,16 @@ ul.navigation li a:hover {
   background-color: #2E99A3;
 }
 
-body {
-  margin: 0; /* remove whitespace at top of page */
+/* -----------------------------------------*/
+
+
+/* Summary Body Section------------------------*/
+
+.baseTile {
+  box-shadow: 1px 4px 9px #888888;
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
-}
-
+/* Main body */
 .tileBack {
   margin-left: 20%;
   height: 100%;
@@ -125,8 +139,51 @@ html, body {
   display: inline-block;
   background-color: #EEEEFF;
   float: left;
+  position: relative;
 }
 
+/* div that encases the attributes of current day summary */
+.attrWrapper {
+  position: absolute;
+  min-height: 60px;
+  bottom: 0;
+  left: 0;
+}
+
+.attrGraphWrapper {
+  position: relative;
+  display:none;
+  flex-flow: column;
+  width: 100%;
+  height: 50%;
+  background-color: aliceblue;
+  float: left;
+  margin: 2% 0 0 0;
+  overflow: hidden;
+}
+
+.attrGraphTile {
+  width: 100%;
+  max-height: 400px;
+  background-color: #528881;
+  float: left;
+  /*margin: 1.5% 0 0 0;*/
+
+  -moz-transition: height .7s;
+  -ms-transition: height .7s;
+  -o-transition: height .7s;
+  -webkit-transition: height .7s;
+  transition: height .7s;
+  height: 0;
+  overflow: hidden;
+}
+
+
+#sleepGraphTile { order : 1}
+#calorieGraphTile { order : 2}
+#idleGraphTile { order : 3}
+
+/* base Tile that encases the summary tiles of the previous n days */
 .historyWrapper {
   width: 100%;
   height: 35%;
@@ -147,3 +204,4 @@ html, body {
   margin: 2% 0 0 1.6%;
 }
 
+/* -----------------------------------------*/
