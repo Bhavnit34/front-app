@@ -7,10 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component, trigger, state, style } from '@angular/core';
+import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
 export var HomeComponent = (function () {
     function HomeComponent() {
-        this.state = 'inactive';
+        this.graphStates = { sleepGraphState: "inactive", calorieGraphState: "inactive", idleGraphState: "inactive" };
+        this.summary_state = 'inactive';
         // lineChart
         this.lineChartData = [
             { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
@@ -61,7 +62,10 @@ export var HomeComponent = (function () {
         return wholeDate;
     };
     HomeComponent.prototype.toggleMove = function () {
-        this.state = (this.state === 'inactive' ? 'active' : 'inactive');
+        this.summary_state = (this.summary_state === 'inactive' ? 'active' : 'inactive');
+    };
+    HomeComponent.prototype.toggleGraph = function (graphID) {
+        this.graphStates[graphID] = (this.graphStates[graphID] === 'inactive' ? 'active' : 'inactive');
     };
     HomeComponent.prototype.randomize = function () {
         var _lineChartData = new Array(this.lineChartData.length);
@@ -94,6 +98,24 @@ export var HomeComponent = (function () {
                         backgroundColor: '#EEEEEE',
                         height: "200px"
                     }))
+                ]),
+                trigger('toggleGraph', [
+                    state('inactive', style({
+                        display: "none"
+                    })),
+                    state('active', style({
+                        display: "linear"
+                    })),
+                    transition('active => inactive', [
+                        animate('0.5s ease-out')
+                    ]),
+                    transition('inactive => active', [
+                        animate(600, keyframes([
+                            style({ opacity: 0, transform: 'translateX(+200px)', offset: 0 }),
+                            style({ opacity: 1, transform: 'translateX(-25px)', offset: .75 }),
+                            style({ opacity: 1, transform: 'translateY(0)', offset: 1 })
+                        ]))
+                    ])
                 ])
             ]
         }), 
@@ -101,4 +123,10 @@ export var HomeComponent = (function () {
     ], HomeComponent);
     return HomeComponent;
 }());
+/*
+for (var key in this.graphStates) {
+  var attrName = key.toString();
+  var value = this.graphStates[attrName];
+}
+*/
 //# sourceMappingURL=D:/front-app/src/app/components/home.component.js.map

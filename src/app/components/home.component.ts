@@ -22,12 +22,31 @@ import {
         backgroundColor: '#EEEEEE',
         height: "200px"
       }))
+    ]),
 
+    trigger('toggleGraph', [
+      state('inactive', style({
+        display:"none"
+      })),
+      state('active', style({
+        display: "linear"
+      })),
+      transition('active => inactive', [
+        animate('0.5s ease-out')
+      ]),
+      transition('inactive => active', [
+        animate(600, keyframes([
+          style({opacity: 0, transform: 'translateX(+200px)', offset: 0}),
+          style({opacity: 1, transform: 'translateX(-25px)', offset: .75}),
+          style({opacity: 1, transform: 'translateY(0)', offset: 1})
+        ]))
+      ])
     ])
   ]
 })
 export class HomeComponent {
   todaysDate: string;
+  graphStates: GraphStates = {sleepGraphState: "inactive", calorieGraphState: "inactive", idleGraphState: "inactive"};
   constructor() {
     this.todaysDate = this.setTodaysDate();
   }
@@ -42,12 +61,17 @@ export class HomeComponent {
     return wholeDate;
   }
 
-  state: string = 'inactive';
+  summary_state: string = 'inactive';
+
+
 
   toggleMove() {
-    this.state = (this.state === 'inactive' ? 'active' : 'inactive');
+    this.summary_state = (this.summary_state === 'inactive' ? 'active' : 'inactive');
   }
 
+  toggleGraph(graphID) {
+    this.graphStates[graphID] = (this.graphStates[graphID] === 'inactive' ? 'active' : 'inactive');
+  }
 
 
 
@@ -125,3 +149,14 @@ export class HomeComponent {
   }
 }
 
+interface GraphStates {
+  sleepGraphState: string;
+  calorieGraphState: string;
+  idleGraphState: string;
+}
+/*
+for (var key in this.graphStates) {
+  var attrName = key.toString();
+  var value = this.graphStates[attrName];
+}
+*/
