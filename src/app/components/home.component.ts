@@ -1,11 +1,70 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  keyframes
+} from '@angular/core';
 
 @Component({
   selector: 'home',
-  templateUrl: 'home.component.html'
+  templateUrl: 'home.component.html',
   //styleUrls: ['app.component.css']
+  animations: [
+
+    trigger('movePanel', [
+      state('inactive', style({
+        height: "0"
+      })),
+      state('active', style({
+        backgroundColor: '#EEEEEE',
+        height: "200px"
+      }))
+
+    ])
+  ]
 })
 export class HomeComponent {
+  todaysDate: string;
+  constructor() {
+    this.todaysDate = this.setTodaysDate();
+  }
+
+  public setTodaysDate():string {
+    const days:Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months:Array<string> = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const today = new Date();
+    const day = days[today.getDay()];
+    const month = months[today.getMonth()];
+    const wholeDate = "Today,  " + day + " " + today.getDate() + " " + month + " " + today.getFullYear();
+    return wholeDate;
+  }
+
+  state: string = 'inactive';
+
+  toggleMove() {
+    this.state = (this.state === 'inactive' ? 'active' : 'inactive');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // lineChart
   public lineChartData:Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
