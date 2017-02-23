@@ -76,9 +76,13 @@ import {
 })
 export class HomeComponent {
   todaysDate: string;
-  graphStates: GraphStates = {sleepGraphState: "inactive", calorieGraphState: "inactive", idleGraphState: "inactive"};
   graphWrapperState: string = 'inactive';
   summary_state: string = 'inactive';
+  graphStates: GraphStates = {
+    sleepGraphState: {state: "inactive", order: 1},
+    calorieGraphState: {state: "inactive", order: 2},
+    idleGraphState: {state: "inactive", order: 3}
+  };
 
   constructor() {
     this.todaysDate = this.setTodaysDate();
@@ -94,20 +98,48 @@ export class HomeComponent {
     return wholeDate;
   }
 
-
+  // expands/collapses the summary tile
   toggleMove() {
     this.summary_state = (this.summary_state === 'inactive' ? 'active' : 'inactive');
   }
 
-  toggleGraph(graphID) {
-    // show/hide the background tile depending on if there are any graphs visible
-    if (this.graphStates[graphID] == 'inactive') {
-      // we want to show a tile so show wrapper if not already visibile
+  // function to show/hide the summaryGraph tiles
+  toggleGraph(graphStateName) {
+    // determine ordering and wrapper visibility
+    if (this.graphStates[graphStateName].state == 'inactive') { // we want to show a tile
+      // re-order tiles
+      for (var key in this.graphStates) {
+        var attrName = key.toString();
+        var graphState = this.graphStates[attrName];
+        if (graphState.state == 'active' && attrName != graphStateName ){
+          // if the graph is visible and not the selected one, then increments its order
+          graphState.order++;
+        }
+      }
+      this.graphStates[graphStateName].order = 1; // finally move new tile to top
+
+      // show wrapper if not already visibile
       if(this.noGraphsActive() == 0) {
           this.graphWrapperState = 'active';
       }
-    } else {
-      // we want to hide a tile so hide wrapper if its the last tile
+    } else { // we want to hide a tile
+      // re-order tiles
+      for (var key in this.graphStates) {
+        var attrName = key.toString();
+        var graphState = this.graphStates[attrName];
+
+        if (graphState.state == 'active' && attrName != graphStateName ){
+          if(graphState.order > this.graphStates[graphStateName].order) {
+            // if the graph is visible and below the current, decrement its order
+            graphState.order--;
+          }
+        }
+      }
+      // finally move new tile to last order
+      this.graphStates[graphStateName].order = 3;
+
+
+      // hide wrapper if its the last tile
       if(this.noGraphsActive() == 1) {
         this.graphWrapperState = 'inactive';
       }
@@ -115,19 +147,18 @@ export class HomeComponent {
 
 
      // toggle relevant graph state
-    this.graphStates[graphID] = (this.graphStates[graphID] === 'inactive' ? 'active' : 'inactive');
+    this.graphStates[graphStateName].state = (this.graphStates[graphStateName].state === 'inactive' ? 'active' : 'inactive');
   }
 
-
+  // function returning the no. of graphs visible on the page
   private noGraphsActive():number {
     var activeCount = 0;
     for (var key in this.graphStates) {
       var attrName = key.toString();
       var value = this.graphStates[attrName];
-      if (value == 'active') {
+      if (value.state == 'active') {
         activeCount++;
       }
-
     }
     return activeCount;
   }
@@ -205,8 +236,9 @@ export class HomeComponent {
   }
 }
 
+// interface of states and visibility order for each summaryGraph tile
 interface GraphStates {
-  sleepGraphState: string;
-  calorieGraphState: string;
-  idleGraphState: string;
+  sleepGraphState: {state: string; order: number;};
+  calorieGraphState: {state: string; order: number;};
+  idleGraphState: {state: string; order: number;};
 }

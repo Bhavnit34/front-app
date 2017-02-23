@@ -172,6 +172,7 @@ ul.navigation li a:hover {
   float: left;
   margin: 2% 0 0 0;
   overflow: hidden;
+  display: flex;
 }
 
 .attrGraphTile {
@@ -179,7 +180,6 @@ ul.navigation li a:hover {
   max-height: 400px;
   background-color: #528881;
   float: left;
-  height: 33%;
   min-height: 300px;
   margin-top: 1.5%;
   /*margin: 1.5% 0 0 0;
@@ -193,10 +193,11 @@ ul.navigation li a:hover {
   overflow: hidden;
 }
 
-
+/*
 #sleepGraphTile { order : 1}
 #calorieGraphTile { order : 2}
 #idleGraphTile { order : 3}
+*/
 
 /* base Tile that encases the summary tiles of the previous n days */
 .historyWrapper {
