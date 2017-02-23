@@ -168,7 +168,6 @@ ul.navigation li a:hover {
   position: relative;
   flex-flow: column;
   width: 100%;
-  height: 400px;
   background-color: aliceblue;
   float: left;
   margin: 2% 0 0 0;

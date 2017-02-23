@@ -7,10 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
+import { Component, trigger, state, style, transition, animate } from '@angular/core';
 export var HomeComponent = (function () {
     function HomeComponent() {
         this.graphStates = { sleepGraphState: "inactive", calorieGraphState: "inactive", idleGraphState: "inactive" };
+        this.graphWrapperState = 'inactive';
         this.summary_state = 'inactive';
         // lineChart
         this.lineChartData = [
@@ -65,7 +66,32 @@ export var HomeComponent = (function () {
         this.summary_state = (this.summary_state === 'inactive' ? 'active' : 'inactive');
     };
     HomeComponent.prototype.toggleGraph = function (graphID) {
+        // show/hide the background tile depending on if there are any graphs visible
+        if (this.graphStates[graphID] == 'inactive') {
+            // we want to show a tile so show wrapper if not already visibile
+            if (this.noGraphsActive() == 0) {
+                this.graphWrapperState = 'active';
+            }
+        }
+        else {
+            // we want to hide a tile so hide wrapper if its the last tile
+            if (this.noGraphsActive() == 1) {
+                this.graphWrapperState = 'inactive';
+            }
+        }
+        // toggle relevant graph state
         this.graphStates[graphID] = (this.graphStates[graphID] === 'inactive' ? 'active' : 'inactive');
+    };
+    HomeComponent.prototype.noGraphsActive = function () {
+        var activeCount = 0;
+        for (var key in this.graphStates) {
+            var attrName = key.toString();
+            var value = this.graphStates[attrName];
+            if (value == 'active') {
+                activeCount++;
+            }
+        }
+        return activeCount;
     };
     HomeComponent.prototype.randomize = function () {
         var _lineChartData = new Array(this.lineChartData.length);
@@ -101,20 +127,48 @@ export var HomeComponent = (function () {
                 ]),
                 trigger('toggleGraph', [
                     state('inactive', style({
-                        display: "none"
+                        height: 0,
+                        minHeight: 0,
+                        marginTop: 0
                     })),
                     state('active', style({
-                        display: "linear"
+                        minHeight: "300px"
                     })),
                     transition('active => inactive', [
-                        animate('0.5s ease-out')
+                        animate('0.5s', style({
+                            height: 0,
+                            minHeight: 0
+                        }))
                     ]),
                     transition('inactive => active', [
-                        animate(600, keyframes([
-                            style({ opacity: 0, transform: 'translateX(+200px)', offset: 0 }),
-                            style({ opacity: 1, transform: 'translateX(-25px)', offset: .75 }),
-                            style({ opacity: 1, transform: 'translateY(0)', offset: 1 })
-                        ]))
+                        animate('0.5s', style({
+                            height: "auto",
+                            minHeight: "300px",
+                            marginTop: "1%"
+                        }))
+                    ])
+                ]),
+                trigger('toggleGraphWrapper', [
+                    state('inactive', style({
+                        height: 0,
+                        minHeight: 0,
+                        marginTop: 0
+                    })),
+                    state('active', style({
+                        minHeight: "300px"
+                    })),
+                    transition('active => inactive', [
+                        animate('0.5s', style({
+                            height: 0,
+                            minHeight: 0
+                        }))
+                    ]),
+                    transition('inactive => active', [
+                        animate('0.5s', style({
+                            height: "auto",
+                            minHeight: "300px",
+                            marginTop: "1%"
+                        }))
                     ])
                 ])
             ]
@@ -123,10 +177,4 @@ export var HomeComponent = (function () {
     ], HomeComponent);
     return HomeComponent;
 }());
-/*
-for (var key in this.graphStates) {
-  var attrName = key.toString();
-  var value = this.graphStates[attrName];
-}
-*/
 //# sourceMappingURL=D:/front-app/src/app/components/home.component.js.map
