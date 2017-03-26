@@ -82,6 +82,9 @@ export class HomeComponent {
   public moon_icon: string;
   public sun_icon: string;
   public flame_icon: string;
+  public football_icon: string;
+  public dumbbell_icon: string;
+  public bike_icon: string;
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -101,6 +104,9 @@ export class HomeComponent {
     this.moon_icon = "img/010-moon.svg";
     this.sun_icon = "img/006-sun.svg";
     this.flame_icon = "img/005-flame.svg";
+    this.football_icon = "img/004-soccer-ball.svg";
+    this.dumbbell_icon = "img/002-dumbbell.svg";
+    this.bike_icon = "img/003-bicycle.svg";
 
   }
 

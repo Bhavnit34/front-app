@@ -357,11 +357,10 @@ ul.navigation li a:hover {
   font-size: 22px;
   float: left;
 }
-
-
-
 /* -------------------------- */
 
+
+/* The extended section of the day tile */
 .summaryExtended {
   width: 100%;
   max-height: 210px;
@@ -379,6 +378,66 @@ ul.navigation li a:hover {
   overflow: hidden;
 }
 
+.summaryExtendedAttributeTop {
+  position: relative;
+  height: 33%;
+  width: 100%;
+  padding: 3% 0 0 0;
+}
+
+.summaryExtendedAttributeBottom {
+  position: relative;
+  height: 33%;
+  width: 100%;
+}
+
+.summaryExtendedAttrTitle {margin: 0 0 0 6%;}
+
+.bar {
+  margin: 1% 10% 0 10%;
+  border-radius: 3px;
+  border: 2px solid #73AD21;
+  min-height:10px;
+  max-height: 15px;
+}
+
+.summaryExtendedWorkout {
+  width: 100%;
+  background-color: #00838F;
+  height: 5%;
+  min-height: 50px;
+  max-height: 75px;
+  position: relative;
+  float: left;
+}
+
+
+.summaryExtendedWorkoutSection {
+  position: relative;
+  width: 30%;
+  height: 100%;
+  float: left;
+  margin: 1%;
+}
+
+.summaryExtendedWorkoutIcon {
+  max-width: 30px;
+  max-height: 30px;
+  margin: 1%;
+  float: left;
+}
+
+.summaryExtendedWorkoutText {
+  margin: 4% 0 0 10%;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 22px;
+  float: left;
+}
+
+
+
+/* the extender button */
 .summaryExtender {
   width: 100%;
   background-color: #FFFFFF;

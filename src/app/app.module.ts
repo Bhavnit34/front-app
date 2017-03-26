@@ -6,6 +6,7 @@ import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 import { ChartsModule } from 'ng2-charts';
 
+
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user.component';
 import { HomeComponent } from './components/home.component';
@@ -22,6 +23,7 @@ import { HomeComponent } from './components/home.component';
     HttpModule,
     MaterialModule.forRoot(),
     ChartsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

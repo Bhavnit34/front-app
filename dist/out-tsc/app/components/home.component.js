@@ -63,6 +63,9 @@ export var HomeComponent = (function () {
         this.moon_icon = "img/010-moon.svg";
         this.sun_icon = "img/006-sun.svg";
         this.flame_icon = "img/005-flame.svg";
+        this.football_icon = "img/004-soccer-ball.svg";
+        this.dumbbell_icon = "img/002-dumbbell.svg";
+        this.bike_icon = "img/003-bicycle.svg";
     }
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

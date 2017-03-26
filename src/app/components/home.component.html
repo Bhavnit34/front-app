@@ -15,8 +15,6 @@
 
 </nav>
 
-
-
 <div class="tileBack">
   <div class="tileToday baseTile">
     <div class="todayBanner"></div>
@@ -93,7 +91,32 @@
           </tr>
         </table>
       </div>
-      <div [@movePanel]='summary_state' class="summaryExtended"></div>
+      <div [@movePanel]='summary_state' class="summaryExtended">
+        <div class="summaryExtendedAttributeTop">
+          <p class="summaryExtendedAttrTitle">Distance</p>
+          <div class="bar"></div>
+        </div>
+        <div class="summaryExtendedAttributeBottom">
+          <p class="summaryExtendedAttrTitle">Sleep Duration</p>
+          <div class="bar"></div>
+        </div>
+        <table class="summaryExtendedWorkout">
+            <tr>
+              <td class="summaryExtendedWorkoutSection">
+                <img class="summaryExtendedWorkoutIcon" [src]="football_icon" />
+                <p class="summaryExtendedWorkoutText"> 1h 20m</p>
+              </td>
+              <td class="summaryExtendedWorkoutSection">
+                <img class="summaryExtendedWorkoutIcon" [src]="dumbbell_icon" />
+                <p class="summaryExtendedWorkoutText">30m</p>
+              </td>
+              <td class="summaryExtendedWorkoutSection">
+                <img class="summaryExtendedWorkoutIcon" [src]="bike_icon" />
+                <p class="summaryExtendedWorkoutText">1h 00m</p>
+              </td>
+            </tr>
+        </table>
+      </div>
       <div (click)="toggleMove()" class="summaryExtender"></div>
 
     </div>
