@@ -19,8 +19,8 @@ import {
         height: "0"
       })),
       state('active', style({
-        backgroundColor: '#EEEEEE',
-        height: "200px"
+        backgroundColor: 'white',
+        height: "250px"
       }))
     ]),
 
