@@ -76,7 +76,22 @@
             </tr>
           </table>
         </div>
-        <div class="summaryBottomBanner"></div>
+        <table class="summaryBottomBanner">
+          <tr>
+          <td class="summaryBottomBannerSection">
+            <img class="summaryBottomBannerIcon" [src]="moon_icon" />
+            <p class="summaryBottomBannerText"> 11:53pm</p>
+          </td>
+          <td class="summaryBottomBannerSection">
+            <img class="summaryBottomBannerIcon" [src]="sun_icon" />
+            <p class="summaryBottomBannerText">08:32am</p>
+          </td>
+          <td class="summaryBottomBannerSection">
+            <img class="summaryBottomBannerIcon" [src]="flame_icon" />
+            <p class="summaryBottomBannerText">1h 33m</p>
+          </td>
+          </tr>
+        </table>
       </div>
       <div [@movePanel]='summary_state' class="summaryExtended"></div>
       <div (click)="toggleMove()" class="summaryExtender"></div>

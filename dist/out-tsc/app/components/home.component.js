@@ -60,6 +60,9 @@ export var HomeComponent = (function () {
         this.steps_icon = "img/013-running.svg";
         this.HR_icon = "img/012-favorite-heart-button.svg";
         this.bed_icon = "img/011-sleeping-bed-silhouette.svg";
+        this.moon_icon = "img/010-moon.svg";
+        this.sun_icon = "img/006-sun.svg";
+        this.flame_icon = "img/005-flame.svg";
     }
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

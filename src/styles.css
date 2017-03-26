@@ -289,6 +289,7 @@ ul.navigation li a:hover {
   width: 30%;
 }
 
+/* for steps, hr and sleeps */
 .summaryContentCell {
   position: relative;
   width: 20%;
@@ -316,22 +317,50 @@ ul.navigation li a:hover {
   margin: 2% 0 2% 0;
   font-size: 18px;
 }
-
-
 /* ---------------------- */
 
+
+
+/* The bottom bar of the day tile */
 .summaryBottomBanner {
   width: 100%;
   background-color: #00838F;
   height: 5%;
-  min-height: 30px;
-  max-height: 35px;
+  min-height: 50px;
+  max-height: 75px;
   position: relative;
   float: left;
-  bottom: 0px;
+  bottom: 0;
   left: 0;
   order: 3;
 }
+
+.summaryBottomBannerSection {
+  position: relative;
+  width: 30%;
+  height: 100%;
+  float: left;
+  margin: 1%;
+}
+
+.summaryBottomBannerIcon {
+  max-width: 30px;
+  max-height: 30px;
+  margin: 1%;
+  float: left;
+}
+
+.summaryBottomBannerText {
+  margin: 4% 0 0 10%;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 22px;
+  float: left;
+}
+
+
+
+/* -------------------------- */
 
 .summaryExtended {
   width: 100%;
@@ -357,7 +386,7 @@ ul.navigation li a:hover {
   min-height: 10px;
   max-height: 12px;
   position: absolute;
-  bottom: 0;
+  bottom: -7px;
   left: 0;
 }
 
@@ -365,8 +394,5 @@ ul.navigation li a:hover {
   cursor: pointer;
   background-color: #2E99A3;
 }
-
-
-
 
 /* -----------------------------------------*/

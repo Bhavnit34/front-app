@@ -79,6 +79,9 @@ export class HomeComponent {
   public steps_icon: string;
   public HR_icon: string;
   public bed_icon: string;
+  public moon_icon: string;
+  public sun_icon: string;
+  public flame_icon: string;
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -95,6 +98,10 @@ export class HomeComponent {
     this.steps_icon = "img/013-running.svg";
     this.HR_icon = "img/012-favorite-heart-button.svg";
     this.bed_icon = "img/011-sleeping-bed-silhouette.svg";
+    this.moon_icon = "img/010-moon.svg";
+    this.sun_icon = "img/006-sun.svg";
+    this.flame_icon = "img/005-flame.svg";
+
   }
 
   public setTodaysDate():string {
