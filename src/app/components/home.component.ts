@@ -75,6 +75,11 @@ import {
   ]
 })
 export class HomeComponent {
+  public mood_face: string;
+  public steps_icon: string;
+  public HR_icon: string;
+  public bed_icon: string;
+
   todaysDate: string;
   graphWrapperState: string = 'inactive';
   summary_state: string = 'inactive';
@@ -86,6 +91,10 @@ export class HomeComponent {
 
   constructor() {
     this.todaysDate = this.setTodaysDate();
+    this.mood_face = "img/001-sad.svg";
+    this.steps_icon = "img/013-running.svg";
+    this.HR_icon = "img/012-favorite-heart-button.svg";
+    this.bed_icon = "img/011-sleeping-bed-silhouette.svg";
   }
 
   public setTodaysDate():string {

@@ -48,8 +48,34 @@
   <div class="historyWrapper">
     <div class="tileSummary baseTile">
       <div class="tileTop">
-        <div class="summaryTopBanner"></div>
-        <div class="summaryContent"></div>
+        <div class="summaryTopBanner">
+          <h2 class="summaryTopBannerTitle"> Friday 25 March</h2>
+          <h2 class="summaryTopBannerYear"> 2017 </h2>
+        </div>
+        <div class="summaryContent">
+          <table class="summaryContentTable">
+            <tr>
+              <td class="summaryContentMoodCell">
+                <img [src]="mood_face" />
+              </td>
+              <td class="summaryContentCell">
+                <img class="summaryContentIcon" [src]="steps_icon" />
+                <p class="summaryContentCount"> 2526 </p>
+                <p class="summaryContentAvg"> 2526 avg </p>
+              </td>
+              <td class="summaryContentCell">
+                <img class="summaryContentIcon" [src]="HR_icon" />
+                <p class="summaryContentCount"> 67 </p>
+                <p class="summaryContentAvg"> 60 avg </p>
+              </td>
+              <td class="summaryContentCell">
+                <img class="summaryContentIcon" [src]="bed_icon" />
+                <p class="summaryContentCount"> 56% </p>
+                <p class="summaryContentAvg"> 85% avg </p>
+              </td>
+            </tr>
+          </table>
+        </div>
         <div class="summaryBottomBanner"></div>
       </div>
       <div [@movePanel]='summary_state' class="summaryExtended"></div>

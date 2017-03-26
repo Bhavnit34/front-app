@@ -56,6 +56,10 @@ export var HomeComponent = (function () {
         this.lineChartLegend = true;
         this.lineChartType = 'line';
         this.todaysDate = this.setTodaysDate();
+        this.mood_face = "img/001-sad.svg";
+        this.steps_icon = "img/013-running.svg";
+        this.HR_icon = "img/012-favorite-heart-button.svg";
+        this.bed_icon = "img/011-sleeping-bed-silhouette.svg";
     }
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
