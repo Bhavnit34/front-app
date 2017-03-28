@@ -162,20 +162,75 @@ ul.navigation li a:hover {
   margin: 1% 0 0 1%;
   color: #061A40;
   font-style: italic;
+  font-size: 2em;
 }
 
 
 .todayBarSection {
   float: left;
   margin: 2% 0 2% 2%;
-  width: 67%;
+  width: 64%;
   height: 50%;
 }
+
+.todayBarSectionTitle {
+  margin: 0 0 1% 1%;
+  font-size: 1.5em;
+}
+
+.todayBarSteps {
+  position: relative;
+  height: 45%;
+  width: 100%;
+  padding: 1% 0 0 0;
+}
+
+.todayBarActiveTime {
+  position: relative;
+  height: 45%;
+  width: 100%;
+  padding: 1% 0 0 0;
+}
+
+.attrBarMax {
+  border-radius: 3px;
+  border: 2px solid #00CD00;
+  min-height: 20px;
+  max-height: 30px;
+  width: 100%;
+  position: absolute;
+}
+
+.attrBar {
+  border-radius: 3px;
+  border: 2px solid #00CD00;
+  background: #00B050;
+  min-height: 28px;
+  max-height: 40px;
+  z-index: 2;
+  position: absolute;
+  width: 75%;
+  top: 55px;
+}
+
+.attrBarAvg {
+  border-radius: 3px;
+  border: 2px solid grey;
+  background: grey;
+  min-height: 20px;
+  max-height: 35px;
+  width: 71%;
+  z-index: 1;
+  opacity: 0.3;
+  position: absolute;
+  top: 75px;
+}
+
 
 .todayDonutSection {
   float: right;
   margin: 1% 1% 1% 0;
-  width: 24%;
+  width: 27%;
   height: 70%
 }
 
@@ -469,7 +524,7 @@ ul.navigation li a:hover {
 
 .summaryExtendedAttrTitle {
   margin: 0 0 0 6%;
-  font-size: 1.3em;;
+  font-size: 1.3em;
 }
 
 .barSection {
@@ -479,19 +534,19 @@ ul.navigation li a:hover {
 .bar {
   border-radius: 3px;
   border: 2px solid #00CD00;
+  background: #00B050;
   min-height:10px;
   max-height: 15px;
   z-index: 2;
+  width: 66%;
   margin-bottom: 1%;
 }
 
 .barMax {
   border-radius: 3px;
   border: 2px solid #00CD00;
-  background: #00B050;
   min-height: 13px;
   max-height: 20px;
-  width: 66%;
   margin-bottom: 1%;
 }
 
