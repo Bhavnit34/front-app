@@ -75,16 +75,14 @@ import {
   ]
 })
 export class HomeComponent {
-  public mood_face: string;
-  public steps_icon: string;
-  public HR_icon: string;
-  public bed_icon: string;
-  public moon_icon: string;
-  public sun_icon: string;
-  public flame_icon: string;
-  public football_icon: string;
-  public dumbbell_icon: string;
-  public bike_icon: string;
+  public mood_face: string; public steps_icon: string;
+  public HR_icon: string; public bed_icon: string;
+  public moon_tile_icon: string; public sun_icon: string;
+  public flame_icon: string; public football_icon: string;
+  public dumbbell_icon: string; public bike_icon: string;
+  public clock_icon: string; public heart_icon: string;
+  public desk_icon: string; public burn_icon: string;
+  public moon_day_icon: string;
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -99,14 +97,19 @@ export class HomeComponent {
     this.todaysDate = this.setTodaysDate();
     this.mood_face = "img/001-sad.svg";
     this.steps_icon = "img/013-running.svg";
-    this.HR_icon = "img/012-favorite-heart-button.svg";
-    this.bed_icon = "img/011-sleeping-bed-silhouette.svg";
-    this.moon_icon = "img/010-moon.svg";
+    this.HR_icon = "img/012-heart-tile.svg";
+    this.heart_icon = "img/012-heart-day.svg";
+    this.bed_icon = "img/011-bed.svg";
+    this.moon_tile_icon = "img/010-moon-tile.svg";
+    this.moon_day_icon = "img/010-moon-day.svg";
     this.sun_icon = "img/006-sun.svg";
     this.flame_icon = "img/005-flame.svg";
     this.football_icon = "img/004-soccer-ball.svg";
     this.dumbbell_icon = "img/002-dumbbell.svg";
     this.bike_icon = "img/003-bicycle.svg";
+    this.clock_icon = "img/008-clock.svg";
+    this.burn_icon = "img/007-burn.svg";
+    this.desk_icon = "img/009-desk.svg";
 
   }
 

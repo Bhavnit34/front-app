@@ -136,12 +136,14 @@ ul.navigation li a:hover {
   position: relative;
 }
 
+
+/* The tile for today and its attributes */
 .tileToday {
   margin: 2% 0 0 0;
   width:100%;
-  height:40%;
+  height:45%;
   min-height: 350px;
-  max-height: 400px;
+  max-height: 500px;
   display: inline-block;
   background-color: #EEEEFF;
   float: left;
@@ -162,13 +164,57 @@ ul.navigation li a:hover {
   font-style: italic;
 }
 
+
+.todayBarSection {
+  float: left;
+  margin: 2% 0 2% 2%;
+  width: 67%;
+  height: 50%;
+}
+
+.todayDonutSection {
+  float: right;
+  margin: 1% 1% 1% 0;
+  width: 24%;
+  height: 70%
+}
+
 /* div that encases the attributes of current day summary */
 .attrWrapper {
   position: absolute;
   min-height: 60px;
   bottom: 0;
   left: 0;
+  width: 50%;
 }
+
+.attrCell {
+  position: relative;
+  width: 16.6%;
+  padding: 1%;
+}
+
+.attrIcon {
+  -webkit-box-ordinal-group: 2;
+  -ms-flex-order: 1;
+  order: 1;
+  max-width: 75px;
+  max-height: 75px;
+  display: block;
+  margin: 10% auto 10% auto;
+}
+.attrValue {
+  -webkit-box-ordinal-group: 3;
+  -ms-flex-order: 2;
+  order: 2;
+  text-align: center;
+  margin: 2% 0 2% 0;
+  font-size: 1.5em;
+}
+
+/* ---------------------------------------- */
+
+
 
 .attrGraphWrapper {
   position: relative;

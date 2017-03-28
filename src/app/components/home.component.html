@@ -19,19 +19,49 @@
   <div class="tileToday baseTile">
     <div class="todayBanner"></div>
     <h2 id="todayDate">{{todaysDate}}</h2>
+
+    <div class="todayBarSection">
+    </div>
+    <div class="todayDonutSection"></div>
+
     <div class="attrWrapper">
-      <table border = "1">
+      <table width = "100%">
         <tr>
-          <td (click)="toggleGraph('sleepGraphState')">Asleep Time</td>
-          <td>Awake Time</td>
-          <td>Sleep Quality</td>
-          <td>Heart Rate</td>
-          <td (click)="toggleGraph('calorieGraphState')">Calories</td>
-          <td (click)="toggleGraph('idleGraphState')">Idle Time</td>
+          <td class= "attrCell" (click)="toggleGraph('sleepGraphState')">
+            <img class="attrIcon" [src]="clock_icon" />
+            <p class="attrValue"> 08:32am </p>
+          </td>
+          <td class="attrCell">
+            <img class="attrIcon" [src]="clock_icon" />
+            <p class="attrValue"> 00:14am </p>
+          </td>
+          <td class="attrCell">
+            <img class="attrIcon" [src]="moon_day_icon" />
+            <p class="attrValue"> 56% </p>
+          </td>
+          <td class="attrCell">
+            <img class="attrIcon" [src]="heart_icon" />
+            <p class="attrValue"> 52 bpm </p>
+          </td>
+          <td class= "attrCell" (click)="toggleGraph('calorieGraphState')">
+            <img class="attrIcon" [src]="burn_icon" />
+            <p class="attrValue"> 600 calories </p>
+          </td>
+          <td class="attrCell" (click)="toggleGraph('idleGraphState')">
+            <img class="attrIcon" [src]="desk_icon" />
+            <p class="attrValue"> 1h 49m </p>
+          </td>
         </tr>
       </table>
     </div>
+
+
   </div>
+
+
+
+
+
   <div [@toggleGraphWrapper]='graphWrapperState' class="attrGraphWrapper" id="attrGraphWrapper">
     <div [@toggleGraph]='graphStates.sleepGraphState.state' [style.order]="graphStates.sleepGraphState.order" class="attrGraphTile baseTile" id="sleepGraphTile">
       <h1>Sleep Graph</h1>
@@ -77,7 +107,7 @@
         <table class="summaryBottomBanner">
           <tr>
           <td class="summaryBottomBannerSection">
-            <img class="summaryBottomBannerIcon" [src]="moon_icon" />
+            <img class="summaryBottomBannerIcon" [src]="moon_tile_icon" />
             <p class="summaryBottomBannerText"> 11:53pm</p>
           </td>
           <td class="summaryBottomBannerSection">
