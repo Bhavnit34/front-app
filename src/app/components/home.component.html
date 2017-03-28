@@ -60,11 +60,11 @@
         <tr>
           <td class= "attrCell attrClick" (click)="toggleGraph('sleepGraphState')">
             <img class="attrIcon" [src]="clock_icon" />
-            <p class="attrValue"> 08:32am </p>
+            <p class="attrValue"> {{attributes.asleep_time}}</p>
           </td>
           <td class="attrCell">
             <img class="attrIcon" [src]="clock_icon" />
-            <p class="attrValue"> 00:14am </p>
+            <p class="attrValue"> {{attributes.awake_time}} </p>
           </td>
           <td class="attrCell">
             <img class="attrIcon" [src]="moon_day_icon" />
@@ -72,15 +72,15 @@
           </td>
           <td class="attrCell">
             <img class="attrIcon" [src]="heart_icon" />
-            <p class="attrValue"> 52 bpm </p>
+            <p class="attrValue"> {{attributes.hr}} bpm</p>
           </td>
           <td class= "attrCell attrClick" (click)="toggleGraph('calorieGraphState')">
             <img class="attrIcon" [src]="burn_icon" />
-            <p class="attrValue"> 600 calories </p>
+            <p class="attrValue"> {{attributes.calories}} calories </p>
           </td>
           <td class="attrCell attrClick" (click)="toggleGraph('idleGraphState')">
             <img class="attrIcon" [src]="desk_icon" />
-            <p class="attrValue"> 1h 49m </p>
+            <p class="attrValue"> {{attributes.idle_time}} </p>
           </td>
         </tr>
       </table>

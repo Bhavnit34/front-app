@@ -86,7 +86,16 @@ export class HomeComponent {
   public desk_icon: string; public burn_icon: string;
   public moon_day_icon: string;
 
-  todaysSleep: {};
+
+  todaysSleep: Sleep;
+  attributes: Attributes = {
+    awake_time: "08:30",
+    asleep_time: "00:00",
+    sleep_quality: "",
+    hr: "",
+    calories: "",
+    idle_time: ""
+  };
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -98,7 +107,24 @@ export class HomeComponent {
   };
 
   constructor(private postsService: PostsService) {
+    this.bindIcons();
     this.todaysDate = this.setTodaysDate();
+    this.getTodaysAttributes(postsService);
+  }
+
+  public getTodaysAttributes(postsService) {
+    postsService.getTodaysSleep().subscribe(posts => {
+      this.todaysSleep = posts;
+      console.log(JSON.stringify(this.todaysSleep, null, 2));
+      let asleep_ts = this.todaysSleep.Items[0].info.details.asleep_time;
+      this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0,5);
+      let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
+      this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0,5);
+    });
+  }
+
+
+  private bindIcons() {
     this.mood_face = "img/001-sad.svg";
     this.steps_icon = "img/013-running.svg";
     this.HR_icon = "img/012-heart-tile.svg";
@@ -114,11 +140,6 @@ export class HomeComponent {
     this.clock_icon = "img/008-clock.svg";
     this.burn_icon = "img/007-burn.svg";
     this.desk_icon = "img/009-desk.svg";
-
-    this.postsService.getTodaysSleep().subscribe(posts => {
-      this.todaysSleep = posts;
-      console.log(JSON.stringify(this.todaysSleep, null, 2));
-    });
   }
 
   public setTodaysDate():string {
@@ -242,11 +263,11 @@ export class HomeComponent {
 
   // events
   public chartClicked(e:any):void {
-    console.log(e);
+    // console.log(e);
   }
 
   public chartHovered(e:any):void {
-    console.log(e);
+    // console.log(e);
   }
 
   // Doughnut
@@ -268,9 +289,18 @@ export interface GraphStates {
   idleGraphState: {state: string; order: number;};
 }
 
-export interface Post{
-  id: number;
-  title: string;
-  body: string;
+export interface Attributes {
+  asleep_time: string;
+  awake_time: string;
+  sleep_quality: string;
+  hr: string;
+  calories: string;
+  idle_time: string;
+}
+
+export interface Sleep {
+  Items:Array<any>;
+  Count: number;
+
 }
 

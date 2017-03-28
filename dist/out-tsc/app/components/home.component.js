@@ -11,8 +11,15 @@ import { Component, trigger, state, style, transition, animate } from '@angular/
 import { PostsService } from '../services/posts.service';
 export var HomeComponent = (function () {
     function HomeComponent(postsService) {
-        var _this = this;
         this.postsService = postsService;
+        this.attributes = {
+            awake_time: "08:30",
+            asleep_time: "00:00",
+            sleep_quality: "",
+            hr: "",
+            calories: "",
+            idle_time: ""
+        };
         this.graphWrapperState = 'inactive';
         this.summary_state = 'inactive';
         this.graphStates = {
@@ -69,7 +76,22 @@ export var HomeComponent = (function () {
             animation: { animateScale: true },
             maintainAspectRatio: false
         };
+        this.bindIcons();
         this.todaysDate = this.setTodaysDate();
+        this.getTodaysAttributes(postsService);
+    }
+    HomeComponent.prototype.getTodaysAttributes = function (postsService) {
+        var _this = this;
+        postsService.getTodaysSleep().subscribe(function (posts) {
+            _this.todaysSleep = posts;
+            console.log(JSON.stringify(_this.todaysSleep, null, 2));
+            var asleep_ts = _this.todaysSleep.Items[0].info.details.asleep_time;
+            _this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
+            var awake_ts = _this.todaysSleep.Items[0].info.details.awake_time;
+            _this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
+        });
+    };
+    HomeComponent.prototype.bindIcons = function () {
         this.mood_face = "img/001-sad.svg";
         this.steps_icon = "img/013-running.svg";
         this.HR_icon = "img/012-heart-tile.svg";
@@ -85,11 +107,7 @@ export var HomeComponent = (function () {
         this.clock_icon = "img/008-clock.svg";
         this.burn_icon = "img/007-burn.svg";
         this.desk_icon = "img/009-desk.svg";
-        this.postsService.getTodaysSleep().subscribe(function (posts) {
-            _this.todaysSleep = posts;
-            console.log(JSON.stringify(_this.todaysSleep, null, 2));
-        });
-    }
+    };
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -158,10 +176,10 @@ export var HomeComponent = (function () {
     };
     // events
     HomeComponent.prototype.chartClicked = function (e) {
-        console.log(e);
+        // console.log(e);
     };
     HomeComponent.prototype.chartHovered = function (e) {
-        console.log(e);
+        // console.log(e);
     };
     HomeComponent = __decorate([
         Component({
