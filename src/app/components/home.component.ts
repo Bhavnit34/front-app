@@ -20,7 +20,7 @@ import {
       })),
       state('active', style({
         backgroundColor: 'white',
-        height: "250px"
+        height: "200px"
       }))
     ]),
 
@@ -259,11 +259,25 @@ export class HomeComponent {
   public chartHovered(e:any):void {
     console.log(e);
   }
+
+  // Doughnut
+  public doughnutChartLabels:string[] = ['Running', 'Soccer', 'Weight Lifting'];
+  public doughnutChartData:number[] = [350, 450, 200];
+  public doughnutChartType:string = 'doughnut';
+  doughnutChartColors: any[] = [{ backgroundColor: ["#FF6384", "#00d9f9", "#FFFF66"] }];
+  public doughnutChartOptions:any = {
+    responsive: true,
+    animation:{animateScale: true},
+    maintainAspectRatio: false
+  };
 }
 
 // interface of states and visibility order for each summaryGraph tile
-interface GraphStates {
+export interface GraphStates {
   sleepGraphState: {state: string; order: number;};
   calorieGraphState: {state: string; order: number;};
   idleGraphState: {state: string; order: number;};
 }
+
+
+

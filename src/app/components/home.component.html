@@ -33,7 +33,31 @@
         <div class="attrBarAvg"></div>
       </div>
     </div>
-    <div class="todayDonutSection"></div>
+
+
+
+
+
+    <div class="todayDonutSection">
+      <div style="display: block">
+        <canvas baseChart
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [colors]="doughnutChartColors"
+                [chartType]="doughnutChartType"
+                [options]="doughnutChartOptions"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"
+                [style.height]="270+ 'px'" ></canvas>
+      </div>
+    </div>
+
+
+
+
+
+
+
 
     <div class="attrWrapper">
       <table width = "100%">
@@ -172,6 +196,8 @@
     <div class="tileSummary"></div>
     <div class="tileSummary"></div>
   </div>
+
+
 </div>
 
 

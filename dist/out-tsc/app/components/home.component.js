@@ -55,6 +55,16 @@ export var HomeComponent = (function () {
         ];
         this.lineChartLegend = true;
         this.lineChartType = 'line';
+        // Doughnut
+        this.doughnutChartLabels = ['Running', 'Soccer', 'Weight Lifting'];
+        this.doughnutChartData = [350, 450, 200];
+        this.doughnutChartType = 'doughnut';
+        this.doughnutChartColors = [{ backgroundColor: ["#FF6384", "#00d9f9", "#FFFF66"] }];
+        this.doughnutChartOptions = {
+            responsive: true,
+            animation: { animateScale: true },
+            maintainAspectRatio: false
+        };
         this.todaysDate = this.setTodaysDate();
         this.mood_face = "img/001-sad.svg";
         this.steps_icon = "img/013-running.svg";
@@ -167,7 +177,7 @@ export var HomeComponent = (function () {
                     })),
                     state('active', style({
                         backgroundColor: 'white',
-                        height: "250px"
+                        height: "200px"
                     }))
                 ]),
                 trigger('toggleGraph', [
