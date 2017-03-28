@@ -39,7 +39,7 @@
 
 
     <div class="todayDonutSection">
-      <div style="display: block">
+      <div style="display: block; height: 100%">
         <canvas baseChart
                 [data]="doughnutChartData"
                 [labels]="doughnutChartLabels"
@@ -48,13 +48,9 @@
                 [options]="doughnutChartOptions"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"
-                [style.height]="270+ 'px'" ></canvas>
+                [style.height]="100+ '%'" ></canvas>
       </div>
     </div>
-
-
-
-
 
 
 
@@ -62,7 +58,7 @@
     <div class="attrWrapper">
       <table width = "100%">
         <tr>
-          <td class= "attrCell" (click)="toggleGraph('sleepGraphState')">
+          <td class= "attrCell attrClick" (click)="toggleGraph('sleepGraphState')">
             <img class="attrIcon" [src]="clock_icon" />
             <p class="attrValue"> 08:32am </p>
           </td>
@@ -78,11 +74,11 @@
             <img class="attrIcon" [src]="heart_icon" />
             <p class="attrValue"> 52 bpm </p>
           </td>
-          <td class= "attrCell" (click)="toggleGraph('calorieGraphState')">
+          <td class= "attrCell attrClick" (click)="toggleGraph('calorieGraphState')">
             <img class="attrIcon" [src]="burn_icon" />
             <p class="attrValue"> 600 calories </p>
           </td>
-          <td class="attrCell" (click)="toggleGraph('idleGraphState')">
+          <td class="attrCell attrClick" (click)="toggleGraph('idleGraphState')">
             <img class="attrIcon" [src]="desk_icon" />
             <p class="attrValue"> 1h 49m </p>
           </td>
@@ -100,6 +96,19 @@
   <div [@toggleGraphWrapper]='graphWrapperState' class="attrGraphWrapper" id="attrGraphWrapper">
     <div [@toggleGraph]='graphStates.sleepGraphState.state' [style.order]="graphStates.sleepGraphState.order" class="attrGraphTile baseTile" id="sleepGraphTile">
       <h1>Sleep Graph</h1>
+          <div style="display: block;">
+            <canvas baseChart
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"
+                    [style.height]="300+ 'px'"
+                    [style.width]="1000+ 'px'" ></canvas>
+          </div>
     </div>
     <div [@toggleGraph]='graphStates.calorieGraphState.state' [style.order]="graphStates.calorieGraphState.order" class="attrGraphTile baseTile" id="calorieGraphTile">
       <h1>Calories Graph</h1>
@@ -196,6 +205,15 @@
     <div class="tileSummary"></div>
     <div class="tileSummary"></div>
   </div>
+
+  <hr>
+  <!--
+  <h3>Posts</h3>
+  <div *ngFor="let post of posts">
+    <h3>{{post.title}}</h3>
+    <p>{{post.body}}</p>
+  </div>
+  -->
 
 
 </div>

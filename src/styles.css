@@ -250,6 +250,10 @@ ul.navigation li a:hover {
   padding: 1%;
 }
 
+.attrClick:hover {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+}
 .attrIcon {
   -webkit-box-ordinal-group: 2;
   -ms-flex-order: 1;
@@ -291,10 +295,11 @@ ul.navigation li a:hover {
 .attrGraphTile {
   width: 100%;
   max-height: 400px;
-  background-color: #528881;
+  background-color: #EEEEFF;
   float: left;
   min-height: 300px;
   margin-top: 1.5%;
+  position: relative;
   /*margin: 1.5% 0 0 0;
 
   -moz-transition: height .7s;

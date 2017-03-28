@@ -7,6 +7,7 @@ import {
   animate,
   keyframes
 } from '@angular/core';
+import {PostsService} from '../services/posts.service';
 
 @Component({
   selector: 'home',
@@ -72,7 +73,8 @@ import {
       ])
     ])
 
-  ]
+  ],
+  providers: [PostsService]
 })
 export class HomeComponent {
   public mood_face: string; public steps_icon: string;
@@ -84,6 +86,8 @@ export class HomeComponent {
   public desk_icon: string; public burn_icon: string;
   public moon_day_icon: string;
 
+  todaysSleep: {};
+
   todaysDate: string;
   graphWrapperState: string = 'inactive';
   summary_state: string = 'inactive';
@@ -93,7 +97,7 @@ export class HomeComponent {
     idleGraphState: {state: "inactive", order: 3}
   };
 
-  constructor() {
+  constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
     this.mood_face = "img/001-sad.svg";
     this.steps_icon = "img/013-running.svg";
@@ -111,6 +115,10 @@ export class HomeComponent {
     this.burn_icon = "img/007-burn.svg";
     this.desk_icon = "img/009-desk.svg";
 
+    this.postsService.getTodaysSleep().subscribe(posts => {
+      this.todaysSleep = posts;
+      console.log(JSON.stringify(this.todaysSleep, null, 2));
+    });
   }
 
   public setTodaysDate():string {
@@ -191,16 +199,6 @@ export class HomeComponent {
 
 
 
-
-
-
-
-
-
-
-
-
-
 // lineChart
   public lineChartData:Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
@@ -209,7 +207,8 @@ export class HomeComponent {
   ];
   public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions:any = {
-    responsive: false
+    responsive: true,
+    maintainAspectRatio: false
   };
   public lineChartColors:Array<any> = [
     { // grey
@@ -240,16 +239,6 @@ export class HomeComponent {
   public lineChartLegend:boolean = true;
   public lineChartType:string = 'line';
 
-  public randomize():void {
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-      }
-    }
-    this.lineChartData = _lineChartData;
-  }
 
   // events
   public chartClicked(e:any):void {
@@ -279,5 +268,9 @@ export interface GraphStates {
   idleGraphState: {state: string; order: number;};
 }
 
-
+export interface Post{
+  id: number;
+  title: string;
+  body: string;
+}
 

@@ -32,7 +32,8 @@ export var AppModule = (function () {
                 FormsModule,
                 HttpModule,
                 MaterialModule.forRoot(),
-                ChartsModule
+                ChartsModule,
+                HttpModule
             ],
             providers: [],
             bootstrap: [AppComponent]

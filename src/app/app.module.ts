@@ -22,7 +22,8 @@ import { HomeComponent } from './components/home.component';
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    HttpModule
 
   ],
   providers: [],

@@ -8,8 +8,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
+import { PostsService } from '../services/posts.service';
 export var HomeComponent = (function () {
-    function HomeComponent() {
+    function HomeComponent(postsService) {
+        var _this = this;
+        this.postsService = postsService;
         this.graphWrapperState = 'inactive';
         this.summary_state = 'inactive';
         this.graphStates = {
@@ -25,7 +28,8 @@ export var HomeComponent = (function () {
         ];
         this.lineChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
         this.lineChartOptions = {
-            responsive: false
+            responsive: true,
+            maintainAspectRatio: false
         };
         this.lineChartColors = [
             {
@@ -81,6 +85,10 @@ export var HomeComponent = (function () {
         this.clock_icon = "img/008-clock.svg";
         this.burn_icon = "img/007-burn.svg";
         this.desk_icon = "img/009-desk.svg";
+        this.postsService.getTodaysSleep().subscribe(function (posts) {
+            _this.todaysSleep = posts;
+            console.log(JSON.stringify(_this.todaysSleep, null, 2));
+        });
     }
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -147,16 +155,6 @@ export var HomeComponent = (function () {
             }
         }
         return activeCount;
-    };
-    HomeComponent.prototype.randomize = function () {
-        var _lineChartData = new Array(this.lineChartData.length);
-        for (var i = 0; i < this.lineChartData.length; i++) {
-            _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
-            for (var j = 0; j < this.lineChartData[i].data.length; j++) {
-                _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-            }
-        }
-        this.lineChartData = _lineChartData;
     };
     // events
     HomeComponent.prototype.chartClicked = function (e) {
@@ -226,9 +224,10 @@ export var HomeComponent = (function () {
                         }))
                     ])
                 ])
-            ]
+            ],
+            providers: [PostsService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [PostsService])
     ], HomeComponent);
     return HomeComponent;
 }());
