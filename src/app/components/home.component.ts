@@ -111,11 +111,14 @@ export class HomeComponent {
     HR: "loading...",
     calories: "loading...",
     idle_time: "loading...",
+    steps: "loading...",
+    steps_avg: "loading...",
+    steps_max: "loading...",
+    active_time: "loading...",
+    active_time_avg: "loading...",
+    active_time_max: "loading...",
     mood: this.icons.mood
   };
-
-  public source: string;
-
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -146,10 +149,18 @@ export class HomeComponent {
     // todays moves
     postsService.getTodaysMoves().subscribe(posts => {
       this.todaysMoves = posts;
+      // calories
       this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString();
+      // idle time
       let it = new Date(null);
       it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
       this.attributes.idle_time = (it.toISOString().substr(11,2) + "h " + it.toISOString().substr(14,2) + "m");
+      // steps
+      this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
+      // active time
+      let at = new Date(null);
+      at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
+      this.attributes.active_time = (at.toISOString().substr(11,2) + "h " + at.toISOString().substr(14,2) + "m");
     });
 
     // todays heartrate
@@ -158,7 +169,7 @@ export class HomeComponent {
       this.attributes.HR = this.todaysHR.Items[0].heartrate;
     });
 
-    // todays heartrate
+    // todays mood
     postsService.getTodaysMood().subscribe(posts => {
       this.todaysMood = posts;
       if (this.todaysMood.Count !== 0) {
@@ -166,6 +177,11 @@ export class HomeComponent {
         this.attributes.mood = this.icons["mood_" + mood];
       }
     })
+
+    // stats
+
+
+
   }
 
   public setTodaysDate():string {
@@ -322,6 +338,12 @@ export interface Attributes {
   calories: string;
   idle_time: string;
   mood: string;
+  steps: string;
+  steps_avg: string;
+  steps_max: string;
+  active_time: string;
+  active_time_avg: string;
+  active_time_max: string;
 }
 
 export interface APIResult {

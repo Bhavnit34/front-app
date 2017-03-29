@@ -35,7 +35,7 @@ export class PostsService {
       .map(res => res.json());
   }
 
-  // function to get the moves data of the current data
+  // function to get the moves data of the current date
   public getTodaysMoves() {
     let headers = new Headers({'Accept': 'application/json'});
 
@@ -62,7 +62,7 @@ export class PostsService {
       .map(res => res.json());
   }
 
-  // function to get the moves data of the current data
+  // function to get the moves data of the current date
   public getTodaysHR() {
     let headers = new Headers({'Accept': 'application/json'});
 
@@ -89,6 +89,7 @@ export class PostsService {
       .map(res => res.json());
   }
 
+  // function to get the mood of the current date
   public getTodaysMood() {
     let headers = new Headers({'Accept': 'application/json'});
 
@@ -114,5 +115,7 @@ export class PostsService {
       .get('http://52.208.153.178:3000/api/mood/BRx5p_mMpSn-RjknXdn3dA', options)
       .map(res => res.json());
   }
+
+  // function to retrieve the latest stats figures
 
 }

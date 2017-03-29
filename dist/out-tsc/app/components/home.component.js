@@ -41,6 +41,12 @@ export var HomeComponent = (function () {
             HR: "loading...",
             calories: "loading...",
             idle_time: "loading...",
+            steps: "loading...",
+            steps_avg: "loading...",
+            steps_max: "loading...",
+            active_time: "loading...",
+            active_time_avg: "loading...",
+            active_time_max: "loading...",
             mood: this.icons.mood
         };
         this.graphWrapperState = 'inactive';
@@ -116,17 +122,25 @@ export var HomeComponent = (function () {
         // todays moves
         postsService.getTodaysMoves().subscribe(function (posts) {
             _this.todaysMoves = posts;
+            // calories
             _this.attributes.calories = Math.round(_this.todaysMoves.Items[0].info.details.calories).toString();
+            // idle time
             var it = new Date(null);
             it.setSeconds(_this.todaysMoves.Items[0].info.details.longest_idle);
             _this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
+            // steps
+            _this.attributes.steps = _this.todaysMoves.Items[0].info.details.steps;
+            // active time
+            var at = new Date(null);
+            at.setSeconds(_this.todaysMoves.Items[0].info.details.active_time);
+            _this.attributes.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
         });
         // todays heartrate
         postsService.getTodaysHR().subscribe(function (posts) {
             _this.todaysHR = posts;
             _this.attributes.HR = _this.todaysHR.Items[0].heartrate;
         });
-        // todays heartrate
+        // todays mood
         postsService.getTodaysMood().subscribe(function (posts) {
             _this.todaysMood = posts;
             if (_this.todaysMood.Count !== 0) {
@@ -134,6 +148,7 @@ export var HomeComponent = (function () {
                 _this.attributes.mood = _this.icons["mood_" + mood];
             }
         });
+        // stats
     };
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
