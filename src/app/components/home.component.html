@@ -22,15 +22,43 @@
     <div class="todayBarSection">
       <div class="todayBarSteps">
         <p class="todayBarSectionTitle">Steps</p>
-        <div class="attrBarMax"></div>
-        <div class="attrBar"></div>
-        <div class="attrBarAvg"></div>
+
+        <p class="attrBarMaxValue"> 18371 max.</p>
+        <section class="attrBarMaxSection">
+          <div class="attrBarMax"></div>
+        </section>
+
+        <section class="attrBarSection">
+          <div class="attrBar">
+            <p class="attrBarValue">9002</p>
+          </div>
+        </section>
+
+        <div class="attrBarAvgSection">
+          <div class="attrBarAvg"></div>
+          <p class="attrBarAvgValue">7641 avg.</p>
+        </div>
       </div>
+
       <div class="todayBarActiveTime">
         <p class="todayBarSectionTitle">Active Time</p>
-        <div class="attrBarMax"></div>
-        <div class="attrBar"></div>
-        <div class="attrBarAvg"></div>
+
+        <p class="attrBarMaxValue"> 5h 16m max.</p>
+        <section class="attrBarMaxSection">
+          <div class="attrBarMax"></div>
+        </section>
+
+        <section class="attrBarSection">
+          <div class="attrBar">
+            <p class="attrBarValue">2h 03m</p>
+          </div>
+        </section>
+
+        <section class="attrBarAvgSection">
+          <div class="attrBarAvg"></div>
+          <p class="attrBarAvgValue">1h 42m avg.</p>
+        </section>
+
       </div>
     </div>
 
@@ -59,28 +87,27 @@
       <table width = "100%">
         <tr>
           <td class= "attrCell attrClick" (click)="toggleGraph('sleepGraphState')">
-            <img class="attrIcon" [src]="clock_icon" />
+            <img class="attrIcon" [src]="icons.clock" />
             <p class="attrValue"> {{attributes.asleep_time}}</p>
           </td>
           <td class="attrCell">
-            <img class="attrIcon" [src]="clock_icon" />
+            <img class="attrIcon" [src]="icons.clock" />
             <p class="attrValue"> {{attributes.awake_time}} </p>
           </td>
           <td class="attrCell">
-            <img class="attrIcon" [src]="moon_day_icon" />
-            <p class="attrValue"> 56% </p>
-          </td>
-          <td class="attrCell">
-            <img class="attrIcon" [src]="heart_icon" />
-            <p class="attrValue"> {{attributes.hr}} bpm</p>
+            <img class="attrIcon" [src]="icons.heart_day" />
+            <p class="attrValue"> {{attributes.HR}} bpm</p>
           </td>
           <td class= "attrCell attrClick" (click)="toggleGraph('calorieGraphState')">
-            <img class="attrIcon" [src]="burn_icon" />
+            <img class="attrIcon" [src]="icons.burn" />
             <p class="attrValue"> {{attributes.calories}} calories </p>
           </td>
           <td class="attrCell attrClick" (click)="toggleGraph('idleGraphState')">
-            <img class="attrIcon" [src]="desk_icon" />
+            <img class="attrIcon" [src]="icons.desk" />
             <p class="attrValue"> {{attributes.idle_time}} </p>
+          </td>
+          <td class="attrCell">
+            <img class="attrIcon" [src]="attributes.mood" />
           </td>
         </tr>
       </table>
@@ -128,20 +155,20 @@
           <table class="summaryContentTable">
             <tr>
               <td class="summaryContentMoodCell">
-                <img [src]="mood_face" />
+                <img [src]="icons.mood_4" />
               </td>
               <td class="summaryContentCell">
-                <img class="summaryContentIcon" [src]="steps_icon" />
+                <img class="summaryContentIcon" [src]="icons.steps" />
                 <p class="summaryContentCount"> 2526 </p>
                 <p class="summaryContentAvg"> 2526 avg </p>
               </td>
               <td class="summaryContentCell">
-                <img class="summaryContentIcon" [src]="HR_icon" />
+                <img class="summaryContentIcon" [src]="icons.heart_tile" />
                 <p class="summaryContentCount"> 67 </p>
                 <p class="summaryContentAvg"> 60 avg </p>
               </td>
               <td class="summaryContentCell">
-                <img class="summaryContentIcon" [src]="bed_icon" />
+                <img class="summaryContentIcon" [src]="icons.bed" />
                 <p class="summaryContentCount"> 56% </p>
                 <p class="summaryContentAvg"> 85% avg </p>
               </td>
@@ -151,15 +178,15 @@
         <table class="summaryBottomBanner">
           <tr>
           <td class="summaryBottomBannerSection">
-            <img class="summaryBottomBannerIcon" [src]="moon_tile_icon" />
+            <img class="summaryBottomBannerIcon" [src]="icons.moon_tile" />
             <p class="summaryBottomBannerText"> 11:53pm</p>
           </td>
           <td class="summaryBottomBannerSection">
-            <img class="summaryBottomBannerIcon" [src]="sun_icon" />
+            <img class="summaryBottomBannerIcon" [src]="icons.sun" />
             <p class="summaryBottomBannerText">08:32am</p>
           </td>
           <td class="summaryBottomBannerSection">
-            <img class="summaryBottomBannerIcon" [src]="flame_icon" />
+            <img class="summaryBottomBannerIcon" [src]="icons.flame" />
             <p class="summaryBottomBannerText">1h 33m</p>
           </td>
           </tr>
@@ -185,15 +212,15 @@
         <table class="summaryExtendedWorkout">
             <tr>
               <td class="summaryExtendedWorkoutSection">
-                <img class="summaryExtendedWorkoutIcon" [src]="football_icon" />
+                <img class="summaryExtendedWorkoutIcon" [src]="icons.soccer" />
                 <p class="summaryExtendedWorkoutText"> 1h 20m</p>
               </td>
               <td class="summaryExtendedWorkoutSection">
-                <img class="summaryExtendedWorkoutIcon" [src]="dumbbell_icon" />
+                <img class="summaryExtendedWorkoutIcon" [src]="icons.dumbbell" />
                 <p class="summaryExtendedWorkoutText">30m</p>
               </td>
               <td class="summaryExtendedWorkoutSection">
-                <img class="summaryExtendedWorkoutIcon" [src]="bike_icon" />
+                <img class="summaryExtendedWorkoutIcon" [src]="icons.bike" />
                 <p class="summaryExtendedWorkoutText">1h 00m</p>
               </td>
             </tr>

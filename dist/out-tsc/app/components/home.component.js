@@ -12,13 +12,36 @@ import { PostsService } from '../services/posts.service';
 export var HomeComponent = (function () {
     function HomeComponent(postsService) {
         this.postsService = postsService;
+        this.icons = {
+            mood_1: "img/mood-1.svg",
+            mood_2: "img/mood-2.svg",
+            mood_3: "img/mood-3.svg",
+            mood_4: "img/mood-4.svg",
+            mood_5: "img/mood-5.svg",
+            steps: "img/running.svg",
+            heart_tile: "img/heart-tile.svg",
+            heart_day: "img/heart-day.svg",
+            bed: "img/bed.svg",
+            moon_tile: "img/moon-tile.svg",
+            moon_day: "img/moon-day.svg",
+            sun: "img/sun.svg",
+            flame: "img/flame.svg",
+            soccer: "img/soccer.svg",
+            dumbbell: "img/dumbbell.svg",
+            bike: "img/bicycle.svg",
+            clock: "img/clock.svg",
+            burn: "img/burn.svg",
+            desk: "img/desk.svg",
+            mood: "img/sleeping.svg",
+            tennis: "img/tennis.svg",
+        };
         this.attributes = {
-            awake_time: "08:30",
-            asleep_time: "00:00",
-            sleep_quality: "",
-            hr: "",
-            calories: "",
-            idle_time: ""
+            awake_time: "loading...",
+            asleep_time: "loading...",
+            HR: "loading...",
+            calories: "loading...",
+            idle_time: "loading...",
+            mood: this.icons.mood
         };
         this.graphWrapperState = 'inactive';
         this.summary_state = 'inactive';
@@ -76,37 +99,41 @@ export var HomeComponent = (function () {
             animation: { animateScale: true },
             maintainAspectRatio: false
         };
-        this.bindIcons();
         this.todaysDate = this.setTodaysDate();
         this.getTodaysAttributes(postsService);
     }
+    // function to obtain the info needed to populate the todayTile
     HomeComponent.prototype.getTodaysAttributes = function (postsService) {
         var _this = this;
+        // todays sleep
         postsService.getTodaysSleep().subscribe(function (posts) {
             _this.todaysSleep = posts;
-            console.log(JSON.stringify(_this.todaysSleep, null, 2));
             var asleep_ts = _this.todaysSleep.Items[0].info.details.asleep_time;
             _this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
             var awake_ts = _this.todaysSleep.Items[0].info.details.awake_time;
             _this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
         });
-    };
-    HomeComponent.prototype.bindIcons = function () {
-        this.mood_face = "img/001-sad.svg";
-        this.steps_icon = "img/013-running.svg";
-        this.HR_icon = "img/012-heart-tile.svg";
-        this.heart_icon = "img/012-heart-day.svg";
-        this.bed_icon = "img/011-bed.svg";
-        this.moon_tile_icon = "img/010-moon-tile.svg";
-        this.moon_day_icon = "img/010-moon-day.svg";
-        this.sun_icon = "img/006-sun.svg";
-        this.flame_icon = "img/005-flame.svg";
-        this.football_icon = "img/004-soccer-ball.svg";
-        this.dumbbell_icon = "img/002-dumbbell.svg";
-        this.bike_icon = "img/003-bicycle.svg";
-        this.clock_icon = "img/008-clock.svg";
-        this.burn_icon = "img/007-burn.svg";
-        this.desk_icon = "img/009-desk.svg";
+        // todays moves
+        postsService.getTodaysMoves().subscribe(function (posts) {
+            _this.todaysMoves = posts;
+            _this.attributes.calories = Math.round(_this.todaysMoves.Items[0].info.details.calories).toString();
+            var it = new Date(null);
+            it.setSeconds(_this.todaysMoves.Items[0].info.details.longest_idle);
+            _this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
+        });
+        // todays heartrate
+        postsService.getTodaysHR().subscribe(function (posts) {
+            _this.todaysHR = posts;
+            _this.attributes.HR = _this.todaysHR.Items[0].heartrate;
+        });
+        // todays heartrate
+        postsService.getTodaysMood().subscribe(function (posts) {
+            _this.todaysMood = posts;
+            if (_this.todaysMood.Count !== 0) {
+                var mood = _this.todaysMood.Items[0].mood;
+                _this.attributes.mood = _this.icons["mood_" + mood];
+            }
+        });
     };
     HomeComponent.prototype.setTodaysDate = function () {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

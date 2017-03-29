@@ -77,25 +77,45 @@ import {PostsService} from '../services/posts.service';
   providers: [PostsService]
 })
 export class HomeComponent {
-  public mood_face: string; public steps_icon: string;
-  public HR_icon: string; public bed_icon: string;
-  public moon_tile_icon: string; public sun_icon: string;
-  public flame_icon: string; public football_icon: string;
-  public dumbbell_icon: string; public bike_icon: string;
-  public clock_icon: string; public heart_icon: string;
-  public desk_icon: string; public burn_icon: string;
-  public moon_day_icon: string;
-
-
-  todaysSleep: Sleep;
-  attributes: Attributes = {
-    awake_time: "08:30",
-    asleep_time: "00:00",
-    sleep_quality: "",
-    hr: "",
-    calories: "",
-    idle_time: ""
+  public icons = {
+    mood_1: "img/mood-1.svg",
+    mood_2: "img/mood-2.svg",
+    mood_3: "img/mood-3.svg",
+    mood_4: "img/mood-4.svg",
+    mood_5: "img/mood-5.svg",
+    steps:"img/running.svg",
+    heart_tile : "img/heart-tile.svg",
+    heart_day : "img/heart-day.svg",
+    bed : "img/bed.svg",
+    moon_tile : "img/moon-tile.svg",
+    moon_day : "img/moon-day.svg",
+    sun : "img/sun.svg",
+    flame :"img/flame.svg",
+    soccer : "img/soccer.svg",
+    dumbbell : "img/dumbbell.svg",
+    bike : "img/bicycle.svg",
+    clock : "img/clock.svg",
+    burn : "img/burn.svg",
+    desk : "img/desk.svg",
+    mood : "img/sleeping.svg",
+    tennis : "img/tennis.svg",
   };
+  // data loaded from REST API
+  todaysSleep: APIResult;
+  todaysMoves: APIResult;
+  todaysHR: APIResult;
+  todaysMood: APIResult;
+  attributes: Attributes = {
+    awake_time: "loading...",
+    asleep_time: "loading...",
+    HR: "loading...",
+    calories: "loading...",
+    idle_time: "loading...",
+    mood: this.icons.mood
+  };
+
+  public source: string;
+
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -107,39 +127,45 @@ export class HomeComponent {
   };
 
   constructor(private postsService: PostsService) {
-    this.bindIcons();
     this.todaysDate = this.setTodaysDate();
     this.getTodaysAttributes(postsService);
   }
 
+
+  // function to obtain the info needed to populate the todayTile
   public getTodaysAttributes(postsService) {
+    // todays sleep
     postsService.getTodaysSleep().subscribe(posts => {
       this.todaysSleep = posts;
-      console.log(JSON.stringify(this.todaysSleep, null, 2));
       let asleep_ts = this.todaysSleep.Items[0].info.details.asleep_time;
       this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0,5);
       let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
       this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0,5);
     });
-  }
 
+    // todays moves
+    postsService.getTodaysMoves().subscribe(posts => {
+      this.todaysMoves = posts;
+      this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString();
+      let it = new Date(null);
+      it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
+      this.attributes.idle_time = (it.toISOString().substr(11,2) + "h " + it.toISOString().substr(14,2) + "m");
+    });
 
-  private bindIcons() {
-    this.mood_face = "img/001-sad.svg";
-    this.steps_icon = "img/013-running.svg";
-    this.HR_icon = "img/012-heart-tile.svg";
-    this.heart_icon = "img/012-heart-day.svg";
-    this.bed_icon = "img/011-bed.svg";
-    this.moon_tile_icon = "img/010-moon-tile.svg";
-    this.moon_day_icon = "img/010-moon-day.svg";
-    this.sun_icon = "img/006-sun.svg";
-    this.flame_icon = "img/005-flame.svg";
-    this.football_icon = "img/004-soccer-ball.svg";
-    this.dumbbell_icon = "img/002-dumbbell.svg";
-    this.bike_icon = "img/003-bicycle.svg";
-    this.clock_icon = "img/008-clock.svg";
-    this.burn_icon = "img/007-burn.svg";
-    this.desk_icon = "img/009-desk.svg";
+    // todays heartrate
+    postsService.getTodaysHR().subscribe(posts => {
+      this.todaysHR = posts;
+      this.attributes.HR = this.todaysHR.Items[0].heartrate;
+    });
+
+    // todays heartrate
+    postsService.getTodaysMood().subscribe(posts => {
+      this.todaysMood = posts;
+      if (this.todaysMood.Count !== 0) {
+        let mood = this.todaysMood.Items[0].mood;
+        this.attributes.mood = this.icons["mood_" + mood];
+      }
+    })
   }
 
   public setTodaysDate():string {
@@ -292,13 +318,13 @@ export interface GraphStates {
 export interface Attributes {
   asleep_time: string;
   awake_time: string;
-  sleep_quality: string;
-  hr: string;
+  HR: string;
   calories: string;
   idle_time: string;
+  mood: string;
 }
 
-export interface Sleep {
+export interface APIResult {
   Items:Array<any>;
   Count: number;
 

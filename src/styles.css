@@ -141,13 +141,14 @@ ul.navigation li a:hover {
 .tileToday {
   margin: 2% 0 0 0;
   width:100%;
-  height:45%;
-  min-height: 315px;
+  height: 63%;
+  min-height: 360px;
   max-height: 400px;
   display: inline-block;
   background-color: #EEEEFF;
   float: left;
   position: relative;
+  overflow: hidden;
 }
 
 .todayBanner {
@@ -179,6 +180,8 @@ ul.navigation li a:hover {
 .todayBarSectionTitle {
   margin: 0 0 1% 1%;
   font-size: 1em;
+  float: left;
+  width: 50%;
 }
 
 .todayBarSteps {
@@ -195,13 +198,30 @@ ul.navigation li a:hover {
   padding: 1% 0 0 0;
 }
 
+.attrBarMaxSection {
+  width: 100%;
+  position: absolute;
+  top: 33px;
+}
+
+.attrBarMaxValue {
+  float: right;
+  margin: 0;
+}
+
 .attrBarMax {
   border-radius: 3px;
   border: 1px solid #00CD00;
   min-height: 10px;
   max-height: 20px;
-  width: 100%;
+  position: relative;
+}
+
+.attrBarSection {
+  z-index: 2;
   position: absolute;
+  width: 75%;
+  top: 39px;
 }
 
 .attrBar {
@@ -209,10 +229,20 @@ ul.navigation li a:hover {
   background: #00B050;
   min-height: 18px;
   max-height: 30px;
-  z-index: 2;
+}
+
+.attrBarValue {
+  float: right;
+  margin: 0 1% 0 0;
+  color: white;
+}
+
+.attrBarAvgSection {
+  width: 71%;
+  z-index: 1;
+  opacity: 0.3;
   position: absolute;
-  width: 75%;
-  top: 39px;
+  top: 52px;
 }
 
 .attrBarAvg {
@@ -220,11 +250,11 @@ ul.navigation li a:hover {
   background: grey;
   min-height: 15px;
   max-height: 35px;
-  width: 71%;
-  z-index: 1;
-  opacity: 0.3;
-  position: absolute;
-  top: 52px;
+}
+
+.attrBarAvgValue {
+  float: right;
+  margin: 0;
 }
 
 
