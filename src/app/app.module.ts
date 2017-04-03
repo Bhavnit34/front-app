@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 import { ChartsModule } from 'ng2-charts';
 
@@ -23,7 +24,8 @@ import { HomeComponent } from './components/home.component';
     HttpModule,
     MaterialModule.forRoot(),
     ChartsModule,
-    HttpModule
+    HttpModule,
+    BrowserAnimationsModule
 
   ],
   providers: [],
