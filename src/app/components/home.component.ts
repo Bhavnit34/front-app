@@ -8,6 +8,8 @@ import {
   keyframes
 } from '@angular/core';
 import {PostsService} from '../services/posts.service';
+import {Observable} from "rxjs";
+import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
 
 @Component({
   selector: 'home',
@@ -77,6 +79,11 @@ import {PostsService} from '../services/posts.service';
   providers: [PostsService]
 })
 export class HomeComponent {
+  public month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+    "November", "December"];
+  public  day_names = ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+
   public icons = {
     mood_1: "assets/img/mood-1.svg",
     mood_2: "assets/img/mood-2.svg",
@@ -89,36 +96,42 @@ export class HomeComponent {
     bed : "assets/img/bed.svg",
     moon_tile : "assets/img/moon-tile.svg",
     moon_day : "assets/img/moon-day.svg",
-    sun : "sassetsrc/img/sun.svg",
+    sun : "assets/img/sun.svg",
     flame :"assets/img/flame.svg",
     soccer : "assets/img/soccer.svg",
     dumbbell : "assets/img/dumbbell.svg",
     bike : "assets/img/bicycle.svg",
     clock : "assets/img/clock.svg",
-    burn : "assets/img/burn.svg",
+    burn_tile : "assets/img/burn_tile.svg",
+    burn_day : "assets/img/burn_day.svg",
     desk : "assets/img/desk.svg",
     mood : "assets/img/sleeping.svg",
     tennis : "assets/img/tennis.svg",
+    running: "assets/img/running.svg"
   };
   // data loaded from REST API
-  todaysSleep: APIResult;
-  todaysMoves: APIResult;
-  todaysHR: APIResult;
-  todaysMood: APIResult;
+  todaysSleep: APIResult; todaysMoves: APIResult; todaysHR: APIResult; todaysMood: APIResult; stats: APIResult;
   attributes: Attributes = {
-    awake_time: "loading...",
-    asleep_time: "loading...",
-    HR: "loading...",
-    calories: "loading...",
-    idle_time: "loading...",
-    steps: "loading...",
-    steps_avg: "loading...",
-    steps_max: "loading...",
-    active_time: "loading...",
-    active_time_avg: "loading...",
-    active_time_max: "loading...",
+    awake_time: "",
+    asleep_time: "",
+    HR: "",
+    calories: "",
+    idle_time: "",
+    steps: "",
+    steps_avg: "",
+    steps_max: "",
+    active_time: "",
+    active_time_value: 0,
+    active_time_avg: "",
+    active_time_max: "",
     mood: this.icons.mood
   };
+  barWidth: BarWidth = {steps: "75%", steps_avg: "60%", active_time: "80%", active_time_avg: "65%"};
+
+  // Day tile
+  last3Sleep: APIResult; last3Moves: APIResult; last3HR: APIResult; last3Mood: APIResult;
+  private dayTiles: Array<DayTile> = new Array<DayTile>();
+
 
   todaysDate: string;
   graphWrapperState: string = 'inactive';
@@ -131,58 +144,260 @@ export class HomeComponent {
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
-    this.getTodaysAttributes(postsService);
+    this.getTodaysAttributes(postsService).subscribe((data) => {
+      // run this function once the previous has been completed
+      this.getLast3Attributes(postsService);
+    });
+
   }
 
 
   // function to obtain the info needed to populate the todayTile
-  public getTodaysAttributes(postsService) {
-    // todays sleep
-    postsService.getTodaysSleep().subscribe(posts => {
-      this.todaysSleep = posts;
-      let asleep_ts = this.todaysSleep.Items[0].info.details.asleep_time;
-      this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0,5);
-      let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
-      this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0,5);
+  public getTodaysAttributes(postsService) : Observable<any> {
+    return Observable.create(observer => {
+      // todays sleep
+      postsService.getTodaysAttr("sleeps").subscribe(posts => {
+        this.todaysSleep = posts;
+        let asleep_ts = this.todaysSleep.Items[0].info.details.asleep_time;
+        this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
+        let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
+        this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
+      });
+
+      // todays moves
+      postsService.getTodaysAttr("moves").subscribe(posts => {
+        this.todaysMoves = posts;
+        // calories
+        this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString() + " calories";
+        // idle time
+        let it = new Date(null);
+        it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
+        this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
+
+        // steps
+        this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
+        // active time
+        let at = new Date(null);
+        at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
+        this.attributes.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
+        this.attributes.active_time_value = this.todaysMoves.Items[0].info.details.active_time;
+      });
+
+      // todays heartrate
+      postsService.getTodaysAttr("heartrate").subscribe(posts => {
+        this.todaysHR = posts;
+        if (this.todaysHR.Items[0].heartrate > 0)
+          this.attributes.HR = this.todaysHR.Items[0].heartrate + " bpm";
+      });
+
+      // todays mood
+      postsService.getTodaysAttr("mood").subscribe(posts => {
+        this.todaysMood = posts;
+        if (this.todaysMood.Count !== 0) {
+          let mood = this.todaysMood.Items[0].mood;
+          this.attributes.mood = this.icons["mood_" + mood];
+        }
+      });
+
+      // stats
+      postsService.getTodaysStats().subscribe(posts => {
+        this.stats = posts;
+        // round some values
+        this.stats.Items[0].info.Moves.Distance.max = this.stats.Items[0].info.Moves.Distance.max.toFixed(2);
+
+
+        if (this.stats.Count !== 0) {
+          let avg = 0;
+          let max = 0;
+          let current = 0;
+          let perc = 0; // width of the bar, to be assigned below
+
+          // steps
+          avg = this.stats.Items[0].info.Moves.Steps.avg;
+          max = this.stats.Items[0].info.Moves.Steps.max;
+          this.attributes.steps_avg = avg.toString();
+          this.attributes.steps_max = max.toString();
+          current = parseInt(this.attributes.steps);
+          // work out length of the steps bars
+          perc = Math.round((avg / max) * 100);
+          this.barWidth.steps_avg = perc + "%";
+          perc = Math.round((current / max) * 100);
+          this.barWidth.steps = perc + "%";
+
+          // active time
+          let t = new Date(null);
+          avg = this.stats.Items[0].info.Moves.Active_time.avg;
+          t.setSeconds(avg);
+          this.attributes.active_time_avg = (t.toISOString().substr(11, 2) + "h " + t.toISOString().substr(14, 2) + "m");
+
+          t = new Date(null);
+          max = this.stats.Items[0].info.Moves.Active_time.max;
+          t.setSeconds(max);
+          this.attributes.active_time_max = (t.toISOString().substr(11, 2) + "h " + t.toISOString().substr(14, 2) + "m");
+
+          current = this.attributes.active_time_value;
+
+          // work out length of active_time_avg bar
+          perc = Math.round((avg / max) * 100);
+          this.barWidth.active_time_avg = perc + "%";
+          perc = Math.round((current / max) * 100);
+          this.barWidth.active_time = perc + "%";
+          observer.next();
+          observer.complete();
+        }
+      });
     });
-
-    // todays moves
-    postsService.getTodaysMoves().subscribe(posts => {
-      this.todaysMoves = posts;
-      // calories
-      this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString();
-      // idle time
-      let it = new Date(null);
-      it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
-      this.attributes.idle_time = (it.toISOString().substr(11,2) + "h " + it.toISOString().substr(14,2) + "m");
-      // steps
-      this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
-      // active time
-      let at = new Date(null);
-      at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
-      this.attributes.active_time = (at.toISOString().substr(11,2) + "h " + at.toISOString().substr(14,2) + "m");
-    });
-
-    // todays heartrate
-    postsService.getTodaysHR().subscribe(posts => {
-      this.todaysHR = posts;
-      this.attributes.HR = this.todaysHR.Items[0].heartrate;
-    });
-
-    // todays mood
-    postsService.getTodaysMood().subscribe(posts => {
-      this.todaysMood = posts;
-      if (this.todaysMood.Count !== 0) {
-        let mood = this.todaysMood.Items[0].mood;
-        this.attributes.mood = this.icons["mood_" + mood];
-      }
-    })
-
-    // stats
-
-
 
   }
+
+
+  // function to obtain the info for the past 3 days to populate the day cards
+  public getLast3Attributes(postsService) {
+    // create a new dayTile object for each day
+      let dayTile = new DayTile();
+
+      // set date
+      let d = new Date();
+      d.setDate(d.getDate() - 3);
+      d.setHours(0, 0, 0, 0);
+      dayTile.date = this.day_names[d.getDay()] + " " + d.getDate() + " " + this.month_names[d.getMonth()];
+      dayTile.year = d.getFullYear();
+      dayTile.timestamp = d.getTime();
+
+      this.getAttributeForDate(postsService, d, dayTile).subscribe( (tile1) => {
+        this.dayTiles.push(tile1); // push to array of tiles
+
+        dayTile = new DayTile();
+        d = new Date();
+        d.setDate(d.getDate() - 2);
+        dayTile.date = this.day_names[d.getDay()] + " " + d.getDate() + " " + this.month_names[d.getMonth()];
+        dayTile.year = d.getFullYear();
+        dayTile.timestamp = d.getTime();
+
+        this.getAttributeForDate(postsService, d, dayTile).subscribe( (tile2) => {
+          this.dayTiles.push(tile2); // push to array of tiles
+
+          dayTile = new DayTile();
+          d = new Date();
+          d.setDate(d.getDate() - 1);
+          dayTile.date = this.day_names[d.getDay()] + " " + d.getDate() + " " + this.month_names[d.getMonth()];
+          dayTile.year = d.getFullYear();
+          dayTile.timestamp = d.getTime();
+
+          this.getAttributeForDate(postsService, d, dayTile).subscribe( (tile3) => {
+            this.dayTiles.push(tile3); // push to array of tiles
+            console.log(JSON.stringify(this.dayTiles, null, 2));
+          });
+        });
+      });
+
+
+
+  } // end function
+
+
+
+  public getAttributeForDate(postsService, d, dayTile) : Observable<any> {
+    return Observable.create(observer => {
+
+      // set sleeps
+      postsService.getAttrForDay("sleeps", d.getTime(), 1).subscribe(posts => {
+        this.last3Sleep = posts;
+        if (this.last3Sleep.Items[0].Count !== 0) {
+          // set sleep info
+          let asleep_ts = this.last3Sleep.Items[0].info.details.asleep_time;
+          dayTile.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
+          let awake_ts = this.last3Sleep.Items[0].info.details.awake_time;
+          dayTile.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
+          let sd = new Date(null);
+          sd.setSeconds(this.last3Sleep.Items[0].info.details.duration);
+          dayTile.sleep_duration = (sd.toISOString().substr(11, 2) + "h " + sd.toISOString().substr(14, 2) + "m");
+
+          // sleep duration max
+          sd = new Date(null);
+          sd.setSeconds(this.stats.Items[0].info.Sleep.Duration.max);
+          dayTile.sleep_duration_max = (sd.toISOString().substr(11, 2) + "h " + sd.toISOString().substr(14, 2) + "m");
+          // sleep duration avg
+          sd = new Date(null);
+          sd.setSeconds(this.stats.Items[0].info.Sleep.Duration.avg);
+          dayTile.sleep_duration_avg = (sd.toISOString().substr(11, 2) + "h " + sd.toISOString().substr(14, 2) + "m");
+
+
+          // set bar widths
+          let max = this.stats.Items[0].info.Sleep.Duration.max;
+          let avg = this.stats.Items[0].info.Sleep.Duration.avg;
+          let perc = Math.round(avg / max * 100);
+          dayTile.sleep_duration_avg_width = perc + "%"; // sleep duration avg
+          perc = Math.round(parseInt(this.last3Sleep.Items[0].info.details.duration) / max * 100);
+          dayTile.sleep_duration_width = perc + "%"; // sleep duration current
+
+        }
+
+        // moves
+        postsService.getAttrForDay("moves", d.getTime(), 1).subscribe(posts => {
+          this.last3Moves = posts;
+          if (this.last3Moves.Items[0].Count !== 0) {
+            // set moves (steps, active time, calories, distance)
+            dayTile.steps = this.last3Moves.Items[0].info.details.steps;
+            dayTile.distance = this.last3Moves.Items[0].info.details.distance.toFixed(2);
+            dayTile.calories = Math.round(this.last3Moves.Items[0].info.details.calories).toString();
+            let at = new Date(null);
+            at.setSeconds(this.last3Moves.Items[0].info.details.active_time);
+            dayTile.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
+
+            // set bar widths
+            let max = this.stats.Items[0].info.Moves.Distance.max;
+            let avg = this.stats.Items[0].info.Moves.Distance.avg;
+            let perc = Math.round(avg / max * 100);
+            dayTile.distance_avg_width = perc + "%"; // distance avg
+            perc = Math.round(parseInt(dayTile.distance) / max * 100);
+            dayTile.distance_width = perc + "%"; // distance current
+
+          }
+
+          // HR
+          postsService.getAttrForDay("heartrate", d.getTime(), 1).subscribe(posts => {
+            this.last3HR = posts;
+            if (this.last3HR.Count !== 0) {
+              // set HR
+              dayTile.HR = this.last3HR.Items[0].heartrate;
+            }
+
+            // mood
+            postsService.getAttrForDay("mood", d.getTime(), 1).subscribe(posts => {
+              this.last3Mood = posts;
+              // set mood
+              if (this.last3Mood.Count !== 0) {
+                let mood_date = new Date(this.last3Mood.Items[0].timestamp_completed * 1000);
+                mood_date.setHours(0, 0, 0, 0);
+                let mood = this.last3Mood.Items[0].mood;
+                dayTile.mood = this.icons["mood_" + mood];
+              }
+
+              // workouts
+              postsService.getAttrForDay("workouts", d.getTime(), 10).subscribe(posts => {
+                // loop through all workouts in a day and add to the tile
+                for (let i = 0; i < posts.Count; i++) {
+                  let wo = new DayTileWorkout();
+                  let wt = new Date(null);
+                  wt.setSeconds(posts.Items[i].info.details.time);
+                  wo.duration = (wt.toISOString().substr(11, 2) + "h " + wt.toISOString().substr(14, 2) + "m");
+                  wo.icon = this.getIconFromSubType(posts.Items[i].info.sub_type);
+
+
+                  dayTile.workouts.push(wo);
+                }
+                observer.next(dayTile);
+                observer.complete();
+
+              }); // end postservice Workout
+            }); // end postservice Mood
+          }); //end postservice HR
+        }); // end postservice moves
+      }); // end postservice sleeps
+    }); // end Observable
+  }
+
 
   public setTodaysDate():string {
     const days:Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -322,6 +537,28 @@ export class HomeComponent {
     animation:{animateScale: true},
     maintainAspectRatio: false
   };
+
+  public pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
+
+
+  public getIconFromSubType(subtype) {
+    switch(subtype) {
+      case 1: {
+        return this.icons.running;
+      }
+      case 3: {
+        return this.icons.dumbbell;
+      }
+      case 21: {
+        return this.icons.soccer;
+      }
+    }
+  }
+
 }
 
 // interface of states and visibility order for each summaryGraph tile
@@ -344,11 +581,74 @@ export interface Attributes {
   active_time: string;
   active_time_avg: string;
   active_time_max: string;
+  active_time_value: number;
 }
 
 export interface APIResult {
   Items:Array<any>;
   Count: number;
 
+}
+
+export interface BarWidth {
+  steps: string;
+  steps_avg: string;
+  active_time: string;
+  active_time_avg: string;
+}
+
+export class DayTileWorkout {
+  icon: string;
+  duration: string;
+
+  constructor() {
+    this.icon = "";
+    this.duration ="";
+  }
+}
+
+
+export class DayTile {
+  date: string;
+  year: number;
+  timestamp: number;
+  mood: string;
+  steps: number;
+  HR: string;
+  calories: string;
+  asleep_time: string;
+  awake_time: string;
+  active_time: string;
+  distance: string;
+  distance_width: string;
+  distance_avg_width: string;
+  sleep_duration: string;
+  sleep_duration_max: string;
+  sleep_duration_avg: string;
+  sleep_duration_width: string;
+  sleep_duration_avg_width: string;
+  workouts: Array<DayTileWorkout>;
+
+  constructor() {
+    this.date = "";
+    this.year = 2017;
+    this.timestamp = 0;
+    this.mood = "assets/img/sleeping.svg";
+    this.steps = 0;
+    this.HR = "";
+    this.calories = "";
+    this.asleep_time = "";
+    this.awake_time = "";
+    this.active_time = "";
+    this.distance = "";
+    this.distance_width = "";
+    this.distance_avg_width = "";
+    this.sleep_duration = "";
+    this.sleep_duration_max = "";
+    this.sleep_duration_avg = "";
+    this.sleep_duration_width = "";
+    this.sleep_duration_avg_width = "";
+    this.workouts = new Array<DayTileWorkout>();
+  }
 }
 

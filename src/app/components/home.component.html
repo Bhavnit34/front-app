@@ -19,7 +19,9 @@
     <div class="todayBanner"></div>
     <h2 id="todayDate">{{todaysDate}}</h2>
 
+
     <div class="todayBarSection">
+      <!-- Steps section -->
       <div class="todayBarSteps">
         <p class="todayBarSectionTitle">Steps</p>
 
@@ -28,18 +30,20 @@
           <div class="attrBarMax"></div>
         </section>
 
-        <section class="attrBarSection">
+        <section class="attrBarSection" [style.width] = "barWidth.steps">
           <div class="attrBar">
             <p class="attrBarValue">{{attributes.steps}}</p>
           </div>
         </section>
 
-        <div class="attrBarAvgSection">
+        <div class="attrBarAvgSection" [style.width] = "barWidth.steps_avg">
           <div class="attrBarAvg"></div>
           <p class="attrBarAvgValue">{{attributes.steps_avg}}</p>
         </div>
       </div>
 
+
+      <!-- Active time section -->
       <div class="todayBarActiveTime">
         <p class="todayBarSectionTitle">Active Time</p>
 
@@ -48,13 +52,13 @@
           <div class="attrBarMax"></div>
         </section>
 
-        <section class="attrBarSection">
+        <section class="attrBarSection" [style.width] = "barWidth.active_time">
           <div class="attrBar">
             <p class="attrBarValue">{{attributes.active_time}}</p>
           </div>
         </section>
 
-        <section class="attrBarAvgSection">
+        <section class="attrBarAvgSection" [style.width] = "barWidth.active_time_avg">
           <div class="attrBarAvg"></div>
           <p class="attrBarAvgValue">{{attributes.active_time_avg}}</p>
         </section>
@@ -96,11 +100,11 @@
           </td>
           <td class="attrCell">
             <img class="attrIcon" [src]="icons.heart_day" />
-            <p class="attrValue"> {{attributes.HR}} bpm</p>
+            <p class="attrValue"> {{attributes.HR}}</p>
           </td>
           <td class= "attrCell attrClick" (click)="toggleGraph('calorieGraphState')">
-            <img class="attrIcon" [src]="icons.burn" />
-            <p class="attrValue"> {{attributes.calories}} calories </p>
+            <img class="attrIcon" [src]="icons.burn_day" />
+            <p class="attrValue"> {{attributes.calories}}</p>
           </td>
           <td class="attrCell attrClick" (click)="toggleGraph('idleGraphState')">
             <img class="attrIcon" [src]="icons.desk" />
@@ -144,103 +148,96 @@
       <h1>Idle Time Graph</h1>
     </div>
   </div>
-  <div class="historyWrapper">
-    <div class="tileSummary baseTile">
-      <div class="tileTop">
+  <section class="historyWrapper">
+    <section class="tileSummary baseTile" *ngFor="let tile of dayTiles">
+      <section class="tileTop">
         <div class="summaryTopBanner">
-          <h2 class="summaryTopBannerTitle"> Friday 25 March</h2>
-          <h2 class="summaryTopBannerYear"> 2017 </h2>
+          <h2 class="summaryTopBannerTitle"> {{tile.date}} </h2>
+          <h2 class="summaryTopBannerYear"> {{tile.year}} </h2>
         </div>
-        <div class="summaryContent">
+        <section class="summaryContent">
           <table class="summaryContentTable">
             <tr>
               <td class="summaryContentMoodCell">
-                <img [src]="icons.mood_4" />
+                <img [src]="tile.mood" />
               </td>
               <td class="summaryContentCell">
                 <img class="summaryContentIcon" [src]="icons.steps" />
-                <p class="summaryContentCount"> 2526 </p>
-                <p class="summaryContentAvg"> 2526 avg </p>
+                <p class="summaryContentCount"> {{tile.steps}} </p>
+                <p class="summaryContentAvg"> {{stats.Items[0].info.Moves.Steps.avg}} avg </p>
               </td>
               <td class="summaryContentCell">
                 <img class="summaryContentIcon" [src]="icons.heart_tile" />
-                <p class="summaryContentCount"> 67 </p>
-                <p class="summaryContentAvg"> 60 avg </p>
+                <p class="summaryContentCount"> {{tile.HR}} </p>
+                <p class="summaryContentAvg"> {{stats.Items[0].info.HeartRate.avg}} avg </p>
               </td>
               <td class="summaryContentCell">
-                <img class="summaryContentIcon" [src]="icons.bed" />
-                <p class="summaryContentCount"> 56% </p>
-                <p class="summaryContentAvg"> 85% avg </p>
+                <img class="summaryContentIcon" [src]="icons.burn_tile" />
+                <p class="summaryContentCount"> {{tile.calories}} </p>
+                <p class="summaryContentAvg"> {{stats.Items[0].info.Moves.Calories.avg}} avg </p>
               </td>
             </tr>
           </table>
-        </div>
+        </section>
         <table class="summaryBottomBanner">
           <tr>
           <td class="summaryBottomBannerSection">
             <img class="summaryBottomBannerIcon" [src]="icons.moon_tile" />
-            <p class="summaryBottomBannerText"> 11:53pm</p>
+            <p class="summaryBottomBannerText"> {{tile.asleep_time}}</p>
           </td>
           <td class="summaryBottomBannerSection">
             <img class="summaryBottomBannerIcon" [src]="icons.sun" />
-            <p class="summaryBottomBannerText">08:32am</p>
+            <p class="summaryBottomBannerText">{{tile.awake_time}}</p>
           </td>
           <td class="summaryBottomBannerSection">
             <img class="summaryBottomBannerIcon" [src]="icons.flame" />
-            <p class="summaryBottomBannerText">1h 33m</p>
+            <p class="summaryBottomBannerText">{{tile.active_time}}</p>
           </td>
           </tr>
         </table>
-      </div>
-      <div [@movePanel]='summary_state' class="summaryExtended">
+      </section>
+      <section [@movePanel]='summary_state' class="summaryExtended">
         <div class="summaryExtendedAttributeTop">
           <p class="summaryExtendedAttrTitle">Distance</p>
           <div class="barSection">
-            <div class="barMax"></div>
-            <div class="bar"></div>
-            <div class="barAvg"></div>
+            <div class="barMax">
+              <p class="barMaxValue">{{stats.Items[0].info.Moves.Distance.max}}</p>
+            </div>
+            <div class="bar" [style.width] = "tile.distance_width">
+              <p class="barValue">{{tile.distance}}</p>
+            </div>
+            <div class="barAvg" [style.width] = "tile.distance_avg_width">
+              <p class="barAvgValue">{{stats.Items[0].info.Moves.Distance.avg}}</p>
+            </div>
           </div>
         </div>
         <div class="summaryExtendedAttributeBottom">
           <p class="summaryExtendedAttrTitle">Sleep Duration</p>
           <div class="barSection">
-            <div class="barMax"></div>
-            <div class="bar"></div>
-            <div class="barAvg"></div>
+            <div class="barMax">
+              <p class="barMaxValue">{{tile.sleep_duration_max}}</p>
+            </div>
+            <div class="bar" [style.width] = "tile.sleep_duration_width">
+              <p class="barValue">{{tile.sleep_duration}}</p>
+            </div>
+            <div class="barAvg" [style.width] = "tile.sleep_duration_avg_width">
+              <p class="barAvgValue">{{tile.sleep_duration_avg}}</p>
+            </div>
           </div>
         </div>
         <table class="summaryExtendedWorkout">
             <tr>
-              <td class="summaryExtendedWorkoutSection">
-                <img class="summaryExtendedWorkoutIcon" [src]="icons.soccer" />
-                <p class="summaryExtendedWorkoutText"> 1h 20m</p>
-              </td>
-              <td class="summaryExtendedWorkoutSection">
-                <img class="summaryExtendedWorkoutIcon" [src]="icons.dumbbell" />
-                <p class="summaryExtendedWorkoutText">30m</p>
-              </td>
-              <td class="summaryExtendedWorkoutSection">
-                <img class="summaryExtendedWorkoutIcon" [src]="icons.bike" />
-                <p class="summaryExtendedWorkoutText">1h 00m</p>
+              <td class="summaryExtendedWorkoutSection" *ngFor="let wo of tile.workouts">
+                <img class="summaryExtendedWorkoutIcon" [src]="wo.icon" />
+                <p class="summaryExtendedWorkoutText"> {{wo.duration}}</p>
               </td>
             </tr>
         </table>
-      </div>
+      </section>
       <div (click)="toggleMove()" class="summaryExtender"></div>
 
-    </div>
-    <div class="tileSummary"></div>
-    <div class="tileSummary"></div>
-  </div>
-
-  <hr>
-  <!--
-  <h3>Posts</h3>
-  <div *ngFor="let post of posts">
-    <h3>{{post.title}}</h3>
-    <p>{{post.body}}</p>
-  </div>
-  -->
+    </section>
+  </section>
 
 
 </div>

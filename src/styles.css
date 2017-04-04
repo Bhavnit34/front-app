@@ -222,6 +222,7 @@ ul.navigation li a:hover {
   position: absolute;
   width: 75%;
   top: 39px;
+  min-width: 60px;
 }
 
 .attrBar {
@@ -243,6 +244,7 @@ ul.navigation li a:hover {
   opacity: 0.3;
   position: absolute;
   top: 52px;
+  min-width: 60px;
 }
 
 .attrBarAvg {
@@ -351,7 +353,6 @@ ul.navigation li a:hover {
 .historyWrapper {
   width: 100%;
   min-height: 200px;
-  background-color: #DDDDDD;
   float: left;
   margin: 2% 0 0% 0;
   overflow: hidden;
@@ -570,17 +571,38 @@ ul.navigation li a:hover {
 .bar {
   border-radius: 2px;
   background: #00B050;
-  min-height: 10px;
+  min-height: 15px;
   max-height: 15px;
   z-index: 2;
   width: 66%;
   margin-bottom: 1%;
 }
 
+.barValue {
+  margin: 0 1% 0 0;
+  color: white;
+  font-size: 0.75em;
+  float: right;
+}
+
+.barAvgValue {
+  margin: 0 1% 0 0;
+  color: black;
+  font-size: 0.75em;
+  float: right;
+}
+
+.barMaxValue {
+  margin: 0 1% 0 0;
+  color: #00B050;
+  font-size: 0.75em;
+  float: right;
+}
+
 .barMax {
   border-radius: 2px;
   border: 1px solid #00CD00;
-  min-height: 6px;
+  min-height: 15px;
   max-height: 20px;
   margin-bottom: 1%;
 }
@@ -588,7 +610,7 @@ ul.navigation li a:hover {
 .barAvg {
   border-radius: 2px;
   background: grey;
-  min-height: 10px;
+  min-height: 15px;
   max-height: 15px;
   width: 73%;
   z-index: 1;
