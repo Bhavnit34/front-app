@@ -131,7 +131,7 @@ ul.navigation li a:hover {
 .tileBack {
   margin-left: 20%;
   height: 100%;
-  background-color: #FDFDFD;
+  /* background-color: #FDFDFD; */
   width: 60%;
   position: relative;
 }
@@ -307,6 +307,9 @@ ul.navigation li a:hover {
 /* ---------------------------------------- */
 
 
+.chart {
+  padding: 2%;
+}
 
 .attrGraphWrapper {
   position: relative;
@@ -315,13 +318,22 @@ ul.navigation li a:hover {
   -ms-flex-flow: column;
   flex-flow: column;
   width: 100%;
-  background-color: aliceblue;
   float: left;
   margin: 2% 0 0 0;
   overflow: hidden;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.attrGraphTitle {
+  margin: 1% 0 0 1%;
+  color: #061A40;
+  font-style: italic;
+  font-size: 1.5em;
+  width: 50%;
+  position: relative;
+  float: left;
 }
 
 .attrGraphTile {
@@ -332,22 +344,8 @@ ul.navigation li a:hover {
   min-height: 300px;
   margin-top: 1.5%;
   position: relative;
-  /*margin: 1.5% 0 0 0;
-
-  -moz-transition: height .7s;
-  -ms-transition: height .7s;
-  -o-transition: height .7s;
-  -webkit-transition: height .7s;
-  transition: height .7s;
-  height: 0;*/
   overflow: hidden;
 }
-
-/*
-#sleepGraphTile { order : 1}
-#calorieGraphTile { order : 2}
-#idleGraphTile { order : 3}
-*/
 
 /* base Tile that encases the summary tiles of the previous n days */
 .historyWrapper {

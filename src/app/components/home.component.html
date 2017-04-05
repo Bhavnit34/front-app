@@ -126,19 +126,19 @@
 
   <div [@toggleGraphWrapper]='graphWrapperState' class="attrGraphWrapper" id="attrGraphWrapper">
     <div [@toggleGraph]='graphStates.sleepGraphState.state' [style.order]="graphStates.sleepGraphState.order" class="attrGraphTile baseTile" id="sleepGraphTile">
-      <h1>Sleep Graph</h1>
-          <div style="display: block;">
+      <h1 class="attrGraphTitle">Last Weeks Sleep</h1>
+          <div class="chart" style="display: block;">
             <canvas baseChart
-                    [datasets]="lineChartData"
-                    [labels]="lineChartLabels"
-                    [options]="lineChartOptions"
-                    [colors]="lineChartColors"
-                    [legend]="lineChartLegend"
-                    [chartType]="lineChartType"
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [colors]="barChartColors"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
-                    [style.height]="300+ 'px'"
-                    [style.width]="1000+ 'px'" ></canvas>
+                    [style.height]="200+ 'px'"
+                    [style.width]="900+ 'px'" ></canvas>
           </div>
     </div>
     <div [@toggleGraph]='graphStates.calorieGraphState.state' [style.order]="graphStates.calorieGraphState.order" class="attrGraphTile baseTile" id="calorieGraphTile">

@@ -131,9 +131,11 @@ export class HomeComponent {
   // Day tile
   last3Sleep: APIResult; last3Moves: APIResult; last3HR: APIResult; last3Mood: APIResult;
   private dayTiles: Array<DayTile> = new Array<DayTile>();
-
-
   todaysDate: string;
+
+
+
+  // Graphs
   graphWrapperState: string = 'inactive';
   summary_state: string = 'inactive';
   graphStates: GraphStates = {
@@ -141,12 +143,22 @@ export class HomeComponent {
     calorieGraphState: {state: "inactive", order: 2},
     idleGraphState: {state: "inactive", order: 3}
   };
+  sleepGraphSeries: Array<SleepGraphSeries> = [];
+  sleepGraphLabels: Array<any> = [];
+
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
     this.getTodaysAttributes(postsService).subscribe((data) => {
       // run this function once the previous has been completed
       this.getLast3Attributes(postsService);
+    });
+    this.getLastWeeksSleep(postsService).subscribe((data) => {
+      this.barChartData = this.sleepGraphSeries;
+
+      setTimeout(() => { // a fix as the package is bugged to dynamically change labels
+        this.barChartLabels = this.sleepGraphLabels;
+        });
     });
 
   }
@@ -286,7 +298,6 @@ export class HomeComponent {
 
           this.getAttributeForDate(postsService, d, dayTile).subscribe( (tile3) => {
             this.dayTiles.push(tile3); // push to array of tiles
-            console.log(JSON.stringify(this.dayTiles, null, 2));
           });
         });
       });
@@ -399,6 +410,38 @@ export class HomeComponent {
   }
 
 
+  public getLastWeeksSleep(postsService) : Observable<any> {
+    return Observable.create(observer => {
+      postsService.getAttrForLatestWeek("sleeps").subscribe(posts => {
+        let data_duration = {label: "Duration", data: []};
+        let data_deep = {label: "Deep Sleep", data: []};
+        let data_rem = {label: "REM Sleep", data: []};
+
+        if (posts.Count == 0) {
+          console.log("No sleep data returned");
+          return;
+        } // no sleep data was returned
+
+        for (let i = 0; i < posts.Count; i++) {
+          let d = new Date(posts.Items[i].date);
+          this.sleepGraphLabels.push(this.day_names[d.getDay()]);
+          data_duration.data.push(Math.round(posts.Items[i].info.details.duration / 60));
+          data_deep.data.push(Math.round(posts.Items[i].info.details.sound / 60));
+          data_rem.data.push(Math.round(posts.Items[i].info.details.rem / 60));
+        }
+
+        this.sleepGraphSeries.push(data_duration);
+        this.sleepGraphSeries.push(data_deep);
+        this.sleepGraphSeries.push(data_rem);
+
+
+        observer.next();
+        observer.complete();
+      });
+    });
+  }
+
+
   public setTodaysDate():string {
     const days:Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months:Array<string> = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -477,18 +520,27 @@ export class HomeComponent {
 
 
 
-// lineChart
-  public lineChartData:Array<any> = [
+// BAR CHART
+  public barChartData:Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
     {data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'}
   ];
-  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChartOptions:any = {
+  public barChartOptions:any = {
+    scaleShowVerticalLines: false,
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'minutes'
+        }
+      }]
+    }
   };
-  public lineChartColors:Array<any> = [
+  public barChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public barChartColors:Array<any> = [
     { // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
@@ -498,24 +550,33 @@ export class HomeComponent {
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },
     { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
+      backgroundColor: '#1919FF',
+      borderColor: '#1919FF',
+      pointBackgroundColor: 'white',
+      pointHoverBackgroundColor: '#FFF',
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     },
     { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
+      backgroundColor: '#7ec0ee',
+      borderColor: '#7ec0ee',
+      pointBackgroundColor: '#FFF',
+      pointHoverBackgroundColor: '#FFF',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
-  public lineChartLegend:boolean = true;
+  public barChartLegend:boolean = true;
+  public barChartType:string = 'bar';
+
+
+
+  // Line CHART
   public lineChartType:string = 'line';
+  public lineChartOptions:any = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
+  public lineChartLegend:boolean = true;
+
 
 
   // events
@@ -595,6 +656,16 @@ export interface BarWidth {
   steps_avg: string;
   active_time: string;
   active_time_avg: string;
+}
+
+export class SleepGraphSeries {
+  data: Array<number>;
+  label: string;
+
+  constructor() {
+    this.data = [0,0,0,0];
+    this.label = "loading...";
+  }
 }
 
 export class DayTileWorkout {

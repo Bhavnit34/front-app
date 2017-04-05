@@ -77,4 +77,41 @@ export class PostsService {
       .map(res => res.json());
   }
 
+  public getAttrForLatestWeek(attr) {
+    let headers = new Headers({'Accept': 'application/json'});
+
+    let params: URLSearchParams = new URLSearchParams();
+
+    params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+    params.set('limit', "7");
+
+    // start date
+    let d = new Date();
+    d.setDate(d.getDate() - 7);
+    let m = d.getMonth() + 1;
+    let startDate = [
+      d.getFullYear(),
+      (m > 9 ? '' : '0') + m, // add leading zero if below 9
+      (d.getDate()>9 ? '' : '0') + d.getDate()]
+      .join('/');
+
+    // end date
+    d = new Date();
+    d.setDate(d.getDate() -1);
+    m = d.getMonth() + 1;
+    let endDate = [
+      d.getFullYear(),
+      (m > 9 ? '' : '0') + m, // add leading zero if below 9
+      (d.getDate()>9 ? '' : '0') + d.getDate()]
+      .join('/');
+
+    params.set('startDate',startDate);
+    params.set('endDate', endDate);
+    let options = new RequestOptions({headers: headers});
+    options.search = params;
+    return this.http
+      .get('http://52.208.153.178:3000/api/' + attr + '/BRx5p_mMpSn-RjknXdn3dA', options)
+      .map(res => res.json());
+  }
+
 }
