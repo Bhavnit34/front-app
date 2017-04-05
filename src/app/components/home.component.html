@@ -142,7 +142,20 @@
           </div>
     </div>
     <div [@toggleGraph]='graphStates.calorieGraphState.state' [style.order]="graphStates.calorieGraphState.order" class="attrGraphTile baseTile" id="calorieGraphTile">
-      <h1>Calories Graph</h1>
+      <h1 class="attrGraphTitle">Calories Burned Today</h1>
+      <div class="chart" style="display: block;">
+        <canvas baseChart
+                [datasets]="calorieChartData"
+                [labels]="calorieChartLabels"
+                [options]="lineChartOptions"
+                [colors]="calorieChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"
+                [style.height]="200+ 'px'"
+                [style.width]="900+ 'px'" ></canvas>
+      </div>
     </div>
     <div [@toggleGraph]='graphStates.idleGraphState.state' [style.order]="graphStates.idleGraphState.order" class="attrGraphTile baseTile" id="idleGraphTile">
       <h1>Idle Time Graph</h1>

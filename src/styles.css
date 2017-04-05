@@ -273,7 +273,7 @@ ul.navigation li a:hover {
   min-height: 60px;
   bottom: 0;
   left: 0;
-  width: 50%;
+  width: 55%;
 }
 
 .attrCell {
@@ -364,7 +364,7 @@ ul.navigation li a:hover {
   max-height: 500px;
   background-color: #EEEEFF;
   float: left;
-  margin: 1% 0 1% 1.5%;
+  margin: 0.5% 1% 0.5% 1%;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;

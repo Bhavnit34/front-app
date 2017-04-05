@@ -143,15 +143,24 @@ export class HomeComponent {
     calorieGraphState: {state: "inactive", order: 2},
     idleGraphState: {state: "inactive", order: 3}
   };
-  sleepGraphSeries: Array<SleepGraphSeries> = [];
+  sleepGraphSeries: Array<GraphSeries> = [];
   sleepGraphLabels: Array<any> = [];
+  calorieGraphSeries: Array<GraphSeries> = [];
+  calorieGraphLabels: Array<any> = [];
 
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
     this.getTodaysAttributes(postsService).subscribe((data) => {
-      // run this function once the previous has been completed
+      // run these function once the previous has been completed
       this.getLast3Attributes(postsService);
+      this.populateCalorieGraph().subscribe((data) => {
+        this.calorieChartData = this.calorieGraphSeries;
+
+        setTimeout(() => { // a fix as the package is bugged to dynamically change labels
+          this.calorieChartLabels = this.calorieGraphLabels;
+        });
+      });
     });
     this.getLastWeeksSleep(postsService).subscribe((data) => {
       this.barChartData = this.sleepGraphSeries;
@@ -174,90 +183,92 @@ export class HomeComponent {
         this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
         let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
         this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
-      });
-
-      // todays moves
-      postsService.getTodaysAttr("moves").subscribe(posts => {
-        this.todaysMoves = posts;
-        // calories
-        this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString() + " calories";
-        // idle time
-        let it = new Date(null);
-        it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
-        this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
-
-        // steps
-        this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
-        // active time
-        let at = new Date(null);
-        at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
-        this.attributes.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
-        this.attributes.active_time_value = this.todaysMoves.Items[0].info.details.active_time;
-      });
-
-      // todays heartrate
-      postsService.getTodaysAttr("heartrate").subscribe(posts => {
-        this.todaysHR = posts;
-        if (this.todaysHR.Items[0].heartrate > 0)
-          this.attributes.HR = this.todaysHR.Items[0].heartrate + " bpm";
-      });
-
-      // todays mood
-      postsService.getTodaysAttr("mood").subscribe(posts => {
-        this.todaysMood = posts;
-        if (this.todaysMood.Count !== 0) {
-          let mood = this.todaysMood.Items[0].mood;
-          this.attributes.mood = this.icons["mood_" + mood];
-        }
-      });
-
-      // stats
-      postsService.getTodaysStats().subscribe(posts => {
-        this.stats = posts;
-        // round some values
-        this.stats.Items[0].info.Moves.Distance.max = this.stats.Items[0].info.Moves.Distance.max.toFixed(2);
 
 
-        if (this.stats.Count !== 0) {
-          let avg = 0;
-          let max = 0;
-          let current = 0;
-          let perc = 0; // width of the bar, to be assigned below
+        // todays moves
+        postsService.getTodaysAttr("moves").subscribe(posts => {
+          this.todaysMoves = posts;
+          // calories
+          this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString() + " calories";
+          // idle time
+          let it = new Date(null);
+          it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
+          this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
 
           // steps
-          avg = this.stats.Items[0].info.Moves.Steps.avg;
-          max = this.stats.Items[0].info.Moves.Steps.max;
-          this.attributes.steps_avg = avg.toString();
-          this.attributes.steps_max = max.toString();
-          current = parseInt(this.attributes.steps);
-          // work out length of the steps bars
-          perc = Math.round((avg / max) * 100);
-          this.barWidth.steps_avg = perc + "%";
-          perc = Math.round((current / max) * 100);
-          this.barWidth.steps = perc + "%";
-
+          this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
           // active time
-          let t = new Date(null);
-          avg = this.stats.Items[0].info.Moves.Active_time.avg;
-          t.setSeconds(avg);
-          this.attributes.active_time_avg = (t.toISOString().substr(11, 2) + "h " + t.toISOString().substr(14, 2) + "m");
+          let at = new Date(null);
+          at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
+          this.attributes.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
+          this.attributes.active_time_value = this.todaysMoves.Items[0].info.details.active_time;
 
-          t = new Date(null);
-          max = this.stats.Items[0].info.Moves.Active_time.max;
-          t.setSeconds(max);
-          this.attributes.active_time_max = (t.toISOString().substr(11, 2) + "h " + t.toISOString().substr(14, 2) + "m");
+          // todays heartrate
+          postsService.getTodaysAttr("heartrate").subscribe(posts => {
+            this.todaysHR = posts;
+            if (this.todaysHR.Items[0].heartrate > 0)
+              this.attributes.HR = this.todaysHR.Items[0].heartrate + " bpm";
 
-          current = this.attributes.active_time_value;
 
-          // work out length of active_time_avg bar
-          perc = Math.round((avg / max) * 100);
-          this.barWidth.active_time_avg = perc + "%";
-          perc = Math.round((current / max) * 100);
-          this.barWidth.active_time = perc + "%";
-          observer.next();
-          observer.complete();
-        }
-      });
+
+            // todays mood
+            postsService.getTodaysAttr("mood").subscribe(posts => {
+              this.todaysMood = posts;
+              if (this.todaysMood.Count !== 0) {
+                let mood = this.todaysMood.Items[0].mood;
+                this.attributes.mood = this.icons["mood_" + mood];
+              }
+              // stats
+              postsService.getTodaysStats().subscribe(posts => {
+                this.stats = posts;
+                // round some values
+                this.stats.Items[0].info.Moves.Distance.max = this.stats.Items[0].info.Moves.Distance.max.toFixed(2);
+
+
+                if (this.stats.Count !== 0) {
+                  let avg = 0;
+                  let max = 0;
+                  let current = 0;
+                  let perc = 0; // width of the bar, to be assigned below
+
+                  // steps
+                  avg = this.stats.Items[0].info.Moves.Steps.avg;
+                  max = this.stats.Items[0].info.Moves.Steps.max;
+                  this.attributes.steps_avg = avg.toString();
+                  this.attributes.steps_max = max.toString();
+                  current = parseInt(this.attributes.steps);
+                  // work out length of the steps bars
+                  perc = Math.round((avg / max) * 100);
+                  this.barWidth.steps_avg = perc + "%";
+                  perc = Math.round((current / max) * 100);
+                  this.barWidth.steps = perc + "%";
+
+                  // active time
+                  let t = new Date(null);
+                  avg = this.stats.Items[0].info.Moves.Active_time.avg;
+                  t.setSeconds(avg);
+                  this.attributes.active_time_avg = (t.toISOString().substr(11, 2) + "h " + t.toISOString().substr(14, 2) + "m");
+
+                  t = new Date(null);
+                  max = this.stats.Items[0].info.Moves.Active_time.max;
+                  t.setSeconds(max);
+                  this.attributes.active_time_max = (t.toISOString().substr(11, 2) + "h " + t.toISOString().substr(14, 2) + "m");
+
+                  current = this.attributes.active_time_value;
+
+                  // work out length of active_time_avg bar
+                  perc = Math.round((avg / max) * 100);
+                  this.barWidth.active_time_avg = perc + "%";
+                  perc = Math.round((current / max) * 100);
+                  this.barWidth.active_time = perc + "%";
+                  observer.next();
+                  observer.complete();
+                }
+              }); // postsService Stats
+            }); // postsService mood
+          }); // postsService HR
+        }); // postsService moves
+      }); // postsService sleeps
     });
 
   }
@@ -441,6 +452,36 @@ export class HomeComponent {
     });
   }
 
+  public populateCalorieGraph(): Observable<any> {
+    return Observable.create(observer => {
+      let data_calories = {label: "Calories", data: []};
+      let data_steps = {label: "Steps", data: []};
+
+      if (this.todaysMoves.Count == 0) {
+        console.log("No moves data returned");
+        return;
+      } // no moves data was returned
+
+      // loop through each hour and add to our local object
+      let hour = this.todaysMoves.Items[0].info.details.hourly_totals;
+      for (let key in hour) {
+        this.calorieGraphLabels.push(key.substr(8,2) + ":00");
+
+        if (hour.hasOwnProperty(key)) {
+          data_calories.data.push(Math.round(hour[key].calories));
+          data_steps.data.push(hour[key].steps);
+        }
+      }
+
+      // push objects to calorieGraphSeries
+      this.calorieGraphSeries.push(data_calories);
+      this.calorieGraphSeries.push(data_steps);
+
+      observer.next();
+      observer.complete();
+      });
+  }
+
 
   public setTodaysDate():string {
     const days:Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -520,11 +561,13 @@ export class HomeComponent {
 
 
 
-// BAR CHART
+  // BAR CHART
+  public barChartType:string = 'bar';
+  public barChartLegend:boolean = true;
   public barChartData:Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
-    {data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'}
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Duration'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Deep Sleep'},
+    {data: [18, 48, 77, 9, 100, 27, 40], label: 'REM Sleep'}
   ];
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
@@ -539,9 +582,9 @@ export class HomeComponent {
       }]
     }
   };
-  public barChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public barChartLabels:Array<any> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   public barChartColors:Array<any> = [
-    { // grey
+    { // sleep duration
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
       pointBackgroundColor: 'rgba(148,159,177,1)',
@@ -549,14 +592,14 @@ export class HomeComponent {
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },
-    { // dark grey
+    { // deep sleep
       backgroundColor: '#1919FF',
       borderColor: '#1919FF',
       pointBackgroundColor: 'white',
       pointHoverBackgroundColor: '#FFF',
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     },
-    { // grey
+    { // rem sleep
       backgroundColor: '#7ec0ee',
       borderColor: '#7ec0ee',
       pointBackgroundColor: '#FFF',
@@ -564,18 +607,47 @@ export class HomeComponent {
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
-  public barChartLegend:boolean = true;
-  public barChartType:string = 'bar';
 
 
 
-  // Line CHART
+
+  // LINE CHART
   public lineChartType:string = 'line';
   public lineChartOptions:any = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'calories / steps'
+        }
+      }]
+    }
   };
   public lineChartLegend:boolean = true;
+  public calorieChartData:Array<any> = [
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Calories'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Steps'}
+  ];
+  public calorieChartLabels:Array<any> = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+  public calorieChartColors:Array<any> = [
+    { // calories
+      backgroundColor: '#F4CC70',
+      borderColor: '#F4CC70',
+      pointBackgroundColor: '#FFF',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // steps
+      backgroundColor: '#5BC8AC',
+      borderColor: '#5BC8AC',
+      pointBackgroundColor: '#FFF',
+      pointHoverBackgroundColor: '#FFF',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    }
+  ];
+
 
 
 
@@ -658,7 +730,7 @@ export interface BarWidth {
   active_time_avg: string;
 }
 
-export class SleepGraphSeries {
+export class GraphSeries {
   data: Array<number>;
   label: string;
 
