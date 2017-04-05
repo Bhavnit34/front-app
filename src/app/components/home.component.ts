@@ -228,7 +228,7 @@ export class HomeComponent {
               postsService.getTodaysStats().subscribe(posts => {
                 this.stats = posts;
                 // round some values
-                this.stats.Items[0].info.Moves.Distance.max = this.stats.Items[0].info.Moves.Distance.max.toFixed(2);
+                this.stats.Items[0].info.Moves.Distance.max = this.stats.Items[0].info.Moves.Distance.max.toFixed(2) + "m";
 
 
                 if (this.stats.Count !== 0) {
@@ -367,7 +367,7 @@ export class HomeComponent {
           if (this.last3Moves.Items[0].Count !== 0) {
             // set moves (steps, active time, calories, distance)
             dayTile.steps = this.last3Moves.Items[0].info.details.steps;
-            dayTile.distance = this.last3Moves.Items[0].info.details.distance.toFixed(2);
+            dayTile.distance = this.last3Moves.Items[0].info.details.distance.toFixed(2) + "m";
             dayTile.calories = Math.round(this.last3Moves.Items[0].info.details.calories).toString();
             let at = new Date(null);
             at.setSeconds(this.last3Moves.Items[0].info.details.active_time);
