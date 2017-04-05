@@ -149,6 +149,8 @@ export class HomeComponent {
   calorieGraphLabels: Array<any> = [];
   activeTimeGraphSeries: Array<GraphSeries> = [];
   activeTimeGraphLabels: Array<any> = [];
+  workoutGraphSeries: Array<any> = [];
+  workoutGraphLabels: Array<any> = [];
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
@@ -156,24 +158,32 @@ export class HomeComponent {
       // run these function once the previous has been completed
       this.getLast3Attributes(postsService);
 
-
+      // once todays moves has been loaded (above), populate the graphs with this data
       this.populateCalorieActiveTimeGraph().subscribe((data) => {
         this.calorieChartData = this.calorieGraphSeries;
         this.activeTimeChartData = this.activeTimeGraphSeries;
-        setTimeout(() => { // a fix as the package is bugged to dynamically change labels
+        setTimeout(() => { // a fix as the ng2-charts is bugged to dynamically change labels
           this.calorieChartLabels = this.calorieGraphLabels;
           this.activeTimeChartLabels = this.activeTimeGraphLabels;
         });
       });
     });
 
-
+    // get sleep for the last 7 days and populate graph with sleep data
     this.getLastWeeksSleep(postsService).subscribe((data) => {
       this.barChartData = this.sleepGraphSeries;
 
-      setTimeout(() => { // a fix as the package is bugged to dynamically change labels
+      setTimeout(() => { // a fix as ng2-charts is bugged to dynamically change labels
         this.barChartLabels = this.sleepGraphLabels;
-        });
+      });
+    });
+
+    // get last weeks workout data and populate the doughnut graph with it
+    this.populateWorkoutGraph(postsService).subscribe((data) => {
+      this.doughnutChartData = this.workoutGraphSeries;
+      setTimeout(() => { // a fix as ng2-charts is bugged to dynamically change labels
+        this.doughnutChartLabels = this.workoutGraphLabels;
+      });
     });
 
   }
@@ -404,17 +414,30 @@ export class HomeComponent {
 
               // workouts
               postsService.getAttrForDay("workouts", d.getTime(), 10).subscribe(posts => {
+                let durations = [];
+                let sorted_durations = [];
+
                 // loop through all workouts in a day and add to the tile
                 for (let i = 0; i < posts.Count; i++) {
+                  durations.push(posts.Items[i].info.details.time);
+                  sorted_durations.push(posts.Items[i].info.details.time);
+                }
+
+                sorted_durations.sort((a,b) => (b-a)); // sort by integers descending
+                // now push the largest 3 durations
+                for (let i = 0; i < posts.Count; i++) {
+                  if (i > 2) { break; }
                   let wo = new DayTileWorkout();
                   let wt = new Date(null);
-                  wt.setSeconds(posts.Items[i].info.details.time);
+                  // get the index of the largest value (i.e. index of number at sorted[0], sorted[1] etc.)
+                  wt.setSeconds(posts.Items[durations.indexOf(sorted_durations[i])].info.details.time);
                   wo.duration = (wt.toISOString().substr(11, 2) + "h " + wt.toISOString().substr(14, 2) + "m");
                   wo.icon = this.getIconFromSubType(posts.Items[i].info.sub_type);
 
-
                   dayTile.workouts.push(wo);
                 }
+
+
                 observer.next(dayTile);
                 observer.complete();
 
@@ -494,6 +517,39 @@ export class HomeComponent {
       observer.next();
       observer.complete();
       });
+  }
+
+  public populateWorkoutGraph(postsService): Observable<any> {
+    return Observable.create(observer => {
+      postsService.getAttrForLatestWeek("workouts").subscribe(posts => {
+        let workouts = {};
+        if (posts.Count == 0) {
+            console.log("No workouts for the latest week");
+            return;
+          }
+
+        // create a set of each workout and it's total duration over the past week
+        for (let i = 0; i < posts.Count; i++) {
+          let wo = posts.Items[i].info;
+          if (workouts.hasOwnProperty(wo.title)){
+            workouts[wo.title] += (wo.details.time);
+          } else {
+            workouts[wo.title] = (wo.details.time);
+          }
+        }
+
+        // push each number into the series array
+        for (let key in workouts) {
+          if (workouts.hasOwnProperty(key)) {
+            this.workoutGraphLabels.push(key);
+            let value = parseFloat(workouts[key]);
+            this.workoutGraphSeries.push((value / 3600).toFixed(2));
+          }
+        }
+        observer.next();
+        observer.complete();
+      });
+    });
   }
 
 
@@ -699,15 +755,16 @@ export class HomeComponent {
     // console.log(e);
   }
 
-  // Doughnut
+  // Doughnut chart
   public doughnutChartLabels:string[] = ['Running', 'Soccer', 'Weight Lifting'];
   public doughnutChartData:number[] = [350, 450, 200];
   public doughnutChartType:string = 'doughnut';
-  doughnutChartColors: any[] = [{ backgroundColor: ["#FF6384", "#00d9f9", "#FFFF66"] }];
+  doughnutChartColors: any[] = [{ backgroundColor: ["#258039", "#F5BE41", "#31A9B8", "#CF3721", "4D648D"] ,
+  borderColor: "#EEEEFF"}];
   public doughnutChartOptions:any = {
     responsive: true,
     animation:{animateScale: true},
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
   };
 
   public pad(n, width, z) {

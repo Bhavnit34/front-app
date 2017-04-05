@@ -677,7 +677,8 @@ ul.navigation li a:hover {
   width: 100%;
   height: 2%;
   background-color: #00838F;
-  position: absolute;
+  position: relative;
+  float: left;
   bottom: 1px;
 }
 

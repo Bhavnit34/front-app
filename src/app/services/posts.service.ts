@@ -83,7 +83,6 @@ export class PostsService {
     let params: URLSearchParams = new URLSearchParams();
 
     params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
-    params.set('limit', "7");
 
     // start date
     let d = new Date();
