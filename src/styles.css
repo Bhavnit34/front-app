@@ -403,7 +403,7 @@ ul.navigation li a:hover {
   color: #FFFFFF;
   font-style: italic;
   position: relative;
-  width: 49%;
+  width: 75%;
   height: 100%;
   margin: 0 0 0 1%;
   float: left;
@@ -414,11 +414,11 @@ ul.navigation li a:hover {
   color: #FFFFFF;
   font-style: italic;
   position: relative;
-  float: left;
+  float: right;
   text-align: right;
-  width: 48%;
+  width: 20%;
   height: 100%;
-  margin: 0;
+  margin: 0 2% 0 0;
   font-size: 1.2em;
 }
 /* ------------------------------- */
@@ -670,3 +670,82 @@ ul.navigation li a:hover {
 }
 
 /* -----------------------------------------*/
+
+@media screen and (min-width: 826px) and (max-width: 1339px) {
+  /* Main body */
+  .tileBack {
+    margin-left: 2%;
+    width: 95%;
+  }
+
+  .tileSummary {
+    width: 32.3%;
+    margin: 0.5%;
+  }
+
+  .summaryBottomBannerText {
+    margin: 2% auto 0 auto;
+    font-weight: normal;
+    display: block;
+    text-align: center;
+  }
+
+  .summaryBottomBannerIcon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: 1340px) and (max-width: 1730px) {
+  /* Main body */
+  .tileBack {
+    margin-left: 12%;
+    width: 75%;
+  }
+
+  .tileSummary {
+    width: 32.3%;
+    margin: 0.5%;
+  }
+}
+
+
+@media screen and (max-width: 900px) {
+  /* Main body */
+  .tileBack {
+    margin-left: 1%;
+    width: 98%;
+  }
+
+  .tileSummary {
+    width: 32.3%;
+    margin: 0.5%;
+  }
+
+  .summaryBottomBannerText {
+    margin: 2% auto 0 auto;
+    font-weight: normal;
+    display: block;
+    text-align: center;
+  }
+
+  .summaryBottomBannerIcon {
+    max-width: 25px;
+    max-height: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .summaryBottomBannerSection {
+    margin: 0.5%;
+  }
+
+  .tileSummary{
+    float: none;
+    margin: 0.5% auto 1.5% auto;
+    width: 55%;
+    min-width: 310px;
+  }
+}

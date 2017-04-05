@@ -147,21 +147,27 @@ export class HomeComponent {
   sleepGraphLabels: Array<any> = [];
   calorieGraphSeries: Array<GraphSeries> = [];
   calorieGraphLabels: Array<any> = [];
-
+  activeTimeGraphSeries: Array<GraphSeries> = [];
+  activeTimeGraphLabels: Array<any> = [];
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
     this.getTodaysAttributes(postsService).subscribe((data) => {
       // run these function once the previous has been completed
       this.getLast3Attributes(postsService);
-      this.populateCalorieGraph().subscribe((data) => {
-        this.calorieChartData = this.calorieGraphSeries;
 
+
+      this.populateCalorieActiveTimeGraph().subscribe((data) => {
+        this.calorieChartData = this.calorieGraphSeries;
+        this.activeTimeChartData = this.activeTimeGraphSeries;
         setTimeout(() => { // a fix as the package is bugged to dynamically change labels
           this.calorieChartLabels = this.calorieGraphLabels;
+          this.activeTimeChartLabels = this.activeTimeGraphLabels;
         });
       });
     });
+
+
     this.getLastWeeksSleep(postsService).subscribe((data) => {
       this.barChartData = this.sleepGraphSeries;
 
@@ -452,10 +458,12 @@ export class HomeComponent {
     });
   }
 
-  public populateCalorieGraph(): Observable<any> {
+  public populateCalorieActiveTimeGraph(): Observable<any> {
     return Observable.create(observer => {
       let data_calories = {label: "Calories", data: []};
       let data_steps = {label: "Steps", data: []};
+      let data_distance = {label: "Distance", data: []};
+      let data_active_time = {label: "Active Time", data: []};
 
       if (this.todaysMoves.Count == 0) {
         console.log("No moves data returned");
@@ -466,16 +474,22 @@ export class HomeComponent {
       let hour = this.todaysMoves.Items[0].info.details.hourly_totals;
       for (let key in hour) {
         this.calorieGraphLabels.push(key.substr(8,2) + ":00");
+        this.activeTimeGraphLabels.push(key.substr(8,2) + ":00");
 
         if (hour.hasOwnProperty(key)) {
           data_calories.data.push(Math.round(hour[key].calories));
           data_steps.data.push(hour[key].steps);
+          data_distance.data.push(Math.round(hour[key].distance));
+          data_active_time.data.push(hour[key].active_time);
         }
       }
 
-      // push objects to calorieGraphSeries
+      // push objects to calorieGraphSeries and activeTimeGraphSeries
       this.calorieGraphSeries.push(data_calories);
       this.calorieGraphSeries.push(data_steps);
+      this.activeTimeGraphSeries.push(data_active_time);
+      this.activeTimeGraphSeries.push(data_distance);
+
 
       observer.next();
       observer.complete();
@@ -630,6 +644,8 @@ export class HomeComponent {
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Calories'},
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Steps'}
   ];
+
+  // Calorie / Steps Graph
   public calorieChartLabels:Array<any> = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
   public calorieChartColors:Array<any> = [
     { // calories
@@ -642,6 +658,29 @@ export class HomeComponent {
     { // steps
       backgroundColor: '#5BC8AC',
       borderColor: '#5BC8AC',
+      pointBackgroundColor: '#FFF',
+      pointHoverBackgroundColor: '#FFF',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    }
+  ];
+
+  // Active Time / Distance Graph
+  public activeTimeChartData:Array<any> = [
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Distance'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Active Time'}
+  ];
+  public activeTimeChartLabels:Array<any> = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+  public activeTimeChartColors:Array<any> = [
+    { // Distance
+      backgroundColor: '#e9413e',
+      borderColor: '#e9413e',
+      pointBackgroundColor: '#FFF',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // Active Time
+      backgroundColor: '#3ee6e9',
+      borderColor: '#3ee6e9',
       pointBackgroundColor: '#FFF',
       pointHoverBackgroundColor: '#FFF',
       pointHoverBorderColor: 'rgba(77,83,96,1)'

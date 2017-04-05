@@ -80,7 +80,7 @@
                 [options]="doughnutChartOptions"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"
-                [style.height]="100+ '%'" ></canvas>
+                [style.height]="100 + '%'" ></canvas>
       </div>
     </div>
 
@@ -124,8 +124,8 @@
 
 
 
-  <div [@toggleGraphWrapper]='graphWrapperState' class="attrGraphWrapper" id="attrGraphWrapper">
-    <div [@toggleGraph]='graphStates.sleepGraphState.state' [style.order]="graphStates.sleepGraphState.order" class="attrGraphTile baseTile" id="sleepGraphTile">
+  <section [@toggleGraphWrapper]='graphWrapperState' class="attrGraphWrapper" id="attrGraphWrapper">
+    <section [@toggleGraph]='graphStates.sleepGraphState.state' [style.order]="graphStates.sleepGraphState.order" class="attrGraphTile baseTile" id="sleepGraphTile">
       <h1 class="attrGraphTitle">Last Weeks Sleep</h1>
           <div class="chart" style="display: block;">
             <canvas baseChart
@@ -137,11 +137,11 @@
                     [chartType]="barChartType"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
-                    [style.height]="200+ 'px'"
-                    [style.width]="900+ 'px'" ></canvas>
+                    [style.height]="100+ '%'"
+                    [style.width]="100+ '%'" ></canvas>
           </div>
-    </div>
-    <div [@toggleGraph]='graphStates.calorieGraphState.state' [style.order]="graphStates.calorieGraphState.order" class="attrGraphTile baseTile" id="calorieGraphTile">
+    </section>
+    <section [@toggleGraph]='graphStates.calorieGraphState.state' [style.order]="graphStates.calorieGraphState.order" class="attrGraphTile baseTile" id="calorieGraphTile">
       <h1 class="attrGraphTitle">Calories Burned Today</h1>
       <div class="chart" style="display: block;">
         <canvas baseChart
@@ -153,14 +153,27 @@
                 [chartType]="lineChartType"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"
-                [style.height]="200+ 'px'"
-                [style.width]="900+ 'px'" ></canvas>
+                [style.height]="100+ '%'"
+                [style.width]="100+ '%'" ></canvas>
       </div>
-    </div>
-    <div [@toggleGraph]='graphStates.idleGraphState.state' [style.order]="graphStates.idleGraphState.order" class="attrGraphTile baseTile" id="idleGraphTile">
-      <h1>Idle Time Graph</h1>
-    </div>
-  </div>
+    </section>
+    <section [@toggleGraph]='graphStates.idleGraphState.state' [style.order]="graphStates.idleGraphState.order" class="attrGraphTile baseTile" id="idleGraphTile">
+      <h1 class="attrGraphTitle">Activity Today</h1>
+      <div class="chart" style="display: block;">
+        <canvas baseChart
+                [datasets]="activeTimeChartData"
+                [labels]="activeTimeChartLabels"
+                [options]="lineChartOptions"
+                [colors]="activeTimeChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"
+                [style.height]="100+ '%'"
+                [style.width]="100+ '%'" ></canvas>
+      </div>
+    </section>
+  </section>
   <section class="historyWrapper">
     <section class="tileSummary baseTile" *ngFor="let tile of dayTiles">
       <section class="tileTop">
