@@ -195,36 +195,40 @@ export class HomeComponent {
       // todays sleep
       postsService.getTodaysAttr("sleeps").subscribe(posts => {
         this.todaysSleep = posts;
-        let asleep_ts = this.todaysSleep.Items[0].info.details.asleep_time;
-        this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
-        let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
-        this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
-
+        if (posts.Count !== 0) {
+          let asleep_ts = this.todaysSleep.Items[0].info.details.asleep_time;
+          this.attributes.asleep_time = new Date(asleep_ts * 1000).toTimeString().substr(0, 5);
+          let awake_ts = this.todaysSleep.Items[0].info.details.awake_time;
+          this.attributes.awake_time = new Date(awake_ts * 1000).toTimeString().substr(0, 5);
+        }
 
         // todays moves
         postsService.getTodaysAttr("moves").subscribe(posts => {
           this.todaysMoves = posts;
-          // calories
-          this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString() + " calories";
-          // idle time
-          let it = new Date(null);
-          it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
-          this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
+          if (posts.Count !== 0) {
+            // calories
+            this.attributes.calories = Math.round(this.todaysMoves.Items[0].info.details.calories).toString() + " calories";
+            // idle time
+            let it = new Date(null);
+            it.setSeconds(this.todaysMoves.Items[0].info.details.longest_idle);
+            this.attributes.idle_time = (it.toISOString().substr(11, 2) + "h " + it.toISOString().substr(14, 2) + "m");
 
-          // steps
-          this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
-          // active time
-          let at = new Date(null);
-          at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
-          this.attributes.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
-          this.attributes.active_time_value = this.todaysMoves.Items[0].info.details.active_time;
+            // steps
+            this.attributes.steps = this.todaysMoves.Items[0].info.details.steps;
+            // active time
+            let at = new Date(null);
+            at.setSeconds(this.todaysMoves.Items[0].info.details.active_time);
+            this.attributes.active_time = (at.toISOString().substr(11, 2) + "h " + at.toISOString().substr(14, 2) + "m");
+            this.attributes.active_time_value = this.todaysMoves.Items[0].info.details.active_time;
+          }
 
           // todays heartrate
           postsService.getTodaysAttr("heartrate").subscribe(posts => {
+            if (posts.Count !== 0) {
             this.todaysHR = posts;
             if (this.todaysHR.Items[0].heartrate > 0)
               this.attributes.HR = this.todaysHR.Items[0].heartrate + " bpm";
-
+            }
 
 
             // todays mood
@@ -436,6 +440,10 @@ export class HomeComponent {
 
                   dayTile.workouts.push(wo);
                 }
+
+                // push the longest duration workout weather
+                let index = durations.indexOf(sorted_durations[0]);
+                dayTile.weather += posts.Items[index].weather.weather[0].icon + ".png";
 
 
                 observer.next(dayTile);
@@ -850,6 +858,7 @@ export class DayTileWorkout {
 export class DayTile {
   date: string;
   year: number;
+  weather: string;
   timestamp: number;
   mood: string;
   steps: number;
@@ -871,6 +880,7 @@ export class DayTile {
   constructor() {
     this.date = "";
     this.year = 2017;
+    this.weather = "http://openweathermap.org/img/w/";
     this.timestamp = 0;
     this.mood = "assets/img/sleeping.svg";
     this.steps = 0;

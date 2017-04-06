@@ -397,30 +397,35 @@ ul.navigation li a:hover {
   -webkit-box-ordinal-group: 2;
   -ms-flex-order: 1;
   order: 1;
-  padding-top: 1%;
 }
 
 .summaryTopBannerTitle {
   color: #FFFFFF;
   font-style: italic;
   position: relative;
-  width: 75%;
+  width: 77%;
   height: 100%;
-  margin: 0 0 0 1%;
+  margin: 1% 0 0 1%;
   float: left;
   font-size: 1.2em;
 }
 
 .summaryTopBannerYear {
-  color: #FFFFFF;
-  font-style: italic;
-  position: relative;
-  float: right;
+  margin: 1.5% 0 0 0;
+  float: left;
   text-align: right;
-  width: 20%;
-  height: 100%;
-  margin: 0 2% 0 0;
-  font-size: 1.2em;
+  color: white;
+  font-size: 1em;
+  font-style: italic;
+}
+
+.summaryTopBannerWeather {
+  margin-right: 0;
+  max-width: 35px;
+  background-color: white;
+  right: 0;
+  top: -3px;
+  float: right;
 }
 /* ------------------------------- */
 
@@ -708,6 +713,19 @@ ul.navigation li a:hover {
     margin-left: auto;
     margin-right: auto;
   }
+
+  .summaryExtendedWorkoutText {
+    margin: 2% auto 0 auto;
+    font-weight: normal;
+    display: block;
+    text-align: center;
+  }
+
+  .summaryExtendedWorkoutIcon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media screen and (min-width: 1340px) and (max-width: 1730px) {
@@ -754,6 +772,26 @@ ul.navigation li a:hover {
   .summaryBottomBannerSection {
     margin: 0.5%;
   }
+
+  .summaryExtendedWorkoutText {
+    margin: 2% auto 0 auto;
+    font-weight: normal;
+    display: block;
+    text-align: center;
+  }
+
+  .summaryExtendedWorkoutIcon {
+    max-width: 25px;
+    max-height: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .summaryExtendedWorkoutSection {
+    margin: 0.5%;
+  }
+
 
   .tileSummary{
     float: none;

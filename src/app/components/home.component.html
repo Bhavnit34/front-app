@@ -180,6 +180,7 @@
         <div class="summaryTopBanner">
           <h2 class="summaryTopBannerTitle"> {{tile.date}} </h2>
           <h2 class="summaryTopBannerYear"> {{tile.year}} </h2>
+          <img class="summaryTopBannerWeather" [src]="tile.weather" onerror="this.src='assets/img/sun.svg'"/>
         </div>
         <section class="summaryContent">
           <table class="summaryContentTable">
