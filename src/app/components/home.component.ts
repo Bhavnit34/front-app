@@ -154,6 +154,7 @@ export class HomeComponent {
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
+
     this.getTodaysAttributes(postsService).subscribe((data) => {
       // run these function once the previous has been completed
       this.getLast3Attributes(postsService);
@@ -165,7 +166,7 @@ export class HomeComponent {
         setTimeout(() => { // a fix as the ng2-charts is bugged to dynamically change labels
           this.calorieChartLabels = this.calorieGraphLabels;
           this.activeTimeChartLabels = this.activeTimeGraphLabels;
-        });
+        }, 5000);
       });
     });
 
@@ -175,16 +176,18 @@ export class HomeComponent {
 
       setTimeout(() => { // a fix as ng2-charts is bugged to dynamically change labels
         this.barChartLabels = this.sleepGraphLabels;
-      });
+      }, 5000);
     });
 
     // get last weeks workout data and populate the doughnut graph with it
     this.populateWorkoutGraph(postsService).subscribe((data) => {
       this.doughnutChartData = this.workoutGraphSeries;
+
       setTimeout(() => { // a fix as ng2-charts is bugged to dynamically change labels
         this.doughnutChartLabels = this.workoutGraphLabels;
-      });
+      }, 2000);
     });
+
 
   }
 
@@ -418,37 +421,38 @@ export class HomeComponent {
 
               // workouts
               postsService.getAttrForDay("workouts", d.getTime(), 10).subscribe(posts => {
-                let durations = [];
-                let sorted_durations = [];
+                if (posts.Count > 0) {
+                  let durations = [];
+                  let sorted_durations = [];
 
-                // loop through all workouts in a day and add to the tile
-                for (let i = 0; i < posts.Count; i++) {
-                  durations.push(posts.Items[i].info.details.time);
-                  sorted_durations.push(posts.Items[i].info.details.time);
+                  // loop through all workouts in a day and add to the tile
+                  for (let i = 0; i < posts.Count; i++) {
+                    durations.push(posts.Items[i].info.details.time);
+                    sorted_durations.push(posts.Items[i].info.details.time);
+                  }
+
+                  sorted_durations.sort((a, b) => (b - a)); // sort by integers descending
+                  // now push the largest 3 durations
+                  for (let i = 0; i < posts.Count; i++) {
+                    if (i > 2) {
+                      break;
+                    }
+                    let wo = new DayTileWorkout();
+                    let wt = new Date(null);
+                    // get the index of the largest value (i.e. index of number at sorted[0], sorted[1] etc.)
+                    wt.setSeconds(posts.Items[durations.indexOf(sorted_durations[i])].info.details.time);
+                    wo.duration = (wt.toISOString().substr(11, 2) + "h " + wt.toISOString().substr(14, 2) + "m");
+                    wo.icon = this.getIconFromSubType(posts.Items[i].info.sub_type);
+
+                    dayTile.workouts.push(wo);
+                  }
+
+                  // push the longest duration workout weather
+                  let index = durations.indexOf(sorted_durations[0]);
+                  dayTile.weather += posts.Items[index].weather.weather[0].icon + ".png";
                 }
-
-                sorted_durations.sort((a,b) => (b-a)); // sort by integers descending
-                // now push the largest 3 durations
-                for (let i = 0; i < posts.Count; i++) {
-                  if (i > 2) { break; }
-                  let wo = new DayTileWorkout();
-                  let wt = new Date(null);
-                  // get the index of the largest value (i.e. index of number at sorted[0], sorted[1] etc.)
-                  wt.setSeconds(posts.Items[durations.indexOf(sorted_durations[i])].info.details.time);
-                  wo.duration = (wt.toISOString().substr(11, 2) + "h " + wt.toISOString().substr(14, 2) + "m");
-                  wo.icon = this.getIconFromSubType(posts.Items[i].info.sub_type);
-
-                  dayTile.workouts.push(wo);
-                }
-
-                // push the longest duration workout weather
-                let index = durations.indexOf(sorted_durations[0]);
-                dayTile.weather += posts.Items[index].weather.weather[0].icon + ".png";
-
-
                 observer.next(dayTile);
                 observer.complete();
-
               }); // end postservice Workout
             }); // end postservice Mood
           }); //end postservice HR
@@ -660,7 +664,7 @@ export class HomeComponent {
       }]
     }
   };
-  public barChartLabels:Array<any> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  public barChartLabels:Array<any> = [];
   public barChartColors:Array<any> = [
     { // sleep duration
       backgroundColor: 'rgba(148,159,177,0.2)',
@@ -710,7 +714,7 @@ export class HomeComponent {
   ];
 
   // Calorie / Steps Graph
-  public calorieChartLabels:Array<any> = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+  public calorieChartLabels:Array<any> = [];
   public calorieChartColors:Array<any> = [
     { // calories
       backgroundColor: '#F4CC70',
@@ -733,7 +737,7 @@ export class HomeComponent {
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Distance'},
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Active Time'}
   ];
-  public activeTimeChartLabels:Array<any> = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+  public activeTimeChartLabels:Array<any> = [];
   public activeTimeChartColors:Array<any> = [
     { // Distance
       backgroundColor: '#e9413e',
@@ -764,8 +768,8 @@ export class HomeComponent {
   }
 
   // Doughnut chart
-  public doughnutChartLabels:string[] = ['Running', 'Soccer', 'Weight Lifting'];
-  public doughnutChartData:number[] = [350, 450, 200];
+  public doughnutChartLabels:string[] = [];
+  public doughnutChartData:number[] = [];
   public doughnutChartType:string = 'doughnut';
   doughnutChartColors: any[] = [{ backgroundColor: ["#258039", "#F5BE41", "#31A9B8", "#CF3721", "4D648D"] ,
   borderColor: "#EEEEFF"}];
