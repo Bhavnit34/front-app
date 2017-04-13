@@ -8,8 +8,8 @@ import {
   keyframes
 } from '@angular/core';
 import {PostsService} from '../services/posts.service';
+import {UploadService} from '../services/upload.service';
 import {Observable} from "rxjs";
-import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
 
 @Component({
   selector: 'home',
@@ -76,7 +76,7 @@ import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
     ])
 
   ],
-  providers: [PostsService]
+  providers: [PostsService, UploadService]
 })
 export class HomeComponent {
   public month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
@@ -152,7 +152,10 @@ export class HomeComponent {
   workoutGraphSeries: Array<any> = [];
   workoutGraphLabels: Array<any> = [];
 
-  constructor(private postsService: PostsService) {
+  // graph canvas
+
+
+  constructor(private postsService: PostsService, private uploadService: UploadService) {
     this.todaysDate = this.setTodaysDate();
 
     this.getTodaysAttributes(postsService).subscribe((data) => {
@@ -174,8 +177,10 @@ export class HomeComponent {
     this.getLastWeeksSleep(postsService).subscribe((data) => {
       this.barChartData = this.sleepGraphSeries;
 
+
       setTimeout(() => { // a fix as ng2-charts is bugged to dynamically change labels
         this.barChartLabels = this.sleepGraphLabels;
+        this.saveCanvas(uploadService);
       }, 5000);
     });
 
@@ -187,6 +192,20 @@ export class HomeComponent {
         this.doughnutChartLabels = this.workoutGraphLabels;
       }, 2000);
     });
+
+
+  }
+
+  public saveCanvas(uploadService) {
+    let canvas : any = document.getElementById("todayCalorieGraph");
+
+    let link = document.createElement('a');
+    link.innerHTML = 'download image';
+    link.addEventListener('click', function(ev) {
+      link.href = canvas.toDataURL();
+    }, false);
+
+    uploadService.uploadFile(canvas.toDataURL());
 
 
   }
