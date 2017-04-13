@@ -24,10 +24,10 @@ export class UploadService {
       let xhr:XMLHttpRequest = new XMLHttpRequest();
 
 
-      xhr.open('POST', "localhost:4200/assets/t.png", true);
+      xhr.open('POST', "localhost:4200/assets/", true);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
       let formData = new FormData();
-      formData.append("file", file, file.name);
+      formData.append("file", file, "test.png");
       xhr.send(formData);
   }
 }
