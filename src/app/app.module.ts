@@ -11,12 +11,16 @@ import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user.component';
 import { HomeComponent } from './components/home.component';
+import { CompanyComponent } from './components/company.component';
+import {routing} from './app.routing';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
-    HomeComponent
+    HomeComponent,
+    CompanyComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +29,8 @@ import { HomeComponent } from './components/home.component';
     MaterialModule.forRoot(),
     ChartsModule,
     HttpModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    routing
 
   ],
   providers: [],

@@ -108,9 +108,8 @@ ul.navigation li a {
   padding: 14px 16px;
 }
 
-ul.navigation li a[selected="true"] {
-  background-color: #FDFDFD;
-  color: #00838F;
+ul.navigation li a{
+  text-decoration: none;
 }
 
 ul.navigation li a:hover {

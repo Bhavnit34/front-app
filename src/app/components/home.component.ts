@@ -8,7 +8,6 @@ import {
   keyframes
 } from '@angular/core';
 import {PostsService} from '../services/posts.service';
-import {UploadService} from '../services/upload.service';
 import {Observable} from "rxjs";
 
 @Component({
@@ -76,7 +75,7 @@ import {Observable} from "rxjs";
     ])
 
   ],
-  providers: [PostsService, UploadService]
+  providers: [PostsService]
 })
 export class HomeComponent {
   public month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
@@ -155,7 +154,7 @@ export class HomeComponent {
   // graph canvas
 
 
-  constructor(private postsService: PostsService, private uploadService: UploadService) {
+  constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
 
     this.getTodaysAttributes(postsService).subscribe((data) => {
@@ -180,7 +179,6 @@ export class HomeComponent {
 
       setTimeout(() => { // a fix as ng2-charts is bugged to dynamically change labels
         this.barChartLabels = this.sleepGraphLabels;
-        this.saveCanvas(uploadService);
       }, 5000);
     });
 
@@ -195,22 +193,6 @@ export class HomeComponent {
 
 
   }
-
-  public saveCanvas(uploadService) {
-    let canvas : any = document.getElementById("todayCalorieGraph");
-
-    let link = document.createElement('a');
-    link.innerHTML = 'download image';
-    link.addEventListener('click', function(ev) {
-      link.href = canvas.toDataURL();
-    }, false);
-
-
-    uploadService.uploadFile(canvas.toDataURL());
-
-
-  }
-
 
   // function to obtain the info needed to populate the todayTile
   public getTodaysAttributes(postsService) : Observable<any> {
