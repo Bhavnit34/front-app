@@ -825,7 +825,6 @@ export interface Attributes {
 export interface APIResult {
   Items:Array<any>;
   Count: number;
-
 }
 
 export interface BarWidth {

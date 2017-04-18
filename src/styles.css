@@ -100,12 +100,13 @@ ul.navigation {
 
 ul.navigation li {
   display:inline-block;
+  margin-top: 2%;
 }
 
 ul.navigation li a {
   color: #FFFFFF;
   font-size: 19px;
-  padding: 14px 16px;
+  padding: 14px 16px 9px;
 }
 
 ul.navigation li a{
