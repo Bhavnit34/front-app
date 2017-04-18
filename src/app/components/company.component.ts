@@ -43,7 +43,7 @@ export class CompanyComponent {
   };
   tableAttributes : TableAttributes = {
     // moves
-    steps: 0,
+    steps: "0",
     calories : "0",
     active_time : "0h 0m",
     distance : "0",
@@ -53,7 +53,7 @@ export class CompanyComponent {
     light : "0h 0m",
     sleep_duration : "0h 0m",
     // workouts
-    wo_logged : 0,
+    wo_logged : "0",
     wo_duration : "0h 0m",
     wo_distance : "0",
     wo_calories : "0",
@@ -133,9 +133,9 @@ export class CompanyComponent {
         }
 
         // moves
-        this.tableAttributes.steps = totals.steps;
-        this.tableAttributes.calories = totals.calories.toFixed(2);
-        this.tableAttributes.distance = totals.distance.toFixed(2);
+        this.tableAttributes.steps = totals.steps.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.tableAttributes.calories = Math.round(totals.calories).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.tableAttributes.distance = Math.round(totals.distance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this.tableAttributes.active_time = this.calculateTime(totals.activeTime);
 
 
@@ -146,9 +146,9 @@ export class CompanyComponent {
         this.tableAttributes.deep = this.calculateTime(totals.deep);
 
         // workouts
-        this.tableAttributes.wo_logged = totals.wo_count;
-        this.tableAttributes.wo_calories = totals.wo_calories.toFixed(2);
-        this.tableAttributes.wo_distance = totals.wo_distance.toFixed(2);
+        this.tableAttributes.wo_logged = totals.wo_count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.tableAttributes.wo_calories = Math.round(totals.wo_calories).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.tableAttributes.wo_distance = Math.round(totals.wo_distance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this.tableAttributes.wo_duration = this.calculateTime(totals.wo_duration);
       });
   }
@@ -210,7 +210,7 @@ export interface APIResult {
 
 export interface TableAttributes {
   // moves
-  steps: number;
+  steps: string;
   calories: string;
   active_time: string;
   distance: string;
@@ -220,7 +220,7 @@ export interface TableAttributes {
   light: string;
   sleep_duration: string;
   // workouts
-  wo_logged: number;
+  wo_logged: string;
   wo_duration: string;
   wo_distance: string;
   wo_calories: string;
