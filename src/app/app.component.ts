@@ -26,6 +26,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 
     </nav>
     <router-outlet></router-outlet>
+    <div id="pageBottom"></div>
   `
 })
 

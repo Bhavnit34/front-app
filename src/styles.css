@@ -351,10 +351,9 @@ ul.navigation li a:hover {
   width: 100%;
   min-height: 200px;
   float: left;
-  margin: 2% 0 0% 0;
+  margin: 2% 0 0 0;
   overflow: hidden;
   position: relative;
-  padding-bottom: 2%;
 }
 
 .tileSummary {
@@ -455,7 +454,7 @@ ul.navigation li a:hover {
   width: 30%;
 }
 
-/* for steps, hr and sleeps */
+/* for steps_tile, hr and sleeps */
 .summaryContentCell {
   position: relative;
   width: 20%;
@@ -683,6 +682,7 @@ ul.navigation li a:hover {
   background-color: #00838F;
   position: relative;
   float: left;
+  margin-top: 1%;
 }
 
 

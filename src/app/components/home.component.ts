@@ -13,7 +13,6 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'home',
   templateUrl: 'home.component.html',
-  //styleUrls: ['app.component.css']
   animations: [
 
     trigger('movePanel', [
@@ -89,14 +88,15 @@ export class HomeComponent {
     mood_3: "assets/img/mood-3.svg",
     mood_4: "assets/img/mood-4.svg",
     mood_5: "assets/img/mood-5.svg",
-    steps:"assets/img/running.svg",
+    steps_tile:"assets/img/footprints-tile.svg",
+    steps_day:"assets/img/footprints-day.svg",
     heart_tile : "assets/img/heart-tile.svg",
     heart_day : "assets/img/heart-day.svg",
     bed : "assets/img/bed.svg",
     moon_tile : "assets/img/moon-tile.svg",
     moon_day : "assets/img/moon-day.svg",
     sun : "assets/img/sun.svg",
-    flame :"assets/img/flame.svg",
+    flame :"assets/img/flame-tile.svg",
     soccer : "assets/img/soccer.svg",
     dumbbell : "assets/img/dumbbell.svg",
     bike : "assets/img/bicycle.svg",
@@ -106,7 +106,7 @@ export class HomeComponent {
     desk : "assets/img/desk.svg",
     mood : "assets/img/sleeping.svg",
     tennis : "assets/img/tennis.svg",
-    running: "assets/img/running.svg"
+    running: "assets/img/running-tile.svg"
   };
   // data loaded from REST API
   todaysSleep: APIResult; todaysMoves: APIResult; todaysHR: APIResult; todaysMood: APIResult; stats: APIResult;
@@ -133,7 +133,6 @@ export class HomeComponent {
   todaysDate: string;
 
 
-
   // Graphs
   graphWrapperState: string = 'inactive';
   summary_state: string = 'inactive';
@@ -150,9 +149,6 @@ export class HomeComponent {
   activeTimeGraphLabels: Array<any> = [];
   workoutGraphSeries: Array<any> = [];
   workoutGraphLabels: Array<any> = [];
-
-  // graph canvas
-
 
   constructor(private postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
@@ -190,7 +186,6 @@ export class HomeComponent {
         this.doughnutChartLabels = this.workoutGraphLabels;
       }, 2000);
     });
-
 
   }
 

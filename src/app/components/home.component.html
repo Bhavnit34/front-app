@@ -1,10 +1,10 @@
-<div class="tileBack">
-  <div class="tileToday baseTile">
+<section class="tileBack">
+  <section class="tileToday baseTile">
     <div class="todayBanner"></div>
     <h2 id="todayDate">{{todaysDate}}</h2>
 
 
-    <div class="todayBarSection">
+    <section class="todayBarSection">
       <!-- Steps section -->
       <div class="todayBarSteps">
         <p class="todayBarSectionTitle">Steps</p>
@@ -28,7 +28,7 @@
 
 
       <!-- Active time section -->
-      <div class="todayBarActiveTime">
+      <section class="todayBarActiveTime">
         <p class="todayBarSectionTitle">Active Time</p>
 
         <p class="attrBarMaxValue"> {{attributes.active_time_max}}</p>
@@ -47,8 +47,8 @@
           <p class="attrBarAvgValue">{{attributes.active_time_avg}}</p>
         </section>
 
-      </div>
-    </div>
+      </section>
+    </section>
 
 
 
@@ -102,7 +102,7 @@
     </div>
 
 
-  </div>
+  </section>
 
 
 
@@ -174,7 +174,7 @@
                 <img [src]="tile.mood" />
               </td>
               <td class="summaryContentCell">
-                <img class="summaryContentIcon" [src]="icons.steps" />
+                <img class="summaryContentIcon" [src]="icons.steps_tile" />
                 <p class="summaryContentCount"> {{tile.steps}} </p>
                 <p class="summaryContentAvg"> {{stats.Items[0].info.Moves.Steps.avg}} avg </p>
               </td>
@@ -252,34 +252,4 @@
   </section>
 
 
-</div>
-<div id="pageBottom"></div>
-
-<!--
-<div class="row">
-  <div class="col-md-6">
-    <div style="display: block;">
-      <canvas baseChart width="500px" height="500px"
-              [datasets]="lineChartData"
-              [labels]="lineChartLabels"
-              [options]="lineChartOptions"
-              [colors]="lineChartColors"
-              [legend]="lineChartLegend"
-              [chartType]="lineChartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-    </div>
-  </div>
-  <div class="col-md-6" style="margin-bottom: 10px">
-    <table class="table table-responsive table-condensed">
-      <tr>
-        <th *ngFor="let label of lineChartLabels">{{label}}</th>
-      </tr>
-      <tr *ngFor="let d of lineChartData">
-        <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
-      </tr>
-    </table>
-    <button (click)="randomize()">CLICK</button>
-  </div>
-</div>
--->
+</section>
