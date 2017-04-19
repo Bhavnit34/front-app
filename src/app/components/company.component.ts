@@ -481,7 +481,7 @@ export class CompanyComponent {
   // Mood Graph
   public barChartType:string = 'bar';
   public moodChartLabels:Array<any> = [];
-  public moodChartColors:Array<any> = [
+  public avgChartColors:Array<any> = [
     { // bhavnit
       backgroundColor: '#F4CC70',
       borderColor: '#F4CC70',
@@ -533,8 +533,7 @@ export class CompanyComponent {
     {
       backgroundColor: 'rgba(148,159,177,0.5)',
       borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
+      pointBackgroundColor: '#FFF',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },
