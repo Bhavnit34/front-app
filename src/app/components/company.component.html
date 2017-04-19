@@ -5,63 +5,87 @@
 
     <table class="todayTable">
       <!-- Row for activity -->
-      <tr class="todayTableRow">
+      <tr>
         <td class="todayTableCell todayTableActivityCell">
-          <img class="attrIcon" [src]="icons.steps_day">
-          <p class="todayTableAttrValue todayTableActivityValue">12041 steps</p>
+          <img class="todayTableActivityIcon" [src]="icons.steps_day">
+          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.steps}}</p>
         </td>
         <td class="todayTableCell todayTableActivityCell">
-          <img class="attrIcon" [src]="icons.burn_day">
-          <p class="todayTableAttrValue todayTableActivityValue">97112 cal.</p>
+          <img class="todayTableActivityIcon" [src]="icons.burn_day">
+          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.calories}} cal.</p>
         </td>
         <td class="todayTableCell todayTableActivityCell">
-          <img class="attrIcon" [src]="icons.flame_day">
-          <p class="todayTableAttrValue todayTableActivityValue">72h 81m</p>
+          <img class="todayTableActivityIcon" [src]="icons.flame_day">
+          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.active_time}}</p>
         </td>
         <td class="todayTableCell todayTableActivityCell">
-          <img class="attrIcon" [src]="icons.desk">
-          <p class="todayTableAttrValue todayTableActivityValue">192h 1m</p>
+          <img class="todayTableActivityIcon" [src]="icons.running_day">
+          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.distance}}</p>
         </td>
-        <td class="todayTableCell todayTableActivityCell">
-          <img class="attrIcon" [src]="icons.running_day">
-          <p class="todayTableAttrValue todayTableActivityValue">895km</p>
+      </tr>
+      <!-- Row for sleeps -->
+      <tr class="todayTableSleepRow">
+        <td class="todayTableCell todayTableAttrRowIcon">
+          <img class="attrIcon" [src]="icons.moon_day">
+        </td>
+        <td class="todayTableCell todayTableSleepCell">
+          <h1 class="attrLargeNumber">{{tableAttributes.sleep_duration}}</h1>
+          <p class="todayTableAttrValue">total sleep</p>
+        </td>
+        <td class="todayTableCell todayTableSleepCell">
+          <h1 class="attrLargeNumber">{{tableAttributes.light}}</h1>
+          <p class="todayTableAttrValue">light sleep</p>
+        </td>
+        <td class="todayTableCell todayTableSleepCell">
+          <h1 class="attrLargeNumber">{{tableAttributes.REM}}</h1>
+          <p class="todayTableAttrValue">REM sleep</p>
+        </td>
+        <td class="todayTableCell todayTableSleepCell">
+          <h1 class="attrLargeNumber">{{tableAttributes.deep}} </h1>
+          <p class="todayTableAttrValue">deep sleep</p>
         </td>
       </tr>
       <!-- Row for workouts -->
-      <tr class="todayTableRow">
-        <td class="todayTableCell todayTableWorkoutCell todayTableFirstCell">
-          <h1 class="attrLargeNumber">98</h1>
+      <tr class="todayTableWorkoutRow">
+        <td class="todayTableCell todayTableAttrRowIcon">
+          <img class="attrIcon" [src]="icons.dumbbell_day">
+        </td>
+        <td class="todayTableCell todayTableWorkoutCell">
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_logged}}</h1>
           <p class="todayTableAttrValue">workouts logged</p>
         </td>
         <td class="todayTableCell todayTableWorkoutCell">
-          <h1 class="attrLargeNumber">218h 18m</h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_duration}}</h1>
           <p class="todayTableAttrValue">workout duration</p>
         </td>
         <td class="todayTableCell todayTableWorkoutCell">
-          <h1 class="attrLargeNumber">412km</h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_distance}}</h1>
           <p class="todayTableAttrValue">travelled</p>
         </td>
         <td class="todayTableCell todayTableWorkoutCell">
-          <h1 class="attrLargeNumber">64911</h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_calories}}</h1>
           <p class="todayTableAttrValue">calories burned</p>
         </td>
       </tr>
       <!-- Row for percentages -->
-      <tr class="todayTableRow">
-        <td class="todayTableCell todayTablePercCell todayTableFirstCell">
-          <h1 class="attrLargeNumber">46%</h1>
+      <tr class="todayTablePercRow">
+        <td class="todayTableCell todayTableAttrRowIcon">
+          <img class="attrIcon" [src]="icons.clock">
+        </td>
+        <td class="todayTableCell todayTablePercCell">
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_we_percentage}}%</h1>
           <p class="todayTableAttrValue">workout weather obtained</p>
         </td>
         <td class="todayTableCell todayTablePercCell">
-          <h1 class="attrLargeNumber">76%</h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.day_summary_percentage}}%</h1>
           <p class="todayTableAttrValue">day summary obtained</p>
         </td>
         <td class="todayTableCell todayTablePercCell">
-          <h1 class="attrLargeNumber">87%</h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_summary_percentage}}%</h1>
           <p class="todayTableAttrValue">workout summary obtained</p>
         </td>
         <td class="todayTableCell todayTablePercCell">
-          <h1 class="attrLargeNumber">98% </h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.sleep_summary_percentage}}% </h1>
           <p class="todayTableAttrValue">sleep summary obtained</p>
         </td>
       </tr>

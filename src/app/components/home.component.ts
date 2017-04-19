@@ -98,7 +98,8 @@ export class HomeComponent {
     sun : "assets/img/sun.svg",
     flame :"assets/img/flame-tile.svg",
     soccer : "assets/img/soccer.svg",
-    dumbbell : "assets/img/dumbbell.svg",
+    dumbbell_tile: "assets/img/dumbbell-tile.svg",
+    dumbbell_day: "assets/img/dumbbell-day.svg",
     bike : "assets/img/bicycle.svg",
     clock : "assets/img/clock.svg",
     burn_tile : "assets/img/burn_tile.svg",
@@ -789,7 +790,7 @@ export class HomeComponent {
         return this.icons.running;
       }
       case 3: {
-        return this.icons.dumbbell;
+        return this.icons.dumbbell_tile;
       }
       case 21: {
         return this.icons.soccer;

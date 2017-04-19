@@ -3,8 +3,8 @@
   margin: 2% 0 0 0;
   width:100%;
   height: 63%;
-  min-height: 385px;
-  max-height: 400px;
+  min-height: 457px;
+  max-height: 470px;
   display: inline-block;
   background-color: #EEEEFF;
   float: left;
@@ -16,6 +16,16 @@
   width: 100%;
   padding: 1%;
   position: relative;
+}
+
+.todayTableActivityIcon {
+  -webkit-box-ordinal-group: 2;
+  -ms-flex-order: 1;
+  order: 1;
+  max-width: 50px;
+  max-height: 75px;
+  display: block;
+  margin: 6% auto 6% auto;
 }
 
 .todayTableAttrValue {
@@ -33,13 +43,22 @@
 
 .todayTableActivityCell {
   margin-bottom: 1%;
-  width: 19%;
+  width: 24%;
   border-top: 1px dotted #00838F;
   border-bottom: 1px dotted #00838F;
 }
 
 .todayTableActivityValue {
-  font-weight: bold;
+  font-size: 1.3em;
+  font-style: italic;
+}
+
+.todayTableAttrRowIcon {
+  width: 15%;
+}
+
+.todayTableWorkoutRow {
+  background-color: #FFDDDD;
 }
 
 .todayTableWorkoutCell {
@@ -48,10 +67,24 @@
   width: 19%;
 }
 
+.todayTablePercRow {
+  background-color: #FFFFFF;
+}
+
 .todayTablePercCell {
   margin-top: 1%;
   width: 19%;
 }
+
+.todayTableSleepRow {
+  background-color: #DDEEEE;
+}
+
+.todayTableSleepCell {
+  margin-top: 1%;
+  width: 19%;
+}
+
 
 .attrLargeNumber {
   font-size: 2em;
