@@ -107,7 +107,8 @@ export class HomeComponent {
     desk : "assets/img/desk.svg",
     mood : "assets/img/sleeping.svg",
     tennis : "assets/img/tennis.svg",
-    running: "assets/img/running-tile.svg"
+    running: "assets/img/running-tile.svg",
+    percentage: "assets/img/percentage.svg"
   };
   // data loaded from REST API
   todaysSleep: APIResult; todaysMoves: APIResult; todaysHR: APIResult; todaysMood: APIResult; stats: APIResult;
@@ -462,7 +463,7 @@ export class HomeComponent {
 
   public getLastWeeksSleep(postsService) : Observable<any> {
     return Observable.create(observer => {
-      postsService.getAttrForLatestWeek("sleeps").subscribe(posts => {
+      postsService.getAttrForLatestWeek("sleeps", "bhav").subscribe(posts => {
         let data_duration = {label: "Duration", data: []};
         let data_deep = {label: "Deep Sleep", data: []};
         let data_rem = {label: "REM Sleep", data: []};
@@ -531,7 +532,7 @@ export class HomeComponent {
 
   public populateWorkoutGraph(postsService): Observable<any> {
     return Observable.create(observer => {
-      postsService.getAttrForLatestWeek("workouts").subscribe(posts => {
+      postsService.getAttrForLatestWeek("workouts", "bhav").subscribe(posts => {
         let workouts = {};
         if (posts.Count == 0) {
             console.log("No workouts for the latest week");

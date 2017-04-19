@@ -8,7 +8,7 @@
       <tr>
         <td class="todayTableCell todayTableActivityCell">
           <img class="todayTableActivityIcon" [src]="icons.steps_day">
-          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.steps}}</p>
+          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.steps}} steps</p>
         </td>
         <td class="todayTableCell todayTableActivityCell">
           <img class="todayTableActivityIcon" [src]="icons.burn_day">
@@ -20,7 +20,7 @@
         </td>
         <td class="todayTableCell todayTableActivityCell">
           <img class="todayTableActivityIcon" [src]="icons.running_day">
-          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.distance}}</p>
+          <p class="todayTableAttrValue todayTableActivityValue">{{tableAttributes.distance}} m</p>
         </td>
       </tr>
       <!-- Row for sleeps -->
@@ -59,18 +59,18 @@
           <p class="todayTableAttrValue">workout duration</p>
         </td>
         <td class="todayTableCell todayTableWorkoutCell">
-          <h1 class="attrLargeNumber">{{tableAttributes.wo_distance}}</h1>
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_distance}} m</h1>
           <p class="todayTableAttrValue">travelled</p>
         </td>
         <td class="todayTableCell todayTableWorkoutCell">
-          <h1 class="attrLargeNumber">{{tableAttributes.wo_calories}}</h1>
-          <p class="todayTableAttrValue">calories burned</p>
+          <h1 class="attrLargeNumber">{{tableAttributes.wo_calories}} cal.</h1>
+          <p class="todayTableAttrValue">burned</p>
         </td>
       </tr>
       <!-- Row for percentages -->
       <tr class="todayTablePercRow">
         <td class="todayTableCell todayTableAttrRowIcon">
-          <img class="attrIcon" [src]="icons.clock">
+          <img class="attrIcon" [src]="icons.percentage">
         </td>
         <td class="todayTableCell todayTablePercCell">
           <h1 class="attrLargeNumber">{{tableAttributes.wo_we_percentage}}%</h1>
@@ -93,22 +93,81 @@
   </section>
 
   <section class="companyGraphLeft baseTile">
-
+    <h2 class="companyGraphTitle">Mood</h2>
+    <div class="chart" style="display: block;">
+      <canvas baseChart
+              [datasets]="moodChartData"
+              [labels]="moodChartLabels"
+              [options]="moodChartOptions"
+              [colors]="sleepChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="barChartType"
+              [style.height]="100+ '%'"></canvas>
+    </div>
   </section>
   <section class="companyGraphRight baseTile">
-
+    <h2 class="companyGraphTitle">Hours of Sleep</h2>
+    <div class="chart" style="display: block;">
+      <canvas baseChart
+              [datasets]="sleepChartData"
+              [labels]="sleepChartLabels"
+              [options]="sleepChartOptions"
+              [colors]="sleepChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              [style.height]="100+ '%'"></canvas>
+    </div>
   </section>
   <section class="companyGraphLeft baseTile">
-
+    <h2 class="companyGraphTitle">Workouts Completed This Week</h2>
+    <div class = "chart" style="display: block; height: 100%">
+      <canvas baseChart
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [colors]="doughnutChartColors"
+              [chartType]="doughnutChartType"
+              [options]="doughnutChartOptions"
+              [style.height]="99+ '%'"></canvas>
+    </div>
   </section>
   <section class="companyGraphRight baseTile">
-
+    <h2 class="companyGraphTitle">Steps</h2>
+    <div class="chart" style="display: block;">
+      <canvas baseChart
+              [datasets]="stepChartData"
+              [labels]="stepChartLabels"
+              [options]="stepChartOptions"
+              [colors]="stepChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              [style.height]="100+ '%'"></canvas>
+    </div>
   </section>
   <section class="companyGraphLeft baseTile">
-
+    <h2 class="companyGraphTitle">Average Deep Sleep</h2>
+    <div class="chart" style="display: block;">
+      <canvas baseChart
+              [datasets]="deepChartData"
+              [labels]="deepChartLabels"
+              [options]="deepChartOptions"
+              [colors]="moodChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              [style.height]="100+ '%'"></canvas>
+    </div>
   </section>
   <section class="companyGraphRight baseTile">
-
+    <h2 class="companyGraphTitle">Average Heart Rate</h2>
+    <div class="chart" style="display: block;">
+      <canvas baseChart
+              [datasets]="HRChartData"
+              [labels]="HRChartLabels"
+              [options]="HRChartOptions"
+              [colors]="moodChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              [style.height]="100+ '%'"></canvas>
+    </div>
   </section>
 
 

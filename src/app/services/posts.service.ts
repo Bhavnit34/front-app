@@ -78,12 +78,21 @@ export class PostsService {
       .map(res => res.json());
   }
 
-  public getAttrForLatestWeek(attr) {
+  public getAttrForLatestWeek(attr, username) {
+    let token = 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
+    let user = 'BRx5p_mMpSn-RjknXdn3dA';
+    let danUser = 'BRx5p_mMpSnKSKC3Fz2aqw';
+    let danToken = 'u1r_4oEFjcGXMeBUkvDdikHZjwblB7qMPAxB0JJSceafi4xZAqlZmKvq7UPSdXGUnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
+    if (username == "dan") {
+      token = danToken;
+      user = danUser;
+    }
+
     let headers = new Headers({'Accept': 'application/json'});
 
     let params: URLSearchParams = new URLSearchParams();
 
-    params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+    params.set('token', token);
 
     // start date
     let d = new Date();
@@ -110,7 +119,7 @@ export class PostsService {
     let options = new RequestOptions({headers: headers});
     options.search = params;
     return this.http
-      .get('http://52.208.153.178:3000/api/' + attr + '/BRx5p_mMpSn-RjknXdn3dA', options)
+      .get('http://52.208.153.178:3000/api/' + attr + '/' + user, options)
       .map(res => res.json());
   }
 

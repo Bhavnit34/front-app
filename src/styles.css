@@ -742,6 +742,16 @@ ul.navigation li a:hover {
 
 
 @media screen and (max-width: 900px) {
+  ul.navigation li a {
+    font-size: 1em;
+    display:table-row;
+  }
+
+
+  .welcomeMessage {
+    font-size: 1em;
+  }
+
   /* Main body */
   .tileBack {
     margin-left: 1%;
