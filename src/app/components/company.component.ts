@@ -418,7 +418,7 @@ export class CompanyComponent {
 
       while (d.getTime() <= now.getTime()) {
         let ts = d.getTime().toString().substr(0, 10);
-        labels.push(d.toLocaleDateString().substr(0,5));
+        labels.push(d.toDateString().split(" ").splice(1,2).join(" "));
 
         for (let i = 0; i < posts.Count; i++) {
           if (posts.Items[i].timestamp_weekStart == ts) {
