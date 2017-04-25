@@ -4,6 +4,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {HomeComponent} from './components/home.component';
 import {CompanyComponent} from './components/company.component';
 
+// defines where which component is loaded depending on the path of the URL
 const appRoutes: Routes = [
   {
     path:'',

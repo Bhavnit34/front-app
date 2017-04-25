@@ -70,6 +70,7 @@ export class CompanyComponent {
 
   constructor(postsService: PostsService) {
     this.todaysDate = this.setTodaysDate();
+    // populate all of the graphs
     this.populateWearableStats(postsService);
     this.populatePercentages(postsService);
     this.populateMoodGraph(postsService);
@@ -90,10 +91,11 @@ export class CompanyComponent {
     return wholeDate;
   }
 
-  // function to populate the company top table
+  // function to populate the company totals table
   private populateWearableStats(postsService) {
       let json = [];
 
+      // query the stats for all users and push to an array of stats
       function populateJSON() {
         return Observable.create(observer => {
           postsService.getStats("bhav").subscribe(posts => {
@@ -107,6 +109,7 @@ export class CompanyComponent {
         });
       }
 
+      // obtain the stats from populateJSON() then fill the model
       populateJSON().subscribe((data) => {
 
         // now calculate the totals from all users
@@ -116,6 +119,7 @@ export class CompanyComponent {
           wo_count: 0, wo_calories: 0, wo_distance: 0, wo_duration: 0
         };
 
+        // loop through each user
         for (let i = 0; i < json.length; i++) {
           // moves
           totals.steps += json[i].Items[0].info.Moves.Steps.total;
@@ -157,14 +161,16 @@ export class CompanyComponent {
       });
   }
 
+  // function to convert seconds into hours and minutes
   private calculateTime(seconds) {
     let hours = Math.floor(seconds / 3600);
     let mins = Math.round((seconds - (hours * 3600)) / 60);
     return (hours + "h " + mins + "m");
   }
 
+  // function to populate the percentages section of the totals model
   private populatePercentages(postsService) {
-    // Workout weather and mood
+    // Obtain all workout weather and moods
     postsService.getAllRowsForAttr("Workouts").subscribe(posts => {
       let weather_associated_count = 0;
       let wo_mood_count = 0;
@@ -177,12 +183,12 @@ export class CompanyComponent {
         }
       }
 
-
+      // calculate the percentage of the associated data added to all rows
       this.tableAttributes.wo_we_percentage = ((weather_associated_count / posts.Count) * 100).toFixed(2);
       this.tableAttributes.wo_summary_percentage = ((wo_mood_count / posts.Count) * 100).toFixed(2);
     });
 
-    // day summary
+    // get all days and check how many have a summary attached
     postsService.getRowCountForAttr("Moves").subscribe(moves => {
       postsService.getRowCountForAttr("DailyMood").subscribe(moods => {
         if(moves.hasOwnProperty("Table") && moods.hasOwnProperty("Table")) {
@@ -191,7 +197,7 @@ export class CompanyComponent {
       })
     });
 
-    // sleep summary
+    // get all sleeps and check how many have a summary attached
     postsService.getAllRowsForAttr("Sleeps").subscribe(sleeps => {
       let sleep_summary_count = 0;
       for (let i = 0; i < sleeps.Count; i++) {
@@ -203,7 +209,9 @@ export class CompanyComponent {
     });
   }
 
+  // function to populate the weeks mood graph
   private populateMoodGraph(postsService) {
+    // get the moods for the last 7 days for all users
     postsService.getAttrForLatestWeek("Mood", "Bhav").subscribe(bhav => {
       postsService.getAttrForLatestWeek("Mood", "dan").subscribe(dan => {
         let labels = [];
@@ -211,14 +219,16 @@ export class CompanyComponent {
         let danData = {label: "Dan", data: []};
         let now = new Date();
         let d = new Date();
-        d.setDate(d.getDate() - 7);
+        d.setDate(d.getDate() - 7); // start date at 7 days ago
         d.setHours(0,0,0,0);
         let found = false;
 
+        // continue adding moods for each day until today
         while (d.getDate() != now.getDate()) {
           let ts = d.getTime().toString().substr(0, 10);
           labels.push(this.day_names[d.getDay()]);
 
+          // find if this user has a mood for the given date
           for (let i = 0; i < bhav.Count; i++) {
             if (bhav.Items[i].timestamp_completed.toString() == ts) {
               bhavData.data.push(bhav.Items[i].mood);
@@ -226,8 +236,10 @@ export class CompanyComponent {
               break;
             }
           }
-          if (!found) { bhavData.data.push(0)}
+          if (!found) { bhavData.data.push(0)} // makes the graph more readable
           found = false;
+
+          // find if this user has a mood for the given date
           for (let i = 0; i < dan.Count; i++) {
             if (dan.Items[i].timestamp_completed.toString() == ts) {
               danData.data.push(dan.Items[i].mood);
@@ -235,40 +247,45 @@ export class CompanyComponent {
               break;
             }
           }
-          if (!found) { danData.data.push(0)}
+          if (!found) { danData.data.push(0)} // makes the graph more readable
           found = false;
+
+          // increment the date and loop
           d.setDate(d.getDate() + 1);
           d.setHours(0,0,0,0);
         }
 
-        this.moodChartData = [danData, bhavData];
+        this.moodChartData = [danData, bhavData]; // populate the model
 
         setTimeout(() => {
-          this.moodChartLabels = labels;
+          this.moodChartLabels = labels; // dynamically change the labels
         }, 2000);
 
       })
     })
   }
 
+  // function to populate this weeks sleep graph
   private populateSleepGraph(postsService) {
+    // get the sleeps for the last 7 days for all users
     postsService.getAttrForLatestWeek("sleeps", "bhav").subscribe(bhav => {
       postsService.getAttrForLatestWeek("sleeps", "dan").subscribe(dan => {
         let labels = [];
         let bhavData = {label: "Bhavnit", data: []};
         let danData = {label: "Dan", data: []};
 
-
         let now = new Date();
         let d = new Date();
-        d.setDate(d.getDate() - 7);
+        d.setDate(d.getDate() - 7); // start the date at 7 days ago
         d.setHours(0,0,0,0);
         let found = false;
 
+        // continue adding sleeps for each day until today
         while (d.getDate() != now.getDate()) {
           let ts = d.getTime().toString().substr(0, 10);
           labels.push(this.day_names[d.getDay()]);
 
+          // find if this user has a sleep for the given date
           for (let i = 0; i < bhav.Count; i++) {
             let cd = new Date(bhav.Items[i].timestamp_completed * 1000);
             cd.setHours(0,0,0,0);
@@ -278,8 +295,10 @@ export class CompanyComponent {
               break;
             }
           }
-          if (!found) { bhavData.data.push(0)}
+          if (!found) { bhavData.data.push(0)} // makes the graph more readable
           found = false;
+
+          // find if this user has a sleep for the given date
           for (let i = 0; i < dan.Count; i++) {
             let cd = new Date(dan.Items[i].timestamp_completed * 1000);
             cd.setHours(0,0,0,0);
@@ -289,30 +308,34 @@ export class CompanyComponent {
               break;
             }
           }
-          if (!found) { danData.data.push(0)}
+          if (!found) { danData.data.push(0)} // makes the graph more readable
           found = false;
+
+          // increment the date and loop
           d.setDate(d.getDate() + 1);
           d.setHours(0,0,0,0);
         }
 
-        this.sleepChartData = [danData, bhavData];
+        this.sleepChartData = [danData, bhavData]; // populate the model
 
         setTimeout(() => {
-          this.sleepChartLabels = labels;
+          this.sleepChartLabels = labels; // dynamically change the labels
         }, 2000);
 
       })
     })
   }
 
-
+  // function to populate this weeks workouts completed
   private populateWorkoutGraph(postsService) {
+    // get the workouts for the last 7 days for all users
     postsService.getAttrForLatestWeek("workouts", "bhav").subscribe(bhav => {
       postsService.getAttrForLatestWeek("workouts", "dan").subscribe(dan => {
         let posts = [bhav, dan];
         let workoutGraphLabels = [];
         let workoutGraphSeries = [];
 
+        // loop through each workout to find the total duration of each workout
         for(let i = 0; i < posts.length; i++) {
           let workouts = {};
           if (posts[i].Count == 0) {
@@ -339,16 +362,18 @@ export class CompanyComponent {
           }
         }
 
-        this.doughnutChartData = workoutGraphSeries;
+        this.doughnutChartData = workoutGraphSeries; // populate the model
         setTimeout(() => {
-          this.doughnutChartLabels = workoutGraphLabels;
+          this.doughnutChartLabels = workoutGraphLabels; // dynamically change the labels
         }, 1000)
 
       });
     });
   }
 
+  // function to populate this weeks movement graph
   private populateStepGraph(postsService) {
+    // get the moves for the last 7 days for all users
     postsService.getAttrForLatestWeek("moves", "bhav").subscribe(bhav => {
       postsService.getAttrForLatestWeek("moves", "dan").subscribe(dan => {
         let labels = [];
@@ -356,14 +381,16 @@ export class CompanyComponent {
         let danData = {label: "Dan", data: []};
         let now = new Date();
         let d = new Date();
-        d.setDate(d.getDate() - 7);
+        d.setDate(d.getDate() - 7); // start date at 7 days ago
         d.setHours(0,0,0,0);
         let found = false;
 
+        // continue adding moves for each day until today
         while (d.getDate() != now.getDate()) {
           let ts = d.getTime().toString().substr(0, 10);
           labels.push(this.day_names[d.getDay()]);
 
+          // find if this user has moves for the given date
           for (let i = 0; i < bhav.Count; i++) {
             let cd = new Date(bhav.Items[i].timestamp_completed * 1000);
             cd.setHours(0,0,0,0);
@@ -373,8 +400,10 @@ export class CompanyComponent {
               break;
             }
           }
-          if (!found) { bhavData.data.push(0)}
+          if (!found) { bhavData.data.push(0)} // makes the graph more readable
           found = false;
+
+          // find if this user has moves for the given date
           for (let i = 0; i < dan.Count; i++) {
             let cd = new Date(dan.Items[i].timestamp_completed * 1000);
             cd.setHours(0,0,0,0);
@@ -384,23 +413,26 @@ export class CompanyComponent {
               break;
             }
           }
-          if (!found) { danData.data.push(0)}
+          if (!found) { danData.data.push(0)} // makes the graph more readable
           found = false;
+          // increment the date and loop
           d.setDate(d.getDate() + 1);
           d.setHours(0,0,0,0);
         }
 
-        this.stepChartData = [danData, bhavData];
+        this.stepChartData = [danData, bhavData]; // populate the model
 
         setTimeout(() => {
-          this.stepChartLabels = labels;
+          this.stepChartLabels = labels; // dynamically change the labels
         }, 2000);
 
       })
     })
   }
 
+  // function to populate the weekly averages graphs (HR and Deep sleep)
   private populateDeepAndHRGraph(postsService) {
+    // get the weekly stats for the latest week for all users
     postsService.getAllRowsForAttr("WeeklyStats").subscribe(posts => {
       let labels = [];
       let bhavData = {label: "Bhavnit", data: []};
@@ -412,44 +444,47 @@ export class CompanyComponent {
       let danFound = false;
 
       let now = new Date();
-      let d = new Date("2017/03/05");
+      let d = new Date("2017/03/05"); // this is the first week start we have in the DB
       d.setHours(0,0,0,0);
-      let found = false;
 
+      // continue adding weekly stats for each day until today
       while (d.getTime() <= now.getTime()) {
         let ts = d.getTime().toString().substr(0, 10);
-        labels.push(d.toDateString().split(" ").splice(1,2).join(" "));
+        labels.push(d.toDateString().split(" ").splice(1,2).join(" ")); // push each week as a label
 
+        // loop through all rows, trying to find one that matches the given date
         for (let i = 0; i < posts.Count; i++) {
           if (posts.Items[i].timestamp_weekStart == ts) {
             if (posts.Items[i].user_id == "BRx5p_mMpSn-RjknXdn3dA") {
+              // append data for this user
               bhavData.data.push(Math.round(posts.Items[i].info.Sleep.Deep.avg / 60) || 0);
               bhavHRData.data.push(posts.Items[i].info.HeartRate.avg || 0);
               bhavFound = true;
 
             } else {
+              // append data for the only other user
               danData.data.push(Math.round(posts.Items[i].info.Sleep.Deep.avg / 60) || 0);
               danHRData.data.push(posts.Items[i].info.HeartRate.avg || 0);
               danFound = true;
             }
           }
         }
+        // add 0 for this week for each user that doesn't have a row
         if(!bhavFound) { bhavData.data.push(0)}
         if(!danFound) { danData.data.push(0)}
         bhavFound = false;
         danFound = false;
+
+        // go forward a week
         d.setDate(d.getDate() + 7);
         d.setHours(0,0,0,0);
       }
-      /*
-      console.log(JSON.stringify(labels));
-      console.log("bhav : " + JSON.stringify(bhavData, null, 2));
-      console.log("dan : " + JSON.stringify(danData, null, 2));
-      */
 
+      // populate the models
       this.deepChartData = [bhavData, danData];
       this.HRChartData = [bhavHRData, danHRData];
       setTimeout(() => {
+        // dynamically change the labels
         this.deepChartLabels = labels;
         this.HRChartLabels = labels;
       }, 1000)
@@ -460,18 +495,6 @@ export class CompanyComponent {
 
   // LINE CHART
   public lineChartType:string = 'line';
-  public lineChartOptions:any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'mood'
-        }
-      }]
-    }
-  };
   public lineChartLegend:boolean = true;
   public moodChartData:Array<any> = [
     {data: [], label: 'Bhavnit'},
@@ -544,11 +567,7 @@ export class CompanyComponent {
       pointHoverBackgroundColor: '#FFF',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
-
   ];
-
-
-
 
 
   // doughnut chart
@@ -644,11 +663,7 @@ export class CompanyComponent {
 } // end component
 
 
-export interface APIResult {
-  Items:Array<any>;
-  Count: number;
-}
-
+// a model for the totals section
 export interface TableAttributes {
   // moves
   steps: string;

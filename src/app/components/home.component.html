@@ -1,9 +1,10 @@
+<!-- The today summary section -------------------------------------------------->
 <section class="tileBack">
   <section class="tileToday baseTile">
     <div class="todayBanner"></div>
     <h2 id="todayDate">{{todaysDate}}</h2>
 
-
+    <!-- The section containing the progress lines -->
     <section class="todayBarSection">
       <!-- Steps section -->
       <div class="todayBarSteps">
@@ -53,7 +54,7 @@
 
 
 
-
+    <!-- The right section that has the doughnut workout graph -->
     <div class="todayDonutSection">
       <div style="display: block; height: 100%">
         <canvas baseChart
@@ -62,15 +63,13 @@
                 [colors]="doughnutChartColors"
                 [chartType]="doughnutChartType"
                 [options]="doughnutChartOptions"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"
                 [style.height]="100 + '%'" ></canvas>
       </div>
     </div>
 
 
 
-
+    <!-- The bottom left section that contains the attr icons and its values -->
     <div class="attrWrapper">
       <table width = "100%">
         <tr>
@@ -100,14 +99,12 @@
         </tr>
       </table>
     </div>
-
-
-  </section>
-
-
+  </section> <!-- end summary section -->
+  <!-- --------------------------------------------------------------->
 
 
 
+  <!-- Section for the 3 graphs  ------------------------>
   <section [@toggleGraphWrapper]='graphWrapperState' class="attrGraphWrapper" id="attrGraphWrapper">
     <section [@toggleGraph]='graphStates.sleepGraphState.state' [style.order]="graphStates.sleepGraphState.order" class="attrGraphTile baseTile" id="sleepGraphTile">
       <h1 class="attrGraphTitle">Last Weeks Sleep</h1>
@@ -119,8 +116,6 @@
                     [colors]="barChartColors"
                     [legend]="barChartLegend"
                     [chartType]="barChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"
                     [style.height]="100+ '%'"
                     [style.width]="100+ '%'" ></canvas>
           </div>
@@ -136,8 +131,6 @@
                 [colors]="calorieChartColors"
                 [legend]="lineChartLegend"
                 [chartType]="lineChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"
                 [style.height]="100+ '%'"
                 [style.width]="100+ '%'" ></canvas>
       </div>
@@ -152,21 +145,23 @@
                 [colors]="activeTimeChartColors"
                 [legend]="lineChartLegend"
                 [chartType]="lineChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"
                 [style.height]="100+ '%'"
                 [style.width]="100+ '%'" ></canvas>
       </div>
     </section>
   </section>
+  <!-- ------------------------------------------------------>
+  <!-- Day tiles  ------------------------------------------->
   <section class="historyWrapper">
     <section class="tileSummary baseTile" *ngFor="let tile of dayTiles">
       <section class="tileTop">
+        <!-- the top banner of the day tile -->
         <div class="summaryTopBanner">
           <h2 class="summaryTopBannerTitle"> {{tile.date}} </h2>
           <h2 class="summaryTopBannerYear"> {{tile.year}} </h2>
           <img class="summaryTopBannerWeather" [src]="tile.weather" onerror="this.src='assets/img/sun.svg'"/>
         </div>
+        <!-- The main body of the day tile -->
         <section class="summaryContent">
           <table class="summaryContentTable">
             <tr>
@@ -191,6 +186,7 @@
             </tr>
           </table>
         </section>
+        <!-- the bottom banner of the day tile -->
         <table class="summaryBottomBanner">
           <tr>
           <td class="summaryBottomBannerSection">
@@ -208,7 +204,9 @@
           </tr>
         </table>
       </section>
+      <!-- The dropdown of the day tile -->
       <section [@movePanel]='summary_state' class="summaryExtended">
+        <!-- The distance lines -->
         <div class="summaryExtendedAttributeTop">
           <p class="summaryExtendedAttrTitle">Distance</p>
           <div class="barSection">
@@ -223,6 +221,7 @@
             </div>
           </div>
         </div>
+        <!-- The sleep duration lines -->
         <div class="summaryExtendedAttributeBottom">
           <p class="summaryExtendedAttrTitle">Sleep Duration</p>
           <div class="barSection">
@@ -237,6 +236,7 @@
             </div>
           </div>
         </div>
+        <!-- The bottom workout banner -->
         <table class="summaryExtendedWorkout">
             <tr>
               <td class="summaryExtendedWorkoutSection" *ngFor="let wo of tile.workouts">
@@ -246,10 +246,11 @@
             </tr>
         </table>
       </section>
+      <!-- The bar that toggles the expanded section -->
       <div (click)="toggleMove()" class="summaryExtender"></div>
 
     </section>
   </section>
-
+  <!-- ------------------------------------------------------>
 
 </section>

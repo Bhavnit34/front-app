@@ -4,8 +4,7 @@ import {
   state,
   style,
   transition,
-  animate,
-  keyframes
+  animate
 } from '@angular/core';
 import {PostsService} from '../services/posts.service';
 import {Observable} from "rxjs";
@@ -13,6 +12,7 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'home',
   templateUrl: 'home.component.html',
+  // a set of pre-defined animations that occur once triggered
   animations: [
 
     trigger('movePanel', [
@@ -77,6 +77,7 @@ import {Observable} from "rxjs";
   providers: [PostsService]
 })
 export class HomeComponent {
+  // used when displaying graph labels
   public month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
     "November", "December"];
   public  day_names = ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -340,7 +341,7 @@ export class HomeComponent {
   } // end function
 
 
-
+  // function to obtain all of the needed attr data for a given day
   public getAttributeForDate(postsService, d, dayTile) : Observable<any> {
     return Observable.create(observer => {
 
@@ -450,6 +451,7 @@ export class HomeComponent {
                   let index = durations.indexOf(sorted_durations[0]);
                   dayTile.weather += posts.Items[index].weather.weather[0].icon + ".png";
                 }
+                // callback HELL complete
                 observer.next(dayTile);
                 observer.complete();
               }); // end postservice Workout
@@ -460,7 +462,7 @@ export class HomeComponent {
     }); // end Observable
   }
 
-
+  // function to populate the sleep models with last weeks sleep
   public getLastWeeksSleep(postsService) : Observable<any> {
     return Observable.create(observer => {
       postsService.getAttrForLatestWeek("sleeps", "bhav").subscribe(posts => {
@@ -473,6 +475,7 @@ export class HomeComponent {
           return;
         } // no sleep data was returned
 
+        // loop through each row and push the obtained sleep data
         for (let i = 0; i < posts.Count; i++) {
           let d = new Date(posts.Items[i].date);
           this.sleepGraphLabels.push(this.day_names[d.getDay()]);
@@ -481,17 +484,19 @@ export class HomeComponent {
           data_rem.data.push(Math.round(posts.Items[i].info.details.rem / 60));
         }
 
+        // update the models
         this.sleepGraphSeries.push(data_duration);
         this.sleepGraphSeries.push(data_deep);
         this.sleepGraphSeries.push(data_rem);
 
-
+        // callback complete
         observer.next();
         observer.complete();
       });
     });
   }
 
+  // function to obtain the data needed to populate the calorie/active_time graph
   public populateCalorieActiveTimeGraph(): Observable<any> {
     return Observable.create(observer => {
       let data_calories = {label: "Calories", data: []};
@@ -518,7 +523,7 @@ export class HomeComponent {
         }
       }
 
-      // push objects to calorieGraphSeries and activeTimeGraphSeries
+      // push objects to calorieGraphSeries and activeTimeGraphSeries models
       this.calorieGraphSeries.push(data_calories);
       this.calorieGraphSeries.push(data_steps);
       this.activeTimeGraphSeries.push(data_active_time);
@@ -530,6 +535,7 @@ export class HomeComponent {
       });
   }
 
+  // function to obtain the data needed to draw the workout graph
   public populateWorkoutGraph(postsService): Observable<any> {
     return Observable.create(observer => {
       postsService.getAttrForLatestWeek("workouts", "bhav").subscribe(posts => {
@@ -549,7 +555,7 @@ export class HomeComponent {
           }
         }
 
-        // push each number into the series array
+        // push each number into the series array models
         for (let key in workouts) {
           if (workouts.hasOwnProperty(key)) {
             this.workoutGraphLabels.push(key);
@@ -563,7 +569,7 @@ export class HomeComponent {
     });
   }
 
-
+  // function to update the bound HTML element with the current date
   public setTodaysDate():string {
     const days:Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months:Array<string> = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -754,18 +760,6 @@ export class HomeComponent {
     }
   ];
 
-
-
-
-  // events
-  public chartClicked(e:any):void {
-    // console.log(e);
-  }
-
-  public chartHovered(e:any):void {
-    // console.log(e);
-  }
-
   // Doughnut chart
   public doughnutChartLabels:string[] = [];
   public doughnutChartData:number[] = [];
@@ -778,13 +772,7 @@ export class HomeComponent {
     maintainAspectRatio: false,
   };
 
-  public pad(n, width, z) {
-  z = z || '0';
-  n = n + '';
-  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-  }
-
-
+  // returns the correct workout icon depending on the ID of the workout
   public getIconFromSubType(subtype) {
     switch(subtype) {
       case 1: {
@@ -808,6 +796,7 @@ export interface GraphStates {
   idleGraphState: {state: string; order: number;};
 }
 
+// model of the attributes section on the today-summary section
 export interface Attributes {
   asleep_time: string;
   awake_time: string;
@@ -824,11 +813,13 @@ export interface Attributes {
   active_time_value: number;
 }
 
+// model of an API result returned from my core service
 export interface APIResult {
   Items:Array<any>;
   Count: number;
 }
 
+// model of the widths for each attr
 export interface BarWidth {
   steps: string;
   steps_avg: string;
@@ -836,6 +827,7 @@ export interface BarWidth {
   active_time_avg: string;
 }
 
+// model of a graphSeries used to draw the graph
 export class GraphSeries {
   data: Array<number>;
   label: string;
@@ -846,6 +838,7 @@ export class GraphSeries {
   }
 }
 
+// model for a workout located at the bottom of each day tile's extended section
 export class DayTileWorkout {
   icon: string;
   duration: string;
@@ -856,7 +849,7 @@ export class DayTileWorkout {
   }
 }
 
-
+// model for a day tile
 export class DayTile {
   date: string;
   year: number;

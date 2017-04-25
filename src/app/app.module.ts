@@ -9,7 +9,6 @@ import { ChartsModule } from 'ng2-charts';
 
 
 import { AppComponent } from './app.component';
-import { UserComponent } from './components/user.component';
 import { HomeComponent } from './components/home.component';
 import { CompanyComponent } from './components/company.component';
 import {routing} from './app.routing';
@@ -18,7 +17,6 @@ import {routing} from './app.routing';
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
     HomeComponent,
     CompanyComponent
   ],
@@ -31,7 +29,6 @@ import {routing} from './app.routing';
     HttpModule,
     BrowserAnimationsModule,
     routing
-
   ],
   providers: [],
   bootstrap: [AppComponent]

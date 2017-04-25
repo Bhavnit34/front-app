@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, URLSearchParams} from '@angular/http';
-import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
 
+// This service is built to request data with the RESTful service that holds and processes it
 @Injectable()
 export class PostsService {
+  defaultToken: string = 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
   constructor(private http: Http) {
     console.log("PostsService Initialised");
   }
@@ -15,7 +16,7 @@ export class PostsService {
 
     let params: URLSearchParams = new URLSearchParams();
 
-    params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+    params.set('token', this.defaultToken);
     params.set('limit', '1');
 
     // get current day
@@ -43,7 +44,7 @@ export class PostsService {
 
     let params: URLSearchParams = new URLSearchParams();
 
-    params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+    params.set('token', this.defaultToken);
     params.set('limit', '1');
 
     let options = new RequestOptions({headers: headers});
@@ -53,12 +54,13 @@ export class PostsService {
       .map(res => res.json());
   }
 
+  // function to get the row for a given attr on a given day(s)
   public getAttrForDay(attr, date, limit) {
     let headers = new Headers({'Accept': 'application/json'});
 
     let params: URLSearchParams = new URLSearchParams();
 
-    params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+    params.set('token', this.defaultToken);
     params.set('limit', limit);
 
     let d = new Date(date);
@@ -78,8 +80,9 @@ export class PostsService {
       .map(res => res.json());
   }
 
+  // function to return data for the last 7 days, for the specified user and attr
   public getAttrForLatestWeek(attr, username) {
-    let token = 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
+    let token = this.defaultToken;
     let user = 'BRx5p_mMpSn-RjknXdn3dA';
     let danUser = 'BRx5p_mMpSnKSKC3Fz2aqw';
     let danToken = 'u1r_4oEFjcGXMeBUkvDdikHZjwblB7qMPAxB0JJSceafi4xZAqlZmKvq7UPSdXGUnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
@@ -123,10 +126,10 @@ export class PostsService {
       .map(res => res.json());
   }
 
-
+    // function to get the stats row for the given username
     public getStats(username) {
       let headers = new Headers({'Accept': 'application/json'});
-      let token = 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
+      let token = this.defaultToken;
       let user = 'BRx5p_mMpSn-RjknXdn3dA';
       let danUser = 'BRx5p_mMpSnKSKC3Fz2aqw';
       let danToken = 'u1r_4oEFjcGXMeBUkvDdikHZjwblB7qMPAxB0JJSceafi4xZAqlZmKvq7UPSdXGUnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP';
@@ -148,11 +151,12 @@ export class PostsService {
         .map(res => res.json());
     }
 
+    // function to get every row in a given table
     public getAllRowsForAttr(attr) {
       let headers = new Headers({'Accept': 'application/json'});
       let params: URLSearchParams = new URLSearchParams();
 
-      params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+      params.set('token', this.defaultToken);
       params.set('userId','BRx5p_mMpSn-RjknXdn3dA');
       params.set('attribute', attr);
 
@@ -163,11 +167,12 @@ export class PostsService {
         .map(res => res.json());
     }
 
+    // function to return the no. of rows in a given table
     public getRowCountForAttr(attr) {
       let headers = new Headers({'Accept': 'application/json'});
       let params: URLSearchParams = new URLSearchParams();
 
-      params.set('token', 'u1r_4oEFjcERitMMWaygT0HZjwblB7qMPAxB0JJSceafi4xZAqlZmNJuJ6MD-KTmnHGv14YiRz_SZK_iqV7QIVECdgRlo_GULMgGZS0EumxrKbZFiOmnmAPChBPDZ5JP');
+      params.set('token', this.defaultToken);
       params.set('userId','BRx5p_mMpSn-RjknXdn3dA');
       params.set('attribute', attr);
 
@@ -177,8 +182,6 @@ export class PostsService {
         .get('http://52.208.153.178:3000/api/jawbone/getRowCount', options)
         .map(res => res.json());
     }
-
-
 }
 
 
