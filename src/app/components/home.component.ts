@@ -442,7 +442,7 @@ export class HomeComponent {
                     // get the index of the largest value (i.e. index of number at sorted[0], sorted[1] etc.)
                     wt.setSeconds(posts.Items[durations.indexOf(sorted_durations[i])].info.details.time);
                     wo.duration = (wt.toISOString().substr(11, 2) + "h " + wt.toISOString().substr(14, 2) + "m");
-                    wo.icon = this.getIconFromSubType(posts.Items[i].info.sub_type);
+                    wo.icon = this.getIconFromSubType(posts.Items[durations.indexOf(sorted_durations[i])].info.sub_type);
 
                     dayTile.workouts.push(wo);
                   }
