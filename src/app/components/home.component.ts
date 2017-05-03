@@ -449,7 +449,9 @@ export class HomeComponent {
 
                   // push the longest duration workout weather
                   let index = durations.indexOf(sorted_durations[0]);
-                  dayTile.weather += posts.Items[index].weather.weather[0].icon + ".png";
+                  if (posts.Items[index].hasOwnProperty("weather")) {
+                    dayTile.weather += posts.Items[index].weather.weather[0].icon + ".png";
+                  }
                 }
                 // callback HELL complete
                 observer.next(dayTile);
@@ -783,6 +785,9 @@ export class HomeComponent {
       }
       case 21: {
         return this.icons.soccer;
+      }
+      case 14: {
+        return this.icons.bike;
       }
     }
   }
